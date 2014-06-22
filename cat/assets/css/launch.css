@@ -107,17 +107,17 @@ nav a:focus { color: #fff; }
 	display: inline-block;
 	width: 113px;
 	height: 110px;
-	background: url(../img/logo.png) center center no-repeat;
+	background: url(../img/logo.jpg) center center no-repeat;
 	text-indent: -99999px;
 }
 
 .coming-soon .logo a:before {
-	content: url(../img/logo-hover.png);
+	content: url(../img/logo-hover.jpg);
 	width: 0;
 	height: 0;
 	visibility: hidden;
 }
-.coming-soon .logo a:hover { background-image: url(../img/logo-hover.png); }
+.coming-soon .logo a:hover { background-image: url(../img/logo-hover.jpg); }
 
 .coming-soon h2 {
     font-size: 46px;

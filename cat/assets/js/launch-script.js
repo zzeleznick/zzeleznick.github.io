@@ -84,7 +84,7 @@ jQuery(document).ready(function() {
     
     /*
 	    Show latest tweets
-	*/
+	
 	$('.latest-tweets .tweets').tweet({
 		modpath: 'assets/twitter/',
 		username: 'anli_zaimi',
@@ -112,16 +112,17 @@ jQuery(document).ready(function() {
     	});
     	clicked_tweet_nav.css('background', '#e8643e');
     });
-
+*/
     /*
 	    Google maps
-	*/
+	
     var position = new google.maps.LatLng(45.067883, 7.687231);
     $('.contact-address .map').gmap({'center': position, 'zoom': 15, 'disableDefaultUI':true, 'callback': function() {
             var self = this;
             self.addMarker({'position': this.get('map').getCenter() });	
         }
     });
+*/
 
 /*
  
