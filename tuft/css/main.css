@@ -18,6 +18,12 @@ nav {
 	z-index: 999;
 	opacity: 1;
 }
+
+.fixed {
+    position: fixed; 
+    top: 0; 
+    }
+
 .back-to-top {
     position: absolute;
     bottom: 10px;
