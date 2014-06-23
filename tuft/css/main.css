@@ -19,8 +19,10 @@ h1.margin {
 .dashboard-piece-orangebg{background-color:#F76C27;}
 .dashboard-piece-yellowbg{background-color:#E7E737;}
 .dashboard-piece-bluebg{background-color:#6D9DD1;}
+.dashboard-piece-greenbg{background-color:#006400;}
 .dashboard-piece-purplebg{background-color:#7E45D3;}
 .dashboard-piece-graybg{background-color:#798388;}
+.dashboard-piece-rorangebg{background-color:#FF4500;}
 .dashboard-piece-logo h1{line-height:100px;}
 .dashboard-piece-logo svg{margin-top:80px; min-height:}
 .dashboard-piece h1{line-height:300px;font-size:3.6em;margin:0;}
