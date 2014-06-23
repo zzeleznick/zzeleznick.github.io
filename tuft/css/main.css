@@ -10,9 +10,43 @@ p.margin {
 	margin: 10px;
 }
 
-h1.margin {
-	
+.back-to-top {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 0 20px;
+    z-index: 999;
+    text-align: center;
+    -webkit-opacity: .05;
+    -moz-opacity: .05;
+    opacity: .05;
 }
+
+.back-to-top:hover {
+    opacity: 1.0;
+}
+
+
+.show-menu a, .hide-menu a, .back-to-top a {
+    display: inline-block;
+    /** width: 46px;
+    height: 42px; **/
+    width: 150px;
+    height: 50px;
+    /*padding-top: 16px;*/
+    background: #3d3d3d;
+    font-size: 21px;
+    color: #fff;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.back-to-top a {
+    width: 42px;
+    height: 42px; 
+}
+
 
 .pure-menu.pure-menu-blackbg .pure-menu-selected a:hover{color:#efefef;}
 .dashboard-piece{min-height:300px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;color:#fff;text-align:center;position:relative;padding-bottom:40px;}.dashboard-piece-redbg{background-color:#E73F3F;}

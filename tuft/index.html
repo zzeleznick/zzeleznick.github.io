@@ -23,14 +23,23 @@
  
 <header>
 <nav class="pure-menu pure-menu-open pure-menu-horizontal pure-menu-blackbg">
-<a href="#" class="pure-menu-heading">WebDesignTuts</a>
+<a href="#" class="pure-menu-heading">C A T A L Y S T</a>
 <ul>
 <li class="pure-menu-selected"><a href="#">Dashboard</a></li>
 <li><a href="#">Users</a></li>
-<li><a href="#">Email</a></li>
+<li><a href="mailto:bioengineering@berkeley.edu?Subject=I'm%20interested!">Email</a></li>
 <li><a href="404.html">Reports</a></li>
 </ul>
 </nav>
+
+
+   <div class="back-to-top" style="position:fixed;">
+            <a href="" title="Going Up">
+                <i class="fontawesome-arrow-up back-to-top"> </i> 
+            </a>
+    </div>
+
+
 </header>
 <section class="dashboard pure-g-r clearfix">
 <div id="capped">
@@ -268,8 +277,42 @@ Ori is a sophomore bioengineering student at University of California, Berkeley.
 <footer>
 &copy; 2014 Cat
 </footer>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="js/vendor/jquery-1.9.1.min.js"> </script>
+<script>
+   //Back to top//
+    $(document).ready(function() {
+    var offset = 1500;
+    var duration = 200;
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > offset) {
+            $('.back-to-top').fadeIn(duration);
+        } else {
+            $('.back-to-top').fadeOut(duration);
+        }
+    });
+    
+    $('.back-to-top').click(function(event) {
+        event.preventDefault();
+       $('html, body').animate({scrollTop: 0}, duration);
+        return false;
+    })
+});
+
+ $('footer').click(function(event) {
+     var myWindow = window.open("http://codepen.io/hakimel/full/fILbu", "myWindow", " scrollbars=no, resizable=yes,  width= 1280, height=960");
+    //myWindow.document.write("<p>This is 'myWindow'</p>");
+    //myWindow.opener.document.write("<p>This is the source window!</p>");
+   $('footer').text('Twighlight Zone!');
+});
+
+document.onkeydown = function (evt) {
+    var x = evt.keyCode;
+    if (x == 27 ) {
+        var myWindow = window.open("http://codepen.io/hakimel/full/aIhkf", "myWindow", " scrollbars=no, resizable=yes,  width= 1280, height=960");
+        };
+};
+
+</script>
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
 
