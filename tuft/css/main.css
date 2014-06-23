@@ -4,9 +4,14 @@ body{font-size:1em;line-height:1.4;}::-moz-selection{background:#b3d4fc;text-sha
 
 img { max-width: 100%;}
 #capped {max-height: 400px !important; overflow: hidden;}
+#xs-capped {max-height: 200px !important; padding-bottom: 70px; overflow: hidden;}
 
 p.margin {
 	margin: 10px;
+}
+
+h1.margin {
+	
 }
 
 .pure-menu.pure-menu-blackbg .pure-menu-selected a:hover{color:#efefef;}
