@@ -14,15 +14,37 @@
 <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
 <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=fontawesome">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/meny.css">
 <script src="js/vendor/modernizr.js"></script>
+<script src="js/meny.js"></script>
 </head>
-<body>
+
+<header>
+    
+
+<div class="meny">
+    <!-- your menu items -->
+   <a href="#" class="pure-menu-heading">C A T A L Y S T</a>
+    <ul>
+    <li class="pure-menu-selected"><a href="#">Dashboard</a></li>
+    <li><a href="#">Users</a></li>
+    <li><a href="mailto:bioengineering@berkeley.edu?Subject=I'm%20interested!">Email</a></li>
+    <li><a href="404.html">Reports</a></li>
+</div>
+
+<div class="meny-arrow"></div>
+
+<div class="contents">
+<span style="background-color:grey; width:100%; position: fixed;"> Hello</span>
+</header>
+
 <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
- 
+<body>
 <header>
-<nav class="pure-menu pure-menu-open pure-menu-horizontal pure-menu-blackbg">
+
+<nav class="pure-menu pure-menu-open pure-menu-horizontal pure-menu-blackbg" style="position:fixed;">
 <a href="#" class="pure-menu-heading">C A T A L Y S T</a>
 <ul>
 <li class="pure-menu-selected"><a href="#">Dashboard</a></li>
@@ -38,9 +60,11 @@
                 <i class="fontawesome-arrow-up back-to-top"> </i> 
             </a>
     </div>
-
-
 </header>
+
+
+
+
 <section class="dashboard pure-g-r clearfix">
 <div id="capped">
 <div class="pure-u-1 dashboard-piece dashboard-piece-redbg dashboard-piece-logo">
@@ -94,8 +118,6 @@ Catalyst </h1>
 <p class="margin"> Fletcher Wilson is currently CEO of InterVene, Inc., a medical device start-up, which he co-founded in late 2011 as a Stanford spin-out. InterVene has developed a minimally invasive technology to address deep vein valve failure caused by deep vein thrombosis. This disease leads to a life sentence of costly and painful venous stasis ulcers, and a successful solution represents a multi-billion dollar market opportunity. InterVene has raised $2M and currently resides in the Fogarty Institute for Innovation. It is important to note that InterVene (formerly Intimal Solutions) got one if its first big breaks by winning the grand prize at the Berkeley Business Plan Competition in 2011.</p>
 </div>
 </div>
-
-
 
 
 
@@ -272,11 +294,14 @@ Ori is a sophomore bioengineering student at University of California, Berkeley.
 
 
 
-    </section>
+</section>
 
-<footer>
+<footer> 
 &copy; 2014 Cat
 </footer>
+
+
+
 <script src="js/vendor/jquery-1.9.1.min.js"> </script>
 <script>
    //Back to top//
@@ -311,6 +336,48 @@ document.onkeydown = function (evt) {
         var myWindow = window.open("http://codepen.io/hakimel/full/aIhkf", "myWindow", " scrollbars=no, resizable=yes,  width= 1280, height=960");
         };
 };
+
+
+var meny = Meny.create({
+    // The element that will be animated in from off screen
+    menuElement: document.querySelector( '.meny' ),
+
+    // The contents that gets pushed aside while Meny is active
+    contentsElement: document.querySelector( '.contents' ),
+
+    // The alignment of the menu (top/right/bottom/left)
+    position: 'left',
+
+    // The height of the menu (when using top/bottom position)
+    height: 400,
+
+    // The width of the menu (when using left/right position)
+    width: 260,
+
+    // The angle at which the contents will rotate to.
+    angle: 30,
+
+    // The mouse distance from menu position which can trigger menu to open.
+    threshold: 100,
+
+    // Width(in px) of the thin line you see on screen when menu is in closed position.
+    overlap: 6,
+
+    // The total time taken by menu animation.
+    transitionDuration: '0.5s',
+
+    // Transition style for menu animations
+    transitionEasing: 'ease',
+
+    // Gradient overlay for the contents
+    gradient: 'rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.65) 100%)',
+
+    // Use mouse movement to automatically open/close
+    mouse: true,
+
+    // Use touch swipe events to open/close
+    touch: true
+});
 
 </script>
 <script src="js/plugins.js"></script>

@@ -22,6 +22,15 @@ p.margin {
     opacity: .05;
 }
 
+.contents .trigger{
+    position: fixed;
+    padding: 0 20px;
+    bottom: 10px;
+    left: 10px;
+    opacity: 1.0;
+    z-index: 999;
+  }
+
 .back-to-top:hover {
     opacity: 1.0;
 }
