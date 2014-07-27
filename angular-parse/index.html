@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+<meta charset=utf-8 />
+<title>Example</title>
+</head>
+<body ng-app="AuthApp">
+  <div ng-hide="currentUser">
+    <form ng-show="scenario == 'Sign up'">
+      <h2>Sign up</h2>
+      Email: <input type="email" ng-model="user.email" /><br />
+      Username: <input type="text" ng-model="user.username" /><br />
+      Password: <input type="password" ng-model="user.password" /><br />
+      <button ng-click="signUp(user)">Sign up</button>
+      or <a href="#" ng-click='scenario="Log in"'>Log in</a>
+    </form>
+
+    <form ng-show="scenario == 'Log in'">
+      <h2>Log in</h2>
+      Username: <input type="text" ng-model="user.username" /><br />
+      Password: <input type="password" ng-model="user.password" /><br />
+      <button ng-click="logIn(user)">Log in</button>
+      or <a href="#" ng-click='scenario="Sign up"'>Sign up</a>
+    </form>
+  </div>
+
+  <div ng-show="currentUser">
+    <h1>Welcome {{currentUser.get('username')}}</h1>
+    <p> You have been successfully logged in</p>
+    <button ng-click="logOut(user)">Log out</button>
+  </div>
+</body>
+</html>
+
+
