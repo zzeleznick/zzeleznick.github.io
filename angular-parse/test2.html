@@ -1,0 +1,87 @@
+<html>
+<head>
+  <title>Firebase Image Gallery</title>
+  <script type="text/javascript" src="https://static.firebase.com/v0/firebase.js"></script>
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+
+  <style type="text/css">
+  #img {
+    position:fixed;
+    top:0;
+    left:0;
+    min-width:100%;
+    min-height:100%;
+  }
+</style>
+</head>
+<body>
+
+
+
+<img id="img" src="" style=""/>
+<input type='button' id='prevBtn' value='PREV' style="position:absolute;  left: 20px; top:20px"></br>
+<input type='button' id='nextBtn' value='NEXT' style="position:absolute; right: 20px; top:20px"></br>
+
+
+<script type='text/javascript'>
+
+  var images = [];
+  images.push("http://www.androidworld.it/wp-content/uploads/2012/10/Android-Home.jpg");
+  images.push("http://4.bp.blogspot.com/-7c47srAg8vI/UCOfpTZmR3I/AAAAAAAALHs/_XTjjK68Lgs/s1600/android.jpg");
+  images.push("http://www.next-tv.it/wp-content/uploads/2012/05/3g-mobile-tv.jpg");
+  images.push("http://www.skypeassets.com/i/images/illustrations/mobile-download-header.png");
+  images.push("http://apple.hdblog.it/wp-content/uploads/2012/10/Web_Traffic_Share_by_Mobile_Phone_610x495.jpg");
+  images.push("http://ziviso.files.wordpress.com/2011/11/mobile.jpg");
+
+  var counter = 0;
+
+  // Get a reference to the root of the gallery data.
+  var pictureRef = new Firebase('https://hotnot.firebaseio.com/img');
+
+
+  $("#nextBtn").click(function() {
+
+    if (counter < images.length-1)
+      counter++;
+    else
+      counter = 0;
+
+    var uri = images[counter];
+
+    $('#img').attr('src', uri);
+
+    pictureRef.set({url : uri});
+  });
+
+  $("#prevBtn").click(function() {
+
+    if (counter > 0)
+      counter--;
+    else
+      counter = images.length - 1;
+
+    // Get Image Path
+    var uri = images[counter];
+
+    // Set image source
+    $('#img').attr('src', uri);
+
+    // Save on Firebase the new url
+    pictureRef.set({url : uri});
+  });
+
+
+
+   pictureRef.on('child_added', function (snapshot) {
+    $('#img').attr('src', snapshot.val());
+  });
+
+
+  pictureRef.on('child_changed', function (snapshot) {
+    $('#img').attr('src', snapshot.val());
+  });
+
+
+</script>
+</body>
+</html>
