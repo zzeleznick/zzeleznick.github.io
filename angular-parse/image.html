@@ -18,6 +18,20 @@
   <h1>Firepano</h1>
   <input class="hidden" type="file" accept="image/*" capture="camera" id="file-upload">
   <br/>
-  <img class="pano" id="pano" />
+  <div class="box"><img class="pano" id="pano" /> </div>
+
+  <style type="text/css">
+  .pano {
+    max-width: 100%;
+  }
+  .box {
+    height: 50%;
+    width: 76%;
+  }
+
+  .del:hover {
+    background-color: red;
+  }
+  </style>
 </body>
 </html>

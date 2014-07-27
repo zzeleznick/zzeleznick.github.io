@@ -3,6 +3,23 @@ var spinner = new Spinner({
 });
 var firebaseRef = 'https://hotnot.firebaseio.com/uploads/';
 
+data = [];
+
+function deleteMe(id) {
+    counter = 0;
+    imgRef = new Firebase(firebaseRef + "new/" + data[id].url.path.m[2]);
+    var onComplete = function(error) {
+        if (error) {
+            console.log('Synchronization failed');
+        } else {
+            console.log('Synchronization succeeded');
+        }
+    };
+    imgRef.remove(onComplete);
+}
+
+
+
 function handleFileSelect(evt) {
     f = evt.target.files[0];
     var reader = new FileReader();
@@ -16,19 +33,22 @@ function handleFileSelect(evt) {
 
             //var f = new Firebase(firebaseRef + 'pano/' + hash + '/filePayload');
             var fref = new Firebase(firebaseRef);
-             fref = fref.child('new');
+            fref = fref.child('new');
 
 
             spinner.spin(document.getElementById('spin'));
             // Set the file payload to Firebase and register an onComplete handler to stop the spinner and show the preview
-            fref.push({name : f.name, content : filePayload});
+            fref.push({
+                name: f.name,
+                content: filePayload
+            });
             spinner.stop();
             document.getElementById("pano").src = e.target.result;
             $('#file-upload').hide();
-                // Update the location bar so the URL can be shared with others
+            // Update the location bar so the URL can be shared with others
             window.location.hash = hash;
 
-           /* fref.set(filePayload, function() {
+            /* fref.set(filePayload, function() {
                 spinner.stop();
                 document.getElementById("pano").src = e.target.result;
                 $('#file-upload').hide();
@@ -51,22 +71,26 @@ $(function() {
         $('#file-upload').show();
         document.getElementById("file-upload").addEventListener('change', handleFileSelect, false);
 
-           imgListRef = new Firebase(firebaseRef + "new");
-                imgListRef.once('value', function(all) {
-                    all.forEach(function(elem) {
-                        // Will be called with a messageSnapshot for each message under message_list.
-                        //var userId = elem.child('user_id').val();
-                        //var text = elem.child('text').val();
-                        // Do something with message.
-                        alert(count);
-                        $('#body').append(++count);
-                        $( "#body" ).append( '<img class="pano" id ="pano"/>' );
-                        document.getElementById("pano").id = count;
-                        document.getElementById(count).src = elem.child('content').val();
-
-
-                    });
+        imgListRef = new Firebase(firebaseRef + "new");
+        imgListRef.once('value', function(all) {
+            all.forEach(function(elem) {
+                // Will be called with a messageSnapshot for each message under message_list.
+                //var userId = elem.child('user_id').val();
+                //var text = elem.child('text').val();
+                // Do something with message.
+                alert(count);
+                data.push({
+                    id: count,
+                    name: elem.child('name').val(),
+                    url: elem.ref()
                 });
+                $('#body').append(count);
+                $("#body").append('<div class="del" onclick="deleteMe(' + count + ');"> <h2> DELETE </h2> </div>');
+                $("#body").append('<div class="box"> <img class="pano" id ="pano"/> </div>');
+                document.getElementById("pano").id = count;
+                document.getElementById(count++).src = elem.child('content').val();
+            });
+        });
 
 
     } else {
@@ -76,11 +100,11 @@ $(function() {
         f.once('value', function(snap) {
             var payload = snap.val();
             if (payload != null) {
-              document.getElementById("pano").src = payload;
+                document.getElementById("pano").src = payload;
             } else {
                 $('#body').append("Not fouddnd");
             }
             spinner.stop();
         });
     }
-});
+})
