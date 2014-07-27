@@ -1,37 +1,134 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
-<meta charset=utf-8 />
-<title>Example</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <meta charset=utf-8 />
+    <title>Example</title>
 </head>
+
 <body ng-app="AuthApp">
-  <div ng-hide="currentUser">
-    <form ng-show="scenario == 'Sign up'">
-      <h2>Sign up</h2>
-      Email: <input type="email" ng-model="user.email" /><br />
-      Username: <input type="text" ng-model="user.username" /><br />
-      Password: <input type="password" ng-model="user.password" /><br />
-      <button ng-click="signUp(user)">Sign up</button>
-      or <a href="#" ng-click='scenario="Log in"'>Log in</a>
-    </form>
+    <div ng-hide="currentUser">
+        <form ng-show="scenario == 'Sign up'">
+            <h2>Sign up</h2>
+            Email:
+            <input type="email" ng-model="user.email" />
+            <br />Username:
+            <input type="text" ng-model="user.username" />
+            <br />Password:
+            <input type="password" ng-model="user.password" />
+            <br />
+            <button ng-click="signUp(user)">Sign up</button>
+            or <a href="#" ng-click='scenario="Log in"'>Log in</a>
+        </form>
 
-    <form ng-show="scenario == 'Log in'">
-      <h2>Log in</h2>
-      Username: <input type="text" ng-model="user.username" /><br />
-      Password: <input type="password" ng-model="user.password" /><br />
-      <button ng-click="logIn(user)">Log in</button>
-      or <a href="#" ng-click='scenario="Sign up"'>Sign up</a>
-    </form>
-  </div>
+        <form ng-show="scenario == 'Log in'">
+            <h2>Log in</h2>
+            Username:
+            <input type="text" ng-model="user.username" />
+            <br />Password:
+            <input type="password" ng-model="user.password" />
+            <br />
+            <button ng-click="logIn(user)">Log in</button>
+            or <a href="#" ng-click='scenario="Sign up"'>Sign up</a>
+        </form>
+    </div>
 
-  <div ng-show="currentUser">
-    <h1>Welcome {{currentUser.get('username')}}</h1>
-    <p> You have been successfully logged in</p>
-    <button ng-click="logOut(user)">Log out</button>
-  </div>
+    <div ng-show="currentUser">
+        <h1>Welcome {{currentUser.get('username')}}</h1>
+        <p>You have been successfully logged in</p>
+        <button ng-click="logOut(user)">Log out</button>
+        <button ng-click="upload(img)">Upload</button>
+
+        <form id="fileupload" name="fileupload" enctype="multipart/form-data" method="post">
+            <fieldset>
+                <input type="file" name="fileselect" id="fileselect"></input>
+                <input id="uploadbutton" type="button" value="Upload to Parse" />
+            </fieldset>
+        </form>
+    </div>
+
+
+
+
+
 </body>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+console.log('html js loaded');
+$(function() {
+
+    /*
+    var GameScore = Parse.Object.extend("GameScore");
+    var gameScore = new GameScore();
+
+    gameScore.set("score", 1337);
+    gameScore.set("playerName", "Sean Plott");
+    gameScore.set("cheatMode", false);
+
+    gameScore.save(null, {
+        success: function(gameScore) {
+            // Execute any logic that should take place after the object is saved.
+            alert('New object created with objectId: ' + gameScore.id);
+        },
+        error: function(gameScore, error) {
+            // Execute any logic that should take place if the save fails.
+            // error is a Parse.Error with an error code and description.
+            alert('Failed to create new object, with error code: ' + error.message);
+        }
+    }); */
+
+    var file;
+
+    // Set an event listener on the Choose File field.
+    $('#fileselect').bind("change", function(e) {
+        var files = e.target.files || e.dataTransfer.files;
+        // Our file var now holds the selected file
+        file = files[0];
+        console.log(file + "________is bound");
+    });
+
+    var FileUpoad = Parse.Object.extend("FileUpoad");
+    myfile = new FileUpoad();
+
+
+    // This function is called when the user clicks on Upload to Parse. It will create the REST API request to upload this image to Parse.
+    $('#uploadbutton').click(function() {
+        var serverUrl = 'https://api.parse.com/1/files/' + file.name;
+        console.log('begin upload');
+        $.ajax({
+            type: "POST",
+            beforeSend: function(request) {
+                request.setRequestHeader("X-Parse-Application-Id", 'GN9N9d0CCreAHC4kOX4xe690IHwNlaLsT3qARkFW');
+                request.setRequestHeader("X-Parse-REST-API-Key", 'ckhVTy3BtgGiPm94W9dOfNhKL4wqneUyMyU6TTQ8');
+                request.setRequestHeader("Content-Type", file.type);
+            },
+            url: serverUrl,
+            data: file,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                myfile.set({picture: {"name": data.name,"__type": "File"}});
+                myfile.save();
+                alert("File available at: " + data.url);
+
+            },
+            error: function(data) {
+                var obj = jQuery.parseJSON(data);
+                alert(obj.error);
+            }
+        });
+    });
+
+
+});
+</script>
+
 </html>
-
-
