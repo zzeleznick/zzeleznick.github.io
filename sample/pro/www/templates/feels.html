@@ -1,18 +1,48 @@
 <view title="'Feeling'" class="home">
-<style type="text/css">
-.home {
-    background: url(../www/img/screens/feels.png) no-repeat center center fixed !important;
-}
-a {
-    color: transparent;
-}
-
-</style>
+    <style type="text/css">
+    .home {
+        background: url(../www/img/screens/feels.png) no-repeat center center fixed !important;
+    }
+    a {
+        color: transparent;
+    }
+    #list {
+        padding: 100px;
+        /*color: red;
+    background: red;*/
+        height: 50px;
+        width: 40px;
+        position: absolute;
+        margin-top: 80px;
+        margin-left: 20px;
+        z-index: 999;
+    }
+    #red2 {
+        padding: 40px;
+        /*color: red;
+        background: red; */
+        height: 50px;
+        width: 100%;
+        position: absolute;
+        margin-top: 380px;
+        margin-left: 20px;
+        z-index: 999;
+        margin-top: 500px;
+        color: transparent;
+        text-decoration: none;
+    }
+    </style>
     <content has-header="true" has-subheader="true">
 
-      <!--p style="text-align:center"> D&D Home Screen </p-->
+        <!--p style="text-align:center"> D&D Home Screen </p-->
 
-       <a href="#graphs"> <div class="center" id="stats"> Feels </div> </a>
+        <a href="#docs">
+            <div class="center" id="list">Docs</div>
+        </a>
+
+        <a href="#graphs">
+            <div class="center" id="red2">Stats</div>
+        </a>
 
     </content>
 
