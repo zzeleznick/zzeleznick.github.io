@@ -36,7 +36,7 @@ angular.module('directory', ['ionic', 'directory.services', 'directory.controlle
            .state('graphs', {
                 url: '/graphs',
                 templateUrl: 'templates/graphs.html',
-                controller: 'DocCtrl'
+                controller: 'GraphCtrl'
             })
 
 

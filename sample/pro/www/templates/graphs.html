@@ -1,17 +1,32 @@
+<link rel="stylesheet" type="text/css" href="../www/css/graphs/main.css">
+<link rel="stylesheet" type="text/css" href="../www/css/graphs/normalize.css">
 <view title="'My Health Charts'">
 
+    <style type="text/css">
+    .widget h3 {
+        margin: -12px 0 12px -12px;
+        padding: 22px;
+        width: 108.5%;
+        text-align: center;
+        color: #627b86;
+        line-height: 2em;
+        background: #d0dde3;
+    }
+    #leg {
+        margin: 0px auto 30px !important;
+        background: #d0dde3;
+    }
+    </style>
 
     <content has-header="false" has-subheader="false">
         <div class="list card">
-
-
 
             <div id="up" class="item item-body capped">
 
 
             </div>
 
-               <div class="item item-avatar">
+            <div class="item item-avatar">
                 <img src="pics/Ray_Moore.jpg">
                 <h2>Maqus Cain</h2>
                 <p>November 25, 1951</p>
@@ -31,7 +46,84 @@
                     Share
                 </a>
             </div>
+        </div>
+        <!--end card-->
 
+        <div class="wrapper">
+            <header>
+                <!--div class="container clearfix">
+                        <input placeholder="Try placing a few numbers in me!" id="scrape" value=""></input>
+                        <a class="button2" id="b4"> Input Data </a>
+                        <select id="gselector">
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+
+                    </div-->
+            </header>
+            <div class="container clearfix">
+
+                <div class="third widget line">
+                    <div class="chart-legend" id="reg">
+                        <h3>Daily Mood Levels</h3>
+                        <p>
+                            <span>This Week</span>&mdash;
+                            <strong>Last Week</strong>
+                        </p>
+                        <p><a href="" class="button">Change Date Range</a>
+                            <a href="" class="button">Filter by Activity</a>
+                        </p>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="shipments"></canvas>
+                        <!--div class="chart-legend" id="leg">
+                            <ul class="leg">
+                                <li class="ship">Mood Score</li>
+
+                                <li class="admin">Activity Score</li>
+
+                            </ul>
+                        </div-->
+                    </div>
+                </div>
+
+
+                <div class="third widget doughnut">
+                    <h3>Your Health</h3>
+                    <!--p><a href="" class="button">Filter By Employee</a></p-->
+                    <!--p><a href="" class="button">Filter By Employee </a><a class="button2" id="b2">Input Data</a>
+                        </p-->
+                    <div class="canvas-container">
+                        <canvas id="hours"></canvas>
+                        <span class="status" id="rotator"></span>
+                    </div>
+                    <div class="chart-legend" id="reg">
+                        <ul>
+                            <li class="ship">Activity Score</li>
+                            <!--GRAY-->
+                            <li class="rework">Zen Score</li>
+                            <!--GR-->
+                            <li class="admin">Social Score</li>
+                            <!--YL-->
+                            <li class="prod">Risk Score</li>
+                            <!--RED-->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="third widget">
+                    <div class="chart-legend" id="reg">
+                        <h3>CBT Assessment</h3>
+                        <p>based on words mentioned</p>
+                        <p><a href="" class="button">Examine Another Entry</a>
+                        </p>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="departments"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="push"></div>
         </div>
 
     </content>
