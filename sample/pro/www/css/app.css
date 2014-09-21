@@ -29,6 +29,14 @@
   height: 50px;
 }
 
+#up {
+  margin-top: 25px;
+  z-index: 9999;
+}
+
+.capped {
+  max-height: 500px;
+}
 .b1:hover {
     color: red;
 }

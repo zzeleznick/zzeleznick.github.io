@@ -33,6 +33,13 @@ angular.module('directory', ['ionic', 'directory.services', 'directory.controlle
                 controller: 'DocCtrl'
             })
 
+           .state('graphs', {
+                url: '/graphs',
+                templateUrl: 'templates/graphs.html',
+                controller: 'DocCtrl'
+            })
+
+
 
               .state('doc-index', {
                 url: '/docs',
