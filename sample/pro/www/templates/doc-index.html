@@ -1,0 +1,36 @@
+<view title="'Counselors'">
+
+      <div class="bar bar-subheader item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios7-search placeholder-icon"></i>
+            <input id="searchKey" type="search" placeholder="Search" ng-model="searchKey" autocorrect="off" >
+            <button class="button button-clear" ng-click="clearSearch()">X</button>
+        </label>
+    </div>
+
+    <content has-header="true" has-subheader="true">
+        <a class="b1" href="" ng-click="reverse=!reverse;order('name', reverse)">Name </a>
+         <a  class="b1"  href="" ng-click="reverse=!reverse;order('rating', reverse)">Rating </a>
+          <a class="b1" href="" ng-click="reverse=!reverse;order('zscore', reverse)"> D&D Score </a>
+
+        <list>
+        <ul ng-repeat="sdoc in sdocs">
+              <div class="item item-avatar">
+                   <a href="http://betterdoctor.com/{{sdoc.profile.slug}}"><img class="profile" ng-src="{{sdoc.profile.image_url}}"> </a>
+                <div class="block">
+                    <h2>  {{sdoc.name}} {{sdoc.profile.last_name}} </h2>
+                      <a href="#/doc/{{sdoc.id}}"> <div class="r-float six"></div> </a>
+
+                    <li> Mental Health </li>
+
+                   <img ng-src="{{sdoc.ratings[0].image_url_small}}">
+                       <li>D&D Score:
+              {{sdoc.zscore}}
+            </li>
+                </div>
+
+        </ul>
+        </list>
+    </content>
+
+</view>

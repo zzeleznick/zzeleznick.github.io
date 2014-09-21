@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>BetterDoctor</title>
+
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+</head>
+
+<body>
+<style type="text/css">
+
+table {
+  margin-left: 20px;
+}
+h3 {
+  margin-left: 20px;
+}
+.rating {
+  margin: 10px 0 10px 0;
+}
+.pic {
+  margin: 5px 0 5px 10px;
+}
+.l-offset {
+padding-left: 10px !important;
+}
+
+
+</style>
+
+  <head>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+</head>
+<body>
+<h3>BetterDoctor -- Recommendation Results</h3>
+<div id="content-placeholder"></div>
+<div id="content-placeholder">
+
+
+<script id="docs-template" type="text/x-handlebars-template">
+    <table>
+        <thead>
+            <th><select id="blah">
+                <option id='blerb'>
+                  Blah
+                </option>
+              <option>
+                Blah2
+              </option>
+              </select>
+              </div>
+            </th>
+            <th> Title</th>
+            <th class="l-offset">Picture</th>
+        </thead>
+        <tbody>
+        {{#data}}
+        <tr>
+            <td><a href="{{attribution_url}}" target="_new">{{profile.first_name}} {{profile.last_name}}</a><br>
+              <img class="rating" src="{{ratings.0.image_url_small}}"></img></td>
+            <td>{{profile.title}}</td>
+            <td><img class="pic" src="{{profile.image_url}}"></img></td>
+        </tr>
+        {{/data}}
+        </tbody>
+    </table>
+</script>
+</body>
+
+  <script src="js/index.js"></script>
+  <script src="js/zindex.js"></script>
+
+</body>
+
+</html>
