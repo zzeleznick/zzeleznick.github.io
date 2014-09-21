@@ -27,6 +27,18 @@ angular.module('directory', ['ionic', 'directory.services', 'directory.controlle
                 controller: 'DocCtrl'
             })
 
+           .state('feels', {
+                url: '/feeling',
+                templateUrl: 'templates/feels.html',
+                controller: 'DocCtrl'
+            })
+
+             .state('sugar', {
+                url: '/sugar',
+                templateUrl: 'templates/sugar.html',
+                controller: 'DocCtrl'
+            })
+
            .state('stats', {
                 url: '/stats',
                 templateUrl: 'templates/stats.html',

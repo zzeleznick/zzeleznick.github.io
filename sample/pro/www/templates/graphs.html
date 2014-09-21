@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="../www/css/graphs/mainz.css">
 <link rel="stylesheet" type="text/css" href="../www/css/graphs/normalize.css">
-<view title="'My Health Charts'">
+<view title="'My Health Charts'" ng-href="#home">
 
     <style type="text/css">
     .widget h3 {
@@ -20,9 +20,28 @@
         max-height: 82px;
         max-width: 82px;
     }
+
+    #home {
+    padding: 500px;
+    /* color: red;
+    background: red; */
+    height: 50px;
+    width: 40px;
+    position: absolute;
+    top: -370px;
+    left: 20px;
+    z-index: 9999999;
+}
+
+a {
+    color: transparent;
+}
     </style>
 
     <content has-header="false" has-subheader="false">
+
+    <a ng-href="#home"> <div class="center" id="home"> home </div> </a>
+
         <div class="list card">
 
             <div id="up" class="item item-body capped">
