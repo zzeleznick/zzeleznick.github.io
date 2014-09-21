@@ -18,15 +18,22 @@
 }
 
 #x2 {
-  margin-top: 370px;
+  margin-top: 770px;
   margin-bottom: 70px;
+  color: transparent;
+  text-decoration: none;
+  height: 500px;
+  width: 300px;
+  padding: 300px;
 }
 
 #stats {
-  margin-top: 450px;
-  background-color: gray;
+  margin-top: 500px;
   width: 200px;
-  height: 50px;
+  height: 70px;
+  padding: 50px;
+  color: transparent;
+  text-decoration: none;
 }
 
 #up {
