@@ -13,9 +13,12 @@
 		<string>MyriadPro-Bold</string>
 		<string>MyriadPro-Regular</string>
 		<string>Roboto-Bold</string>
+		<string>HelveticaNeue-Light</string>
+		<string>HelveticaNeue-Medium</string>
+		<string>HelveticaNeue-Bold</string>
 	</array>
 	<key>length</key>
-	<integer>3024529</integer>
+	<integer>3051931</integer>
 	<key>version</key>
 	<integer>37</integer>
 </dict>
