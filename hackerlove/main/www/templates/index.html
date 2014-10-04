@@ -24,8 +24,9 @@
   max-width: 100%;
 }
 #fb{
-  margin: auto;
-    padding-top: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 400px;
   max-width: 100%;
 
 }
@@ -37,7 +38,6 @@
 var fb = document.getElementById('fb');
 
 function test() {
-  alert("efdfdf");
   console.log('lolll');
 }
 
@@ -61,12 +61,12 @@ function lazyfb() {
 </script>
 
 
- <a href="#createProfile" id="">
+ <!--a href="#createProfile" id=""-->
 
     <content has-header="true" has-subheader="true" scroll="false">
 
-      <img src="img/bluebut.png" id="fb" ng-click="logger('bb')">
-      <img src="img/greenbutton.png" id="tour" ng-click="">
+    <a ng-click="logger()"> Click Me! <img src="img/bluebut.png" id="fb" ng-click="logger()"> </a>
+      <img src="img/greenbutton.png" id="tour">
 
       <!--p class="center"> Splash Page </p-->
 

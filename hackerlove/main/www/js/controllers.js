@@ -36,10 +36,10 @@ angular.module('directory.controllers', [])
 
 .controller('FbCtrl', function($scope) {
     console.log("blah");
-    $scope.logger = function(blah) {
-        $scope.user = "hi";
+    $scope.logger = function() {
+        //$scope.user = "hi";
         console.log("blah2");
-        /*Parse.FacebookUtils.logIn(null, { //pass in age_range and location then get current_location from page, also user/picture
+        Parse.FacebookUtils.logIn(null, { //pass in age_range and location then get current_location from page, also user/picture
             success: function(user) {
                 if (!user.existed()) {
                     alert("User signed up and logged in through Facebook!");
@@ -50,7 +50,12 @@ angular.module('directory.controllers', [])
             error: function(user, error) {
                 alert("User cancelled the Facebook login or did not fully authorize.");
             }
-        }); //just call user.get("key") for everything  */
+        }); //just call user.get("key") for everything
+
+    test();
+    }
+    var test = function() {
+        console.log('inner');
     }
 
 })
