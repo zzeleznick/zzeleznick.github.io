@@ -25,13 +25,13 @@ angular.module('directory.controllers', [])
 
 })
 
-    /*
+/*
 
-    .controller('DocListCtrl', function ($scope, $stateParams, DocService) {
-        DocService.findById($stateParams.doclistId).then(function(doclist) {
-            $scope.doclist = doclist;
-        });
-    }) */
+.controller('DocListCtrl', function ($scope, $stateParams, DocService) {
+    DocService.findById($stateParams.doclistId).then(function(doclist) {
+        $scope.doclist = doclist;
+    });
+}) */
 
 
 .controller('FbCtrl', function($scope) {
@@ -42,6 +42,16 @@ angular.module('directory.controllers', [])
         Parse.FacebookUtils.logIn(null, { //pass in age_range and location then get current_location from page, also user/picture
             success: function(user) {
                 if (!user.existed()) {
+                    if (!Parse.FacebookUtils.isLinked(user)) {
+                        Parse.FacebookUtils.link(user, null, {
+                            success: function(user) {
+                                alert("Woohoo, user logged in with Facebook!");
+                            },
+                            error: function(user, error) {
+                                alert("User cancelled the Facebook login or did not fully authorize.");
+                            }
+                        });
+                    }
                     alert("User signed up and logged in through Facebook!");
                 } else {
                     alert("User logged in through Facebook!");
@@ -52,7 +62,7 @@ angular.module('directory.controllers', [])
             }
         }); //just call user.get("key") for everything
 
-    test();
+        test();
     }
     var test = function() {
         console.log('inner');
