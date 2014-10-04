@@ -42,6 +42,7 @@ angular.module('directory.controllers', [])
         Parse.FacebookUtils.logIn(null, { //pass in age_range and location then get current_location from page, also user/picture
             success: function(user) {
                 if (!user.existed()) {
+                    alert("finding user");
                     if (!Parse.FacebookUtils.isLinked(user)) {
                         Parse.FacebookUtils.link(user, null, {
                             success: function(user) {
@@ -52,9 +53,9 @@ angular.module('directory.controllers', [])
                             }
                         });
                     }
-                    alert("User signed up and linked in through Facebook!");
+                    alert("Exit: User signed up and linked in through Facebook!");
                 } else {
-                    alert("User existed in system");
+                    alert("User already existed in system");
                 }
             },
             error: function(user, error) {
