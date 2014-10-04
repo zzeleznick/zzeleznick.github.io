@@ -1,4 +1,4 @@
-angular.module('directory.controllers', [])
+angular.module('directory.controllers', ["firebase"])
 
 .controller('EmployeeIndexCtrl', function($scope, EmployeeService) {
 
@@ -34,8 +34,36 @@ angular.module('directory.controllers', [])
 }) */
 
 
-.controller('FbCtrl', function($scope) {
+.controller('FbCtrl', function($scope, $firebase) {
     console.log("blah");
+
+    $scope.fbLogin = function() {
+        var ref = FireRef;
+        /*ref.authWithOAuthPopup("facebook", function(error, authData) {
+            if (authData) {
+                // the access token will allow us to make Open Graph API calls
+                console.log(authData.facebook.accessToken);
+            }
+        }, {
+            scope: "email,user_likes" // the permissions requested
+        }); */
+        var auth = new FirebaseSimpleLogin(ref, function(error, user) {
+            if (error) {
+                // an error occurred while attempting login
+                alert(error);
+            } else if (user) {
+                // user authenticated with Firebase
+                alert('User ID: ' + user.id + ', Provider: ' + user.provider);
+            } else {
+                // user is logged out
+            }
+        });
+
+        // attempt to log the user in with your preferred authentication provider
+        auth.login('facebook');
+    }
+
+
     $scope.logger = function() {
         //$scope.user = "hi";
         console.log("blah2");
@@ -56,6 +84,8 @@ angular.module('directory.controllers', [])
                     alert("Exit: User signed up and linked in through Facebook!");
                 } else {
                     alert("User already existed in system");
+                    x = user;
+                    console.log(user);
                 }
             },
             error: function(user, error) {

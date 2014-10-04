@@ -32,6 +32,12 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.0.min.js"></script>
 
+  <script type="text/javascript" src="https://static.firebase.com/v0/firebase.js"></script>
+
+  <script src="https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js"></script>
+  <script src="https://cdn.firebase.com/js/simple-login/1.6.4/firebase-simple-login.js"></script>
+
+
   </head>
 
   <!--
@@ -70,6 +76,9 @@
 </script-->
 
  <script>
+
+   FireRef = new Firebase('https://hackerlove.firebaseio.com/user');
+
       //***********************************************************
       // Be sure to add your Parse Keys and Facebook App ID Below!
       //***********************************************************
