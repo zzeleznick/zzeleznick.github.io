@@ -1,0 +1,79 @@
+<view title="'Welcome'" class="splash">
+<style type="text/css">
+
+#preload-01  { background: url(img/background.png) no-repeat -9999px -9999px; }
+.splash {
+    background: url(img/background.png) no-repeat center center fixed !important;
+}
+
+#log {
+  margin-top: 300px;
+  width: 200px;
+  height: 70px;
+  padding: 50px;
+  margin-left: 103px;
+  color: transparent;
+  text-decoration: none;
+  z-index: 99999999;
+}
+
+#tour {
+  margin: auto;
+  position: fixed;
+  top: 340px;
+  max-width: 100%;
+}
+#fb{
+  margin: auto;
+    padding-top: 400px;
+  max-width: 100%;
+
+}
+
+</style>
+
+<script>
+
+var fb = document.getElementById('fb');
+
+function test() {
+  alert("efdfdf");
+  console.log('lolll');
+}
+
+function lazyfb() {
+  alert("blah");
+  Parse.FacebookUtils.logIn(null, {//pass in age_range and location then get current_location from page, also user/picture
+    success: function(user) {
+    if (!user.existed()) {
+      alert("User signed up and logged in through Facebook!");
+    } else {
+      alert("User logged in through Facebook!");
+    }
+    },
+    error: function(user, error) {
+    alert("User cancelled the Facebook login or did not fully authorize.");
+    }
+  });//just call user.get("key") for everything
+
+}
+
+</script>
+
+
+ <a href="#createProfile" id="">
+
+    <content has-header="true" has-subheader="true" scroll="false">
+
+      <img src="img/bluebut.png" id="fb" ng-click="logger('bb')">
+      <img src="img/greenbutton.png" id="tour" ng-click="">
+
+      <!--p class="center"> Splash Page </p-->
+
+      <!--a href="#home" id="x2"><div class="center" > Login </div> </a-->
+      <!--div class="center"> Register </div-->
+
+    </content>
+    </a>
+
+</view>
