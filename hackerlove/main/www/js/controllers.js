@@ -45,16 +45,16 @@ angular.module('directory.controllers', [])
                     if (!Parse.FacebookUtils.isLinked(user)) {
                         Parse.FacebookUtils.link(user, null, {
                             success: function(user) {
-                                alert("Woohoo, user logged in with Facebook!");
+                                alert("Woohoo, user logged in and linked with Facebook!");
                             },
                             error: function(user, error) {
-                                alert("User cancelled the Facebook login or did not fully authorize.");
+                                alert("error in linkage.");
                             }
                         });
                     }
-                    alert("User signed up and logged in through Facebook!");
+                    alert("User signed up and linked in through Facebook!");
                 } else {
-                    alert("User logged in through Facebook!");
+                    alert("User existed in system");
                 }
             },
             error: function(user, error) {
