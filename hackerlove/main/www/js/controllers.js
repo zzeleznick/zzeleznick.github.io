@@ -158,7 +158,7 @@ angular.module('directory.controllers', [])
 .controller('DocCtrl', function($scope, $http, $filter) {
     var api_key = 'CODE_SAMPLES_KEY_9d3608187'; // Get your API key at developer.betterdoctor.com
     //mental-health-counselor
-    var resource_url = 'https://api.betterdoctor.com/2014-09-12/doctors?location=37.773,-122.413,100&skip=2&limit=10&user_key=' + api_key;
+    /*var resource_url = 'https://api.betterdoctor.com/2014-09-12/doctors?location=37.773,-122.413,100&skip=2&limit=10&user_key=' + api_key;
 
     $http.get('https://api.betterdoctor.com/2014-09-12/doctors?location=37.849,-122.269,100&skip=0&limit=15&user_key=CODE_SAMPLES_KEY_9d3608187').
     success(function(data, status, headers, config) {
@@ -200,4 +200,5 @@ angular.module('directory.controllers', [])
     error(function(data, status, headers, config) {
         // log error
     });
+*/
 });

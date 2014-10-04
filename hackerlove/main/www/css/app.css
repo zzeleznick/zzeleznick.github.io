@@ -1,60 +1,88 @@
 /* Your app's CSS, go crazy, make it your own */
 
 .ionic-logo {
-  display: block;
-  margin: 15px auto;
-  width: 96px;
-  height: 96px;
+    display: block;
+    margin: 15px auto;
+    width: 96px;
+    height: 96px;
 }
 
+#modup{
+  margin-top: -20px !important;
+}
+
+.item h2 {
+  font-size: 20px;
+  padding-bottom: -1px;
+}
+
+.item h4 {
+  padding-bottom: 2px;
+  font-weight: 200;
+  font-size: 12px;
+}
+.item p {
+  line-height: 1.8;
+  font-size: 16px;
+  font-weight: 200;
+  color: black;
+}
+
+.item-avatar2 {
+    padding-left: 150px;
+    min-height: 150px;
+}
+.item-avatar2 img:first-child, .item-avatar2 .item-img {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    max-width: 120px;
+    max-height: 120px;
+    width: 100%;
+    border-radius: 4px;
+}
 .center {
-  text-align: center;
-  margin-left: auto !important;
-  margin-right: auto !important;
+    text-align: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 .b1 {
- padding: 2px 4px 4px 4px;
- color: blue;
+    padding: 2px 4px 4px 4px;
+    color: blue;
 }
-
 #x2 {
-  margin-top: 770px;
-  margin-bottom: 70px;
-  color: transparent;
-  text-decoration: none;
-  height: 500px;
-  width: 300px;
-  padding: 300px;
+    margin-top: 770px;
+    margin-bottom: 70px;
+    color: transparent;
+    text-decoration: none;
+    height: 500px;
+    width: 300px;
+    padding: 300px;
 }
-
 #stats {
-  margin-top: 500px;
-  width: 200px;
-  height: 70px;
-  padding: 50px;
-  color: transparent;
-  text-decoration: none;
+    margin-top: 500px;
+    width: 200px;
+    height: 70px;
+    padding: 50px;
+    color: transparent;
+    text-decoration: none;
 }
-
 #up {
-  margin-top: 25px;
-  z-index: 9999;
+    margin-top: 25px;
+    z-index: 9999;
 }
-
 .capped {
-  max-height: 500px;
+    max-height: 500px;
 }
 .b1:hover {
     color: red;
 }
-
 .b1:first-child {
     margin-left: 10px;
 }
 .details {
     padding: 0px 12px 20px 12px;
 }
-
 .r-float {
     display: absolute;
     float: right;
@@ -70,14 +98,13 @@
     min-width: 80px;
     min-height: 80px;
 }
-.block{
-   margin: 2px 0px 2px 40px;
+.block {
+    margin: 2px 0px 2px 40px;
 }
 .details img {
     float: left;
     margin-right: 12px;
 }
-
 .list {
     clear: both;
 }
