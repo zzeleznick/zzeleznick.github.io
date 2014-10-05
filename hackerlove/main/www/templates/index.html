@@ -30,10 +30,20 @@
   max-width: 100%;
 
 }
+#sec{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  position: fixed;
+  top: 480px;
+  max-width: 100%;
+
+}
 
 </style>
 
 <script>
+
 
 var fb = document.getElementById('fb');
 
@@ -65,7 +75,7 @@ function lazyfb() {
 
     <content has-header="true" has-subheader="true" scroll="false">
 
-    <!--a ng-click="fbLogin()"> Click Me! <img src="img/bluebut.png" id="fb" ng-click="logger()"> </a-->
+    <a ng-click="fbLogin()" id="sec"> Click Me FB! </a>
      <a ng-click="logger()"> Click Me! <img src="img/bluebut.png" id="fb" ng-click="logger()"> </a>
 
       <img src="img/greenbutton.png" id="tour">

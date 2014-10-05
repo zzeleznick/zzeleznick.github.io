@@ -34,13 +34,13 @@ angular.module('directory.controllers', ["firebase"])
 }) */
 
 
-.controller('FbCtrl', function($scope, $firebase) {
+.controller('FbCtrl', function($scope, $firebase, $location) {
     console.log("blah");
 
-    /*  $scope.fbLogin = function() {
+     $scope.fbLogin = function() {
           var uref = FireRef;
           var sref = SessionRef;
-          var auth = new FirebaseSimpleLogin(ref, function(error, user) {
+          var auth = new FirebaseSimpleLogin(sref, function(error, user) {
               if (error) {
                   // an error occurred while attempting login
                   alert(error);
@@ -50,6 +50,13 @@ angular.module('directory.controllers', ["firebase"])
                   x = user;
                   var count = 0;
                   var z = x.displayName.split(" ");
+                  var gender = x.thirdPartyUserData.gender;
+                  var ageObject = x.thirdPartyUserData.age_range;
+                  var age = ageObject.min + ageObject.max
+                  age = age/2;
+                  var picLink = x.thirdPartyUserData.picture.data.url;
+
+
                   if (z.length != 2) {
                       z[1] = "";
                   }
@@ -67,7 +74,7 @@ angular.module('directory.controllers', ["firebase"])
                   });
 
                   if (count == 0) {
-                      var newUserRef = ref.push();
+                      var newUserRef = sref.push();
                       newUserRef.set({
                           'user_id': x.id,
                           'firstName': z[0],
@@ -75,6 +82,18 @@ angular.module('directory.controllers', ["firebase"])
                       });
                       console.log('session added');
                       count++;
+                      var update = 1;
+                      for (key in GlobalU) {
+                        console.log(key.id);
+                        if (x.id == key.id) {
+                            update = 0;
+                            break;
+                        }
+                      }
+                      if (update == 1) {
+                         GlobalU.push(x);
+                         console.log('pushed' + x.id);
+                      }
                   }
 
                   var sesQuery = sref.limit(10);
@@ -87,6 +106,7 @@ angular.module('directory.controllers', ["firebase"])
                       console.log(count++);
                   });
 
+                $scope.$apply(function() { $location.path("/createProfile"); });
 
 
               } else {
@@ -96,7 +116,7 @@ angular.module('directory.controllers', ["firebase"])
 
           // attempt to log the user in with your preferred authentication provider
           auth.login('facebook');
-      }  */
+      }
 
 
     $scope.logger = function() {
