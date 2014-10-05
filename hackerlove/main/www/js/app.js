@@ -23,7 +23,7 @@ angular.module('directory', ['ionic', 'directory.services', 'directory.controlle
             .state('profilec', {
                 url: '/createProfile',
                 templateUrl: 'templates/profilec.html',
-                controller: 'FbCtrl'
+                controller: 'ProfileCtrl'
             })
 
 

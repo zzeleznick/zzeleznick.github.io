@@ -37,117 +37,125 @@ angular.module('directory.controllers', ["firebase"])
 .controller('FbCtrl', function($scope, $firebase, $location) {
     console.log("blah");
 
-     $scope.fbLogin = function() {
-          var uref = FireRef;
-          var sref = SessionRef;
-          var auth = new FirebaseSimpleLogin(sref, function(error, user) {
-              if (error) {
-                  // an error occurred while attempting login
-                  alert(error);
-              } else if (user) {
-                  // user authenticated with Firebase
-                  //alert('User ID: ' + user.id + ', Provider: ' + user.provider);
-                  x = user;
-                  var count = 0;
-                  var z = x.displayName.split(" ");
-                  var gender = x.thirdPartyUserData.gender;
-                  var ageObject = x.thirdPartyUserData.age_range;
-                  var age = ageObject.min + ageObject.max
-                  age = age/2;
-                  var picLink = x.thirdPartyUserData.picture.data.url;
+    $scope.fbLogin = function() {
+        var uref = FireRef;
+        var sref = SessionRef;
+        var auth = new FirebaseSimpleLogin(sref, function(error, user) {
+            if (error) {
+                // an error occurred while attempting login
+                alert(error);
+            } else if (user) {
+                // user authenticated with Firebase
+                //alert('User ID: ' + user.id + ', Provider: ' + user.provider);
+                x = user;
+                var count = 0;
+                var z = x.displayName.split(" ");
+                var gender = x.thirdPartyUserData.gender;
+                var ageObject = x.thirdPartyUserData.age_range;
+                var age = ageObject.min + ageObject.max
+                age = age / 2;
+                var picLink = x.thirdPartyUserData.picture.data.url;
 
 
-                  if (z.length != 2) {
-                      z[1] = "";
-                  }
+                if (z.length != 2) {
+                    z[1] = "";
+                }
 
 
-                  fcount = 0;
+                fcount = 0;
 
-                  /*
-                  sref.on('child_added', function(snap) {
-                      fcount++;
-                      console.log('session added', snap.name());
-                  });
-                  // length will always equal count, since snap.val() will include every child_added event
-                  // triggered before this point
-                  sref.once('value', function(snap) {
-                      console.log('initial session data loaded!', Object.keys(snap.val()).length === fcount);
-                  }); */
+                /*
+                sref.on('child_added', function(snap) {
+                    fcount++;
+                    console.log('session added', snap.name());
+                });
+                // length will always equal count, since snap.val() will include every child_added event
+                // triggered before this point
+                sref.once('value', function(snap) {
+                    console.log('initial session data loaded!', Object.keys(snap.val()).length === fcount);
+                }); */
 
-                  if (count == 0) {
-                      var newUserRef = uref.child(user.id);
-                      newUserRef.set({
-                          'user_id': x.id,
-                          'firstName': z[0],
-                          'lastName': z[1]
-                      });
-                      console.log('session added');
-                      count++;
-                      var update = 1;
-                      for (key in GlobalU) {
+                if (count == 0) {
+                    var newUserRef = uref.child(user.id);
+                    newUserRef.set({
+                        'user_id': x.id,
+                        'firstName': z[0],
+                        'lastName': z[1],
+                        'age': age,
+                        'gender': gender,
+                        'picLink': picLink
+                    });
+                    console.log('session added');
+                    count++;
+                    var update = 1;
+                    for (key in GlobalU) {
                         console.log(key.id);
                         if (x.id == key.id) {
                             update = 0;
                             break;
                         }
-                      }
-                      if (update == 1) {
-                         GlobalU.push(x);
-                         console.log('pushed' + x.id);
-                      }
-                  }
+                    }
+                    if (update == 1) {
+                        GlobalU.push(x);
+                        console.log('pushed' + x.id);
+                    }
+                }
 
-                  var sesQuery = sref.limit(10);
-                  var uQuery = uref.limit(10);
+                var sesQuery = sref.limit(10);
+                var uQuery = uref.limit(10);
 
-                  // Get the 10 latest posts
-                  sesQuery.on('child_added', function(snapshot) {
-                      var postInfo = snapshot.val();
-                      console.log(postInfo);
-                      console.log(count++);
-                  });
+                // Get the 10 latest posts
+                sesQuery.on('child_added', function(snapshot) {
+                    var postInfo = snapshot.val();
+                    console.log(postInfo);
+                    console.log(count++);
+                });
 
                 //TODO: Get user id of current person : their_id
 
 
-                  /*uref.child(their_id + "/matches").once('value', function(snapshot) {
-                        for(key in snapshot.val()) {
-                        //list all likes
-                        console.log(key);
-                        if ( key.likes == user.id ) { //is there a match
+                /*uref.child(their_id + "/matches").once('value', function(snapshot) {
+                      for(key in snapshot.val()) {
+                      //list all likes
+                      console.log(key);
+                      if ( key.likes == user.id ) { //is there a match
 
-                        }
+                      }
 
-                    }
-                  }) */
-/*
-                   uref.child(their_id + "/matches" +"/user.id").once('value', function(snapshot) {
-                    var result = snapshot.val(); })
-                   if (result == true) {
-                        console.log('A match between ' + user.id + "and " + their_id);
-                   }
-*/
-
-
-                  /*
-                  otherPersonMatchesRef.once('value', function(snapshot) {
-                    console.log(snapshot.val() )
-                  }); */
+                  }
+                }) */
+                /*
+                                   uref.child(their_id + "/matches" +"/user.id").once('value', function(snapshot) {
+                                    var result = snapshot.val(); })
+                                   if (result == true) {
+                                        console.log('A match between ' + user.id + "and " + their_id);
+                                   }
+                */
 
 
+                /*
+                otherPersonMatchesRef.once('value', function(snapshot) {
+                  console.log(snapshot.val() )
+                }); */
 
-                $scope.$apply(function() { $location.path("/createProfile"); });
 
 
-              } else {
-                  // user is logged out
-              }
-          });
+                $scope.$apply(function() {
+                    $location.path("/createProfile");
+                });
 
-          // attempt to log the user in with your preferred authentication provider
-          auth.login('facebook');
-      }
+
+            } else {
+                // user is logged out
+            }
+        });
+
+        // attempt to log the user in with your preferred authentication provider
+        auth.login('facebook', {
+            rememberMe: true,
+            scope: 'email, user_likes'
+        });
+    }
 
 
     $scope.logger = function() {
@@ -196,6 +204,125 @@ angular.module('directory.controllers', ["firebase"])
     }
 
 })
+
+
+.controller('ProfileCtrl', function($scope, $firebase, $location, $q) {
+    console.log("profile");
+    var uref = FireRef;
+    zuser = null;
+    var defer = $q.defer();
+
+    if (GlobalU.length != 0) {
+        console.log('session stored');
+        uref.child(GlobalU[0].id).once('value', function(snapshot) {
+            result = snapshot.val();
+            console.log(result);
+        })
+    } else {
+        console.log('need to login with fb');
+        defer.promise
+            .then(function() {
+                var ref = new Firebase("https://hackerlove.firebaseio.com");
+                var auth = new FirebaseSimpleLogin(ref, function(error, user) {
+                    zuser = user;
+                    sdata = ref.child("users/" + zuser.id).on('value', function(snapshot) {
+                    //sdata.child('age').on('value', function(snapshot) {
+                        result = snapshot.val();
+                        age = result["age"];
+                        $("#pic")[0].src = result["picLink"];
+                        $("#age").text("Age: " + age);
+                    })
+
+                    console.log(user);
+                    $("#name").text(zuser.displayName);
+                })
+            })
+            .then(function() {
+                //alert(zuser.displayName);
+            })
+            .then(function() {
+                // alert(zuser.displayName);
+            });
+
+        defer.resolve();
+    }
+
+    $scope.fbLogin = function() {
+        var uref = FireRef;
+        var sref = SessionRef;
+        var auth = new FirebaseSimpleLogin(sref, function(error, user) {
+            if (error) {
+                // an error occurred while attempting login
+                alert(error);
+            } else if (user) {
+                // user authenticated with Firebase
+                //alert('User ID: ' + user.id + ', Provider: ' + user.provider);
+                x = user;
+                var count = 0;
+                var z = x.displayName.split(" ");
+                var gender = x.thirdPartyUserData.gender;
+                var ageObject = x.thirdPartyUserData.age_range;
+                var age = ageObject.min + ageObject.max
+                age = age / 2;
+                var picLink = x.thirdPartyUserData.picture.data.url;
+
+
+                if (z.length != 2) {
+                    z[1] = "";
+                }
+
+
+                fcount = 0;
+
+
+
+                if (count == 0) {
+                    var newUserRef = uref.child(user.id);
+                    newUserRef.set({
+                        'user_id': x.id,
+                        'firstName': z[0],
+                        'lastName': z[1],
+                        'age': age,
+                        'gender': gender,
+                        'picLink': picLink
+                    });
+                    console.log('session added');
+                    count++;
+                    var update = 1;
+                    for (key in GlobalU) {
+                        console.log(key.id);
+                        if (x.id == key.id) {
+                            update = 0;
+                            break;
+                        }
+                    }
+                    if (update == 1) {
+                        GlobalU.push(x);
+                        console.log('pushed' + x.id);
+                    }
+                }
+
+                var sesQuery = sref.limit(10);
+                var uQuery = uref.limit(10);
+
+                // Get the 10 latest posts
+                sesQuery.on('child_added', function(snapshot) {
+                    var postInfo = snapshot.val();
+                    console.log(postInfo);
+                    console.log(count++);
+                });
+
+
+            } else {
+                // user is logged out
+            }
+        });
+
+        // attempt to log the user in with your preferred authentication provider
+        auth.login('facebook');
+    }
+})
+
 
 
 .controller('GraphCtrl', function($scope, GraphService) {
