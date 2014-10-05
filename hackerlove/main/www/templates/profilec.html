@@ -3,41 +3,19 @@
 .home {
     background: url(img/background.png) no-repeat center center fixed !important;
 }
-#feels {
-    padding: 100px;
-    /*color: red;
-    background: red;*/
-    height: 50px;
-    width: 40px;
-    position: absolute;
-    top: -370px;
-    left: 20px;
-}
-#sugar {
-    padding: 100px;
-    /*color: red;
-    background: red; */
-    height: 50px;
-    width: 40px;
-    position: absolute;
-    top: -400px;
-    left: 150px;
+#cont{
+  margin-left: auto;
+  margin-right: auto;
+ position: fixed;
+  top: 330px;
+  max-width: 100%;
+
 }
 a {
     color: transparent;
 }
 </style>
     <content has-header="true" has-subheader="true" scroll="false" id="modup">
-
-      <!--div class="list card">
-          <a class="item item-icon-left" href="#/employee/{{employee.managerId}}" ng-if="employee.managerId > 0"><i class="icon ion-ios7-person"></i>View Manager<p>{{employee.managerName}}</p></a>
-          <a class="item item-icon-left" href="#/employee/{{employee.id}}/reports" ng-if="employee.reports > 0"><i class="icon ion-person-stalker"></i>View Direct Reports<p>{{employee.reports}}</p></a>
-          <a class="item item-icon-left" href="tel:{{employee.officePhone}}"><i class="icon ion-ios7-telephone"></i>Call Office<p>{{employee.officePhone}}</p></a>
-          <a class="item item-icon-left" href="tel:{{employee.cellPhone}}"><i class="icon ion-ios7-telephone"></i>Call Cell<p>{{employee.cellPhone}}</p></a>
-          <a class="item item-icon-left" href="sms:{{employee.cellPhone}}"><i class="icon ion-chatbox-working"></i>SMS<p>{{employee.cellPhone}}</p></a>
-          <a class="item item-icon-left" href="mailto:{{employee.email}}"><i class="icon ion-ios7-email"></i>Email Now<p>{{employee.email}}</p></a>
-      </div-->
-
 
   <div class="item item-avatar2">
     <img ng-src="img/tiff.png" id="pic">
@@ -47,17 +25,20 @@ a {
   </div>
 
   <div class="item item-body">
-    <!--img class="full-image" src="img/tiff.png"-->
     <p>
-      This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-      the content is from a card-body consisting of an image and paragraph text. The footer
-      consists of tabs, icons aligned left, within the card-footer.
+      This is your Profile
     </p>
     <p>
       <a href="#" class="subdued">1 Like</a>
       <a href="#" class="subdued">5 Comments</a>
     </p>
+    </div>
+
+<div>
+    <a href="#matches"> <img src="img/continue.png" id="cont"> </a>
+
   </div>
+
 
   <div class="item tabs tabs-secondary tabs-icon-left">
     <a class="tab-item" href="#">

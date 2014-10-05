@@ -217,34 +217,28 @@ angular.module('directory.controllers', ["firebase"])
         uref.child(GlobalU[0].id).once('value', function(snapshot) {
             result = snapshot.val();
             console.log(result);
+            age = result["age"];
+            $("#pic")[0].src = result["picLink"];
+            $("#age").text("Age: " + age);
         })
     } else {
         console.log('need to login with fb');
-        defer.promise
-            .then(function() {
-                var ref = new Firebase("https://hackerlove.firebaseio.com");
-                var auth = new FirebaseSimpleLogin(ref, function(error, user) {
-                    zuser = user;
-                    sdata = ref.child("users/" + zuser.id).on('value', function(snapshot) {
-                    //sdata.child('age').on('value', function(snapshot) {
-                        result = snapshot.val();
-                        age = result["age"];
-                        $("#pic")[0].src = result["picLink"];
-                        $("#age").text("Age: " + age);
-                    })
 
-                    console.log(user);
-                    $("#name").text(zuser.displayName);
-                })
+        var ref = new Firebase("https://hackerlove.firebaseio.com");
+        var auth = new FirebaseSimpleLogin(ref, function(error, user) {
+            zuser = user;
+            sdata = ref.child("users/" + zuser.id).on('value', function(snapshot) {
+                //sdata.child('age').on('value', function(snapshot) {
+                result = snapshot.val();
+                age = result["age"];
+                $("#pic")[0].src = result["picLink"];
+                $("#age").text("Age: " + age);
             })
-            .then(function() {
-                //alert(zuser.displayName);
-            })
-            .then(function() {
-                // alert(zuser.displayName);
-            });
 
-        defer.resolve();
+            console.log(user);
+            $("#name").text(zuser.displayName);
+        })
+
     }
 
     $scope.fbLogin = function() {
@@ -324,6 +318,41 @@ angular.module('directory.controllers', ["firebase"])
 })
 
 
+.controller('RecCtrl', function($scope, $firebase, $location, $q) {
+    console.log("profile");
+    var uref = FireRef;
+    zuser = null;
+    var defer = $q.defer();
+
+    if (GlobalU.length != 0) {
+        console.log('session stored');
+        uref.child(GlobalU[0].id).once('value', function(snapshot) {
+            result = snapshot.val();
+            console.log(result);
+            age = result["age"];
+            $("#pic")[0].src = result["picLink"];
+            $("#age").text("Age: " + age);
+        })
+    } else {
+        console.log('need to login with fb');
+
+        var ref = new Firebase("https://hackerlove.firebaseio.com");
+        var auth = new FirebaseSimpleLogin(ref, function(error, user) {
+            zuser = user;
+            sdata = ref.child("users/" + zuser.id).on('value', function(snapshot) {
+                //sdata.child('age').on('value', function(snapshot) {
+                result = snapshot.val();
+                age = result["age"];
+               // $("#pic")[0].src = result["picLink"];
+                //$("#age").text("Age: " + age);
+            })
+
+            console.log(user);
+            //$("#name").text(zuser.displayName);
+        })
+
+    }
+})
 
 .controller('GraphCtrl', function($scope, GraphService) {
     (function() {

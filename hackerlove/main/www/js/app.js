@@ -26,6 +26,19 @@ angular.module('directory', ['ionic', 'directory.services', 'directory.controlle
                 controller: 'ProfileCtrl'
             })
 
+           .state('matches', {
+                url: '/matches',
+                templateUrl: 'templates/matches.html',
+                controller: 'ProfileCtrl'
+            })
+
+
+           .state('food', {
+                url: '/restaurants',
+                templateUrl: 'templates/restaurants.html',
+                controller: 'RecCtrl'
+            })
+
 
            .state('home', {
                 url: '/home',
@@ -33,17 +46,6 @@ angular.module('directory', ['ionic', 'directory.services', 'directory.controlle
                 controller: 'DocCtrl'
             })
 
-           .state('feels', {
-                url: '/feeling',
-                templateUrl: 'templates/feels.html',
-                controller: 'DocCtrl'
-            })
-
-             .state('sugar', {
-                url: '/sugar',
-                templateUrl: 'templates/sugar.html',
-                controller: 'DocCtrl'
-            })
 
            .state('stats', {
                 url: '/stats',
