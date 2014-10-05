@@ -1,7 +1,7 @@
 <view title="'Matches'" class="home">
     <style type="text/css">
     .home {
-        background: url(img/background.png) no-repeat center center fixed !important;
+        /*background: url(img/background.png) no-repeat center center fixed !important; */
     }
     a {
         color: transparent;
@@ -9,46 +9,33 @@
     </style>
 
 
-    <content has-header="true" has-subheader="true" scroll="false" id="modup">
+    <content has-header="true" has-subheader="true" scroll="false">
 
 
-
-        <div class="item item-avatar2">
-            <img ng-src="img/tiff.png" id="pic">
-            <h2 style="padding-bottom: 2px;" id="name">Tiffany Wang</h2>
-            <p style="padding-bottom: -2px;">
-                <span id="age">Age: 23</span>
-                <br>
-                <!--i class="icon ion-map">  &nbsp;&nbsp;&nbsp;&nbsp; </i-->
-                <span id="location">Berkeley, CA</span>
-                <br>
-                <h4 id="tags">Coding, Design, Snowboarding</h4>
-            </p>
-        </div>
-
-        <div class="item item-body">
-            <p>
-                This is a sample Match
-            </p>
-            <p>
-                <a href="#" class="subdued">1 Like</a>
-                <a href="#" class="subdued">5 Comments</a>
-            </p>
-        </div>
-
-
-        <div class="item tabs tabs-secondary tabs-icon-left">
-            <a class="tab-item" href="#">
-                <i class="icon ion-thumbsup"></i>
-                Like
-            </a>
-            <a class="tab-item" href="#">
-                <i class="icon ion-chatbox"></i>
-                Comment
-            </a>
-        </div>
-
-        </div>
+     <ion-pane ng-controller="CardsCtrl">
+      <ion-header-bar type="bar-transparent" title="'Help out'"></ion-header-bar>
+FFFFFFFFFFFFFF
+      <swipe-cards>
+        <swipe-card on-card-swipe="cardSwiped()" id="start-card">
+          Swipe down for a new card
+        </swipe-card>
+        <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-card-swipe="cardSwiped($index)">
+          <div ng-controller="CardCtrl">
+            <div class="title">
+              {{card.title}}
+            </div>
+            <div class="image">
+            IS THERE AN IMAGE?
+              <img ng-src="{{card.image}}">
+            </div>
+            <div class="button-bar">
+              <button class="button button-clear button-positive" ng-click="goAway()">Answer</button>
+              <button class="button button-clear button-positive" ng-click="goAway()">Decline</button>
+            </div>
+          </div>
+        </swipe-card>
+      </swipe-cards>
+    </ion-pane>
 
     </content>
 

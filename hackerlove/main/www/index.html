@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>HackerLove</title>
@@ -27,27 +28,29 @@
     <script src="js/services.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/plugins.js"></script>
-      <script src="js/jquery-1.3.2.min.js"></script>
+    <script src="js/jquery-1.3.2.min.js"></script>
+    <script src="js/cards.js"></script>
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.0.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.0.min.js"></script>
 
-  <script type="text/javascript" src="https://static.firebase.com/v0/firebase.js"></script>
+    <script type="text/javascript" src="https://static.firebase.com/v0/firebase.js"></script>
 
-  <script src="https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js"></script>
-  <script src="https://cdn.firebase.com/js/simple-login/1.6.4/firebase-simple-login.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js"></script>
+    <script src="https://cdn.firebase.com/js/simple-login/1.6.4/firebase-simple-login.js"></script>
 
 
-  </head>
+</head>
 
-  <!--
+<!--
     'directory' is the name of this angular module (js/app.js)
   -->
-  <body ng-app="directory" animation="slide-left-right-ios7">
 
-<div id="fb-root"> </div>
+<body ng-app="directory" animation="slide-left-right-ios7">
 
-<!--script type="text/javascript">
+    <div id="fb-root"></div>
+
+    <!--script type="text/javascript">
   Parse.initialize("LrtFOwnzyda2llyZXfVp56YNosBe9UWiqRbV2BBH", "enceBimPNDpMc2xDWewPzsST4eBOirQPwak45nNV");
 
   // Initialize Parse
@@ -75,44 +78,46 @@
   }(document, 'script', 'facebook-jssdk'));
 </script-->
 
-<script>
-   FireRef = new Firebase('https://hackerlove.firebaseio.com/users');
-   SessionRef = new Firebase('https://hackerlove.firebaseio.com/sessions');
-   GlobalU = [];
-   </script>
+    <script>
+    FireRef = new Firebase('https://hackerlove.firebaseio.com/users');
+    SessionRef = new Firebase('https://hackerlove.firebaseio.com/sessions');
+    GlobalU = [];
+    </script>
 
- <script>
+    <script>
+    //***********************************************************
+    // Be sure to add your Parse Keys and Facebook App ID Below!
+    //***********************************************************
 
-
-      //***********************************************************
-      // Be sure to add your Parse Keys and Facebook App ID Below!
-      //***********************************************************
-
-      // Initialize Parse
-   Parse.initialize("LrtFOwnzyda2llyZXfVp56YNosBe9UWiqRbV2BBH", "enceBimPNDpMc2xDWewPzsST4eBOirQPwak45nNV");
+    // Initialize Parse
+    Parse.initialize("LrtFOwnzyda2llyZXfVp56YNosBe9UWiqRbV2BBH", "enceBimPNDpMc2xDWewPzsST4eBOirQPwak45nNV");
 
 
 
-      // Initialize the Facebook SDK with Parse as described at
-      // https://parse.com/docs/js_guide#fbusers
-      window.fbAsyncInit = function() {
+    // Initialize the Facebook SDK with Parse as described at
+    // https://parse.com/docs/js_guide#fbusers
+    window.fbAsyncInit = function() {
         // init the FB JS SDK
         Parse.FacebookUtils.init({
-          appId      : '1603931436501031',// Facebook App ID
-          channelUrl : '//www.anyyolk.com/channel.html', // Channel File
-          status     : true, // check login status
-          cookie     : true, // enable cookies to allow Parse to access the session
-          xfbml      : true  // parse XFBML
+            appId: '1603931436501031', // Facebook App ID
+            channelUrl: '//www.anyyolk.com/channel.html', // Channel File
+            status: true, // check login status
+            cookie: true, // enable cookies to allow Parse to access the session
+            xfbml: true // parse XFBML
         });
-      };
-      (function(d, debug){
-         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement('script'); js.id = id; js.async = true;
-         js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
-         ref.parentNode.insertBefore(js, ref);
-       }(document, /*debug*/ false));
-
+    };
+    (function(d, debug) {
+        var js, id = 'facebook-jssdk',
+            ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document, /*debug*/ false));
     </script>
 
 
@@ -124,10 +129,7 @@
       Additional attributes set its look, nav-bar animation and icons
       Icons provided by Ionicons: http://ionicons.com/
     -->
-    <nav-bar type="bar-positive"
-             animation="nav-title-slide-ios7"
-             back-button-type="button-icon"
-             back-button-icon="ion-ios7-arrow-back"></nav-bar>
+    <nav-bar type="bar-positive" animation="nav-title-slide-ios7" back-button-type="button-icon" back-button-icon="ion-ios7-arrow-back"></nav-bar>
 
     <!--
       The views will be rendered in the <nav-view> directive below
@@ -136,5 +138,6 @@
     -->
     <nav-view></nav-view>
 
-  </body>
+</body>
+
 </html>

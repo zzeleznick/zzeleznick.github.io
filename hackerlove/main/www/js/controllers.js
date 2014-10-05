@@ -1,4 +1,4 @@
-angular.module('directory.controllers', ["firebase"])
+angular.module('directory.controllers', ["firebase", 'ionic', 'ionic.contrib.ui.cards'])
 
 .controller('EmployeeIndexCtrl', function($scope, EmployeeService) {
 
@@ -316,6 +316,80 @@ angular.module('directory.controllers', ["firebase"])
         auth.login('facebook');
     }
 })
+
+
+
+.controller('CardsCtrl', function($scope, $ionicSwipeCardDelegate) {
+  var cardTypes = [
+    { title: 'Swipe down to clear the card', image: 'img/tiff.png' },
+    { title: 'Where is this?', image: 'img/sliver.png' },
+    { title: 'What kind of grass is this?', image: 'img/ionic.png' },
+    { title: 'What beach is this?', image: 'img/tiff.png' },
+    { title: 'What kind of clouds are these?', image: 'img/sliver.png' }
+  ];
+
+  $scope.cards = Array.prototype.slice.call(cardTypes, 0, 0);
+
+  $scope.cardSwiped = function(index) {
+    $scope.addCard();
+  };
+
+  $scope.cardDestroyed = function(index) {
+    $scope.cards.splice(index, 1);
+  };
+
+  $scope.addCard = function() {
+    var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+    newCard.id = Math.random();
+    $scope.cards.push(angular.extend({}, newCard));
+  }
+})
+
+.controller('CardCtrl', function($scope, $ionicSwipeCardDelegate) {
+  $scope.goAway = function() {
+    var card = $ionicSwipeCardDelegate.getSwipebleCard($scope);
+    card.swipe();
+  };
+})
+
+
+
+.controller('MatchCtrl', function($scope, $firebase, $location, $q) {
+    console.log("profile");
+    var uref = FireRef;
+    zuser = null;
+    var defer = $q.defer();
+
+    if (GlobalU.length != 0) {
+        console.log('session stored');
+        uref.child(GlobalU[0].id).once('value', function(snapshot) {
+            result = snapshot.val();
+            console.log(result);
+            age = result["age"];
+            $("#pic")[0].src = result["picLink"];
+            $("#age").text("Age: " + age);
+        })
+    } else {
+        console.log('need to login with fb');
+
+        var ref = new Firebase("https://hackerlove.firebaseio.com");
+        var auth = new FirebaseSimpleLogin(ref, function(error, user) {
+            zuser = user;
+            sdata = ref.child("users/" + zuser.id).on('value', function(snapshot) {
+                //sdata.child('age').on('value', function(snapshot) {
+                result = snapshot.val();
+                age = result["age"];
+               // $("#pic")[0].src = result["picLink"];
+                //$("#age").text("Age: " + age);
+            })
+
+            console.log(user);
+            //$("#name").text(zuser.displayName);
+        })
+
+    }
+})
+
 
 
 .controller('RecCtrl', function($scope, $firebase, $location, $q) {

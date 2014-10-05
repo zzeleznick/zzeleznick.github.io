@@ -3,7 +3,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'directory.services' is found in services.js
 // 'directory.controllers' is found in controllers.js
-angular.module('directory', ['ionic', 'directory.services', 'directory.controllers'])
+angular.module('directory', ['ionic', 'directory.services', 'directory.controllers', 'ionic.contrib.ui.cards'])
 
 
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -28,8 +28,8 @@ angular.module('directory', ['ionic', 'directory.services', 'directory.controlle
 
            .state('matches', {
                 url: '/matches',
-                templateUrl: 'templates/matches.html',
-                controller: 'ProfileCtrl'
+                templateUrl: 'templates/matches.html'
+                //controller: 'CardsCtrl'
             })
 
 
