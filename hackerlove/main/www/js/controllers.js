@@ -1,38 +1,30 @@
 angular.module('directory.controllers', ["firebase", 'ionic', 'ionic.contrib.ui.cards'])
 
-.controller('EmployeeIndexCtrl', function($scope, EmployeeService) {
+.directive('dragBack', function($ionicGesture, $state) {
+    return {
+        restrict: 'A',
+        link: function(scope, elem, attr) {
 
-    $scope.searchKey = "";
+            $ionicGesture.on('swipe', function(event) {
+                console.log('Got swiped!');
+                event.preventDefault();
+                window.history.back();
 
-    $scope.clearSearch = function() {
-        $scope.searchKey = "";
-        findAllEmployees();
+            }, elem);
+
+        }
     }
-
-    $scope.search = function() {
-        EmployeeService.findByName($scope.searchKey).then(function(employees) {
-            $scope.employees = employees;
-        });
-    }
-
-    var findAllEmployees = function() {
-        EmployeeService.findAll().then(function(employees) {
-            $scope.employees = employees;
-        });
-    }
-
-    findAllEmployees();
-
 })
 
-/*
-
-.controller('DocListCtrl', function ($scope, $stateParams, DocService) {
-    DocService.findById($stateParams.doclistId).then(function(doclist) {
-        $scope.doclist = doclist;
-    });
-}) */
-
+.directive('myRefresher', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        require: ['^?ionContent', '^?ionList'],
+        template: '<div class="scroll-refresher"><div class="ionic-refresher-content"><i class="icon ion-arrow-down-c icon-pulling"></i><i class="icon ion-loading-c icon-refreshing"></i></div></div>',
+        scope: true
+    };
+})
 
 .controller('FbCtrl', function($scope, $firebase, $location) {
     console.log("blah");
@@ -320,74 +312,88 @@ angular.module('directory.controllers', ["firebase", 'ionic', 'ionic.contrib.ui.
 
 
 .controller('CardsCtrl', function($scope, $ionicSwipeCardDelegate) {
-  var cardTypes = [
-    { title: 'Swipe down to clear the card', image: 'img/tiff.png' },
-    { title: 'Where is this?', image: 'img/sliver.png' },
-    { title: 'What kind of grass is this?', image: 'img/ionic.png' },
-    { title: 'What beach is this?', image: 'img/tiff.png' },
-    { title: 'What kind of clouds are these?', image: 'img/sliver.png' }
-  ];
+    var cardTypes = [{
+        title: 'Swipe down to clear the card',
+        image: 'img/tiff.png'
+    }, {
+        title: 'Where is this?',
+        image: 'img/tiff.png'
+    }, {
+        title: 'What kind of grass is this?',
+        image: 'img/tiff.png'
+    }, {
+        title: 'What beach is this?',
+        image: 'img/ionic.png'
+    }, {
+        title: 'What kind of clouds are these?',
+        image: 'img/ionic.png'
+    }];
 
-  $scope.cards = Array.prototype.slice.call(cardTypes, 0, 0);
+    $scope.cards = Array.prototype.slice.call(cardTypes, 0, 0);
 
-  $scope.cardSwiped = function(index) {
-    $scope.addCard();
-  };
+    $scope.cardSwiped = function(index) {
+        $scope.addCard();
+    };
 
-  $scope.cardDestroyed = function(index) {
-    $scope.cards.splice(index, 1);
-  };
+    $scope.cardDestroyed = function(index) {
+        $scope.cards.splice(index, 1);
+    };
 
-  $scope.addCard = function() {
-    var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
-    newCard.id = Math.random();
-    $scope.cards.push(angular.extend({}, newCard));
-  }
+    $scope.addCard = function() {
+        var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+        newCard.id = Math.random();
+        $scope.cards.push(angular.extend({}, newCard));
+    }
 })
 
 .controller('CardCtrl', function($scope, $ionicSwipeCardDelegate) {
-  $scope.goAway = function() {
-    var card = $ionicSwipeCardDelegate.getSwipebleCard($scope);
-    card.swipe();
-  };
+    $scope.goAway = function() {
+        var card = $ionicSwipeCardDelegate.getSwipebleCard($scope);
+        card.swipe();
+    };
+})
+
+.controller('TestCtrl', function($scope) {
+$scope.cards = [{
+        title: 'Swipe down to clear the card',
+        image: 'img/tiff.png',
+        likes: [1,2,3],
+        id: 1
+    }, {
+        title: 'Where is this?',
+        image: 'img/tiff.png',
+        likes: [1,2,4],
+        id: 2
+    }, {
+        title: 'What kind of grass is this?',
+        image: 'img/tiff.png',
+        likes: [1,2,4],
+        id: 3
+    }, {
+        title: 'What beach is this?',
+        image: 'img/ionic.png',
+        likes: [1,2,4],
+        id: 4
+    }, {
+        title: 'What kind of clouds are these?',
+        image: 'img/ionic.png',
+        likes: [1,2,4],
+        id: 5
+    }];
+    cards = $scope.cards;
+    $scope.like = function(id) {
+        console.log(id);
+        //update the array
+    };
+    $scope.dislike = function(id) {
+        console.log("Dislike this: " + id);
+        //update the array
+    };
 })
 
 
-
-.controller('MatchCtrl', function($scope, $firebase, $location, $q) {
-    console.log("profile");
-    var uref = FireRef;
-    zuser = null;
-    var defer = $q.defer();
-
-    if (GlobalU.length != 0) {
-        console.log('session stored');
-        uref.child(GlobalU[0].id).once('value', function(snapshot) {
-            result = snapshot.val();
-            console.log(result);
-            age = result["age"];
-            $("#pic")[0].src = result["picLink"];
-            $("#age").text("Age: " + age);
-        })
-    } else {
-        console.log('need to login with fb');
-
-        var ref = new Firebase("https://hackerlove.firebaseio.com");
-        var auth = new FirebaseSimpleLogin(ref, function(error, user) {
-            zuser = user;
-            sdata = ref.child("users/" + zuser.id).on('value', function(snapshot) {
-                //sdata.child('age').on('value', function(snapshot) {
-                result = snapshot.val();
-                age = result["age"];
-               // $("#pic")[0].src = result["picLink"];
-                //$("#age").text("Age: " + age);
-            })
-
-            console.log(user);
-            //$("#name").text(zuser.displayName);
-        })
-
-    }
+.controller('ChatCtrl', function($scope, $firebase, $location, $q) {
+    console.log('chat');
 })
 
 
@@ -404,8 +410,8 @@ angular.module('directory.controllers', ["firebase", 'ionic', 'ionic.contrib.ui.
             result = snapshot.val();
             console.log(result);
             age = result["age"];
-            $("#pic")[0].src = result["picLink"];
-            $("#age").text("Age: " + age);
+           // $("#pic")[0].src = result["picLink"];
+           // $("#age").text("Age: " + age);
         })
     } else {
         console.log('need to login with fb');
@@ -417,7 +423,7 @@ angular.module('directory.controllers', ["firebase", 'ionic', 'ionic.contrib.ui.
                 //sdata.child('age').on('value', function(snapshot) {
                 result = snapshot.val();
                 age = result["age"];
-               // $("#pic")[0].src = result["picLink"];
+                // $("#pic")[0].src = result["picLink"];
                 //$("#age").text("Age: " + age);
             })
 
@@ -426,151 +432,4 @@ angular.module('directory.controllers', ["firebase", 'ionic', 'ionic.contrib.ui.
         })
 
     }
-})
-
-.controller('GraphCtrl', function($scope, GraphService) {
-    (function() {
-        var t;
-
-        function size(animate) {
-                if (animate == undefined) {
-                    animate = false;
-                }
-                clearTimeout(t);
-                t = setTimeout(function() {
-                    $("canvas").each(function(i, el) {
-                        $(el).attr({
-                            "width": $(el).parent().width(),
-                            "height": $(el).parent().outerHeight()
-                        });
-                    });
-                    redraw(animate);
-                    var m = 0;
-                    $(".widget").height("");
-                    $(".widget").each(function(i, el) {
-                        m = Math.max(m, $(el).height());
-                    });
-                    $(".widget").height(m);
-                }, 30);
-            }
-            /*
-            $(window).on('resize', function() {
-                size(false);
-            });
-            */
-
-        function redraw(animation) {
-            var options = {};
-            if (!animation) {
-                options.animation = false;
-            } else {
-                options.animation = true;
-            }
-            var data = [{
-                    value: 20,
-                    color: "#637b85"
-                }, {
-                    value: 30,
-                    color: "#2c9c69"
-                }, {
-                    value: 40,
-                    color: "#dbba34"
-                }, {
-                    value: 10,
-                    color: "#c62f29"
-                }
-
-            ];
-            var canvas = document.getElementById("hours");
-            var ctx = canvas.getContext("2d");
-            new Chart(ctx).Doughnut(data, options);
-
-            var data = {
-                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-                datasets: [{
-                    fillColor: "rgba(99,123,133,0.4)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgba(220,220,220,1)",
-                    pointStrokeColor: "#fff",
-                    data: [65, 54, 30, 81, 56, 55, 40]
-                }, {
-                    fillColor: "rgba(219,186,52,0.4)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgba(220,220,220,1)",
-                    pointStrokeColor: "#fff",
-                    data: [20, 60, 42, 58, 31, 21, 50]
-                }, ]
-            }
-            var canvas = document.getElementById("shipments");
-            var ctx = canvas.getContext("2d");
-            new Chart(ctx).Line(data, options);
-
-
-
-            var data = {
-                labels: ["Happy", "Anxious", "Lonely", "Hopeful", "Slow", "Frustrated"],
-                datasets: [{
-                    fillColor: "rgba(220,220,220,0.5)",
-                    strokeColor: "#637b85",
-                    pointColor: "#dbba34",
-                    pointStrokeColor: "#637b85",
-                    data: [65, 59, 90, 81, 30, 56]
-                }]
-            }
-            var canvas = document.getElementById("departments");
-            var ctx = canvas.getContext("2d");
-            new Chart(ctx).Radar(data, options);
-        }
-        size(true);
-
-    }());
-
-})
-
-.controller('DocCtrl', function($scope, $http, $filter) {
-    var api_key = 'CODE_SAMPLES_KEY_9d3608187'; // Get your API key at developer.betterdoctor.com
-    //mental-health-counselor
-    /*var resource_url = 'https://api.betterdoctor.com/2014-09-12/doctors?location=37.773,-122.413,100&skip=2&limit=10&user_key=' + api_key;
-
-    $http.get('https://api.betterdoctor.com/2014-09-12/doctors?location=37.849,-122.269,100&skip=0&limit=15&user_key=CODE_SAMPLES_KEY_9d3608187').
-    success(function(data, status, headers, config) {
-        zdocs = $scope.docs = data;
-        zzdocs = $scope.sdocs = data.data;
-        for (var i = 0; i < zzdocs.length; i++) {
-            // console.log(zzdocs[i].profile.first_name);
-            $scope.sdocs[i].name = zzdocs[i].profile.first_name;
-            $scope.sdocs[i].lname = zzdocs[i].profile.last_name;
-            $scope.sdocs[i].id = i;
-            $scope.sdocs[i].rating = zzdocs[i].ratings[0].rating;
-            $scope.sdocs[i].spec = zzdocs[i].specialties[0].name;
-            $scope.sdocs[i].zscore = Math.floor(Math.random() * 40 + 60);
-        }
-
-        var orderBy = $filter('orderBy');
-        //zdocs.data[0].ratings[0].rating
-        // console.log(data);
-
-        $scope.order = function(predicate, reverse) {
-            $scope.sdocs = orderBy($scope.sdocs, predicate, reverse);
-        }
-
-        $scope.searchKey = "";
-
-        $scope.clearSearch = function() {
-            $scope.searchKey = "";
-        }
-
-        $scope.search = function() {
-            var results = sdocs.filter(function(element) {
-                var fullName = element.firstName + " " + element.lastName;
-                return fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
-            });
-            $scope.sdocs = sdocs;
-        };
-
-    }).
-    error(function(data, status, headers, config) {
-        // log error
-    });
-*/
 });

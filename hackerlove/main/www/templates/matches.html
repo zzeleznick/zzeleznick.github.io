@@ -1,20 +1,16 @@
-<view title="'Matches'" class="home">
-    <style type="text/css">
-    .home {
-        /*background: url(img/background.png) no-repeat center center fixed !important; */
-    }
-    a {
-        color: transparent;
-    }
-    </style>
+<view title="'Matches'" class="splash">
 
+<style type="text/css">
+  #min{
+    max-width: 100%;
+  }
 
-    <content has-header="true" has-subheader="true" scroll="false">
+</style>
 
-
-     <ion-pane ng-controller="CardsCtrl">
+<content has-header="true" has-subheader="true" scroll="true">
+<!--ion-pane ng-controller="CardsCtrl">
       <ion-header-bar type="bar-transparent" title="'Help out'"></ion-header-bar>
-FFFFFFFFFFFFFF
+
       <swipe-cards>
         <swipe-card on-card-swipe="cardSwiped()" id="start-card">
           Swipe down for a new card
@@ -25,7 +21,6 @@ FFFFFFFFFFFFFF
               {{card.title}}
             </div>
             <div class="image">
-            IS THERE AN IMAGE?
               <img ng-src="{{card.image}}">
             </div>
             <div class="button-bar">
@@ -35,8 +30,22 @@ FFFFFFFFFFFFFF
           </div>
         </swipe-card>
       </swipe-cards>
-    </ion-pane>
+    </ion-pane-->
+
+    <div ng-repeat="card in cards">
+            <div class="title">
+              {{card.title}}
+            </div>
+             <div class="item item-avatar2">
+              <img ng-src="{{card.image}}">
+            </div>
+            <div class="button-bar">
+              <button class="button button-clear button-positive" ng-click="like(card.id)">Answer</button>
+              <button class="button button-clear button-positive" ng-click="dislike(card.id)">Decline</button>
+            </div>
+          </div>
+        </div>
+
+        <a href="#restaurants"> CLICK FOR NEXT</a> ||  <a href="#chat"> CLICK FOR CHAT</a>
 
     </content>
-
-</view>
