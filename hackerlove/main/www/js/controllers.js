@@ -63,6 +63,8 @@ angular.module('directory.controllers', ["firebase"])
 
 
                   fcount = 0;
+
+                  /*
                   sref.on('child_added', function(snap) {
                       fcount++;
                       console.log('session added', snap.name());
@@ -71,10 +73,10 @@ angular.module('directory.controllers', ["firebase"])
                   // triggered before this point
                   sref.once('value', function(snap) {
                       console.log('initial session data loaded!', Object.keys(snap.val()).length === fcount);
-                  });
+                  }); */
 
                   if (count == 0) {
-                      var newUserRef = sref.push();
+                      var newUserRef = uref.child(user.id);
                       newUserRef.set({
                           'user_id': x.id,
                           'firstName': z[0],
@@ -106,6 +108,35 @@ angular.module('directory.controllers', ["firebase"])
                       console.log(count++);
                   });
 
+                //TODO: Get user id of current person : their_id
+
+
+                  /*uref.child(their_id + "/matches").once('value', function(snapshot) {
+                        for(key in snapshot.val()) {
+                        //list all likes
+                        console.log(key);
+                        if ( key.likes == user.id ) { //is there a match
+
+                        }
+
+                    }
+                  }) */
+/*
+                   uref.child(their_id + "/matches" +"/user.id").once('value', function(snapshot) {
+                    var result = snapshot.val(); })
+                   if (result == true) {
+                        console.log('A match between ' + user.id + "and " + their_id);
+                   }
+*/
+
+
+                  /*
+                  otherPersonMatchesRef.once('value', function(snapshot) {
+                    console.log(snapshot.val() )
+                  }); */
+
+
+
                 $scope.$apply(function() { $location.path("/createProfile"); });
 
 
@@ -121,6 +152,7 @@ angular.module('directory.controllers', ["firebase"])
 
     $scope.logger = function() {
         //$scope.user = "hi";
+        FB.logout();
         console.log("blah2");
 
         Parse.FacebookUtils.logIn('user_location, user_relationship_details', { //pass in age_range and location then get current_location from page, also user/picture
