@@ -37,55 +37,99 @@ angular.module('directory.controllers', ["firebase"])
 .controller('FbCtrl', function($scope, $firebase) {
     console.log("blah");
 
-    $scope.fbLogin = function() {
-        var ref = FireRef;
-        /*ref.authWithOAuthPopup("facebook", function(error, authData) {
-            if (authData) {
-                // the access token will allow us to make Open Graph API calls
-                console.log(authData.facebook.accessToken);
-            }
-        }, {
-            scope: "email,user_likes" // the permissions requested
-        }); */
-        var auth = new FirebaseSimpleLogin(ref, function(error, user) {
-            if (error) {
-                // an error occurred while attempting login
-                alert(error);
-            } else if (user) {
-                // user authenticated with Firebase
-                alert('User ID: ' + user.id + ', Provider: ' + user.provider);
-            } else {
-                // user is logged out
-            }
-        });
+    /*  $scope.fbLogin = function() {
+          var uref = FireRef;
+          var sref = SessionRef;
+          var auth = new FirebaseSimpleLogin(ref, function(error, user) {
+              if (error) {
+                  // an error occurred while attempting login
+                  alert(error);
+              } else if (user) {
+                  // user authenticated with Firebase
+                  //alert('User ID: ' + user.id + ', Provider: ' + user.provider);
+                  x = user;
+                  var count = 0;
+                  var z = x.displayName.split(" ");
+                  if (z.length != 2) {
+                      z[1] = "";
+                  }
 
-        // attempt to log the user in with your preferred authentication provider
-        auth.login('facebook');
-    }
+
+                  fcount = 0;
+                  sref.on('child_added', function(snap) {
+                      fcount++;
+                      console.log('session added', snap.name());
+                  });
+                  // length will always equal count, since snap.val() will include every child_added event
+                  // triggered before this point
+                  sref.once('value', function(snap) {
+                      console.log('initial session data loaded!', Object.keys(snap.val()).length === fcount);
+                  });
+
+                  if (count == 0) {
+                      var newUserRef = ref.push();
+                      newUserRef.set({
+                          'user_id': x.id,
+                          'firstName': z[0],
+                          'lastName': z[1]
+                      });
+                      console.log('session added');
+                      count++;
+                  }
+
+                  var sesQuery = sref.limit(10);
+                  var uQuery = uref.limit(10);
+
+                  // Get the 10 latest posts
+                  sesQuery.on('child_added', function(snapshot) {
+                      var postInfo = snapshot.val();
+                      console.log(postInfo);
+                      console.log(count++);
+                  });
+
+
+
+              } else {
+                  // user is logged out
+              }
+          });
+
+          // attempt to log the user in with your preferred authentication provider
+          auth.login('facebook');
+      }  */
 
 
     $scope.logger = function() {
         //$scope.user = "hi";
         console.log("blah2");
-        Parse.FacebookUtils.logIn(null, { //pass in age_range and location then get current_location from page, also user/picture
+
+        Parse.FacebookUtils.logIn('user_location, user_relationship_details', { //pass in age_range and location then get current_location from page, also user/picture
             success: function(user) {
-                if (!user.existed()) {
-                    alert("finding user");
-                    if (!Parse.FacebookUtils.isLinked(user)) {
-                        Parse.FacebookUtils.link(user, null, {
-                            success: function(user) {
-                                alert("Woohoo, user logged in and linked with Facebook!");
-                            },
-                            error: function(user, error) {
-                                alert("error in linkage.");
-                            }
+
+                var currentUser = Parse.User.current();
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({
+                    'address': user.user_location
+                }, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var point = new Parse.GeoPoint({
+                            latitude: results[0].geometry.location.lat(),
+                            longitude: results[0].geometry.location.lng()
                         });
+                        currentUser.set("location", point);
+                    } else {
+                        alert("Something got wrong " + status);
                     }
-                    alert("Exit: User signed up and linked in through Facebook!");
+                });
+
+                if (!user.existed()) {
+                    currentUser.set("name", user.name);
+                    currentUser.set("id", user.id);
+                    currentUser.set("gender", user.gender);
+                    currentUser.set("sexual_interests", user.user_relationship_details);
+                    alert("User signed up and logged in through Facebook!");
                 } else {
-                    alert("User already existed in system");
-                    x = user;
-                    console.log(user);
+                    alert("User logged in through Facebook!");
                 }
             },
             error: function(user, error) {

@@ -1,0 +1,56 @@
+<script>
+  // Initialize Parse
+  Parse.initialize("YOUR_APP_ID", "YOUR_JAVASCRIPT_KEY");
+ 
+  window.fbAsyncInit = function() {
+    Parse.FacebookUtils.init({ // this line replaces FB.init({
+      appId      : '1603931436501031', // Facebook App ID
+      status     : true, // check Facebook Login status
+      cookie     : true, // enable cookies to allow Parse to access the session
+      xfbml      : true
+    });
+ 
+    // Run code after the Facebook SDK is loaded.
+  };
+ 
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+  
+
+  	////////////FACEBOOK LOGIN/////////////
+<script>
+	Parse.FacebookUtils.logIn('age_range,user_location,user_relationship_details', {//pass in age_range and location then get current_location from page, also user/picture
+	  success: function(user) {
+		 
+		  var currentUser = Parse.User.current();
+		  var geocoder =  new google.maps.Geocoder();
+    	  geocoder.geocode( { 'address': user.user_location }, function(results, status) {
+          	if (status == google.maps.GeocoderStatus.OK) {
+			  	var point = new Parse.GeoPoint({latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng()});
+				currentUser.set("location",point);
+          	} else {
+            	alert("Something got wrong " + status);
+          	}
+          });
+		  
+		if (!user.existed()) {
+			currentUser.set("name",user.name);
+			currentUser.set("id",user.id);
+			currentUser.set("gender",user.gender);
+			currentUser.set("sexual_interests",user.user_relationship_details);
+		  alert("User signed up and logged in through Facebook!");
+		} else {
+		  alert("User logged in through Facebook!");
+		}
+	  },
+	  error: function(user, error) {
+		alert("User cancelled the Facebook login or did not fully authorize.");
+	  }
+	});//just call user.get("key") for everything
+</script>
