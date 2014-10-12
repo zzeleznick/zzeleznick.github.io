@@ -1,0 +1,109 @@
+<html>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+
+<style>
+h2 {
+    margin: 10px 0px 10px 0px;
+}
+h1 {
+    margin: 20px 0px 20px 0px;
+}
+section {
+    margin-bottom: 50px;
+}
+.container {
+    width: 900px;
+    height: 900px;
+    margin: 0 auto;
+}
+li {
+    margin: 2px;
+}
+.tab {
+    margin: 4px 2px 2px 40px;
+}
+
+.tab-2 {
+    margin: 8px 2px 2px 80px;
+}
+.tab-3 {
+    margin: 8px 2px 2px 120px;
+}
+</style>
+
+<script type="text/javascript">
+</script>
+
+<title>Twitter Annual Revenue Calculation</title>
+
+<h1>This is my chart page</h1>
+
+<section id="first">
+
+    <h2>Narrowing the Scope</h2>
+
+</section>
+
+<section id="second">
+
+    <h2>Identifying the Parameters</h2>
+    <h4>Revenue Generated from Sponsored Ads</h4>
+    <ul>
+        Cost per View (CPV)
+        <li class="tab">
+            Estimate: $0.15
+        </li>
+    </ul>
+    <ul>
+        Cost per Click (CPC)
+        <li class="tab">
+            Estimate: $0.30
+        </li>
+    </ul>
+
+    <ul>
+        Estimating Number of Users
+        <li class="tab">
+            Bottom-up Approach:
+            <li class="tab-2">
+                Starting from my personal use-case
+            </li>
+             <li class="tab-3">
+               With ~1 hour of idle use on a given day, I see an average of 5 ads
+            </li>
+            <li class="tab-3">
+               Estimating that 2 hours of idle use is the average frequency of active daily users
+            </li>
+             <li class="tab-3">
+                Assume a 10 ads per user per day (A/UD)
+             </li>
+        </li>
+    </ul>
+
+
+</section>
+
+<section id="third">
+
+    <h2>Determining Twitter's 2014 Annual Revenue</h2>
+
+
+    <div id="chart"></div>
+    <!--button class='small' onclick='reload();'>Load</button-->
+
+    <script type="text/javascript" src="js/c3.js"></script>
+    <script src="js/main2.js"></script>
+
+    <h3>Data Source for Reported Annual Revenue:
+        <a href="http://www.marketwatch.com/investing/stock/twtr/financials"> Market Watch </a>
+    </h3>
+
+http://www.forbes.com/sites/investopedia/2013/10/10/twitters-got-a-revenue-conundrum/
+
+
+</section>
+
+
+</html>
