@@ -4,6 +4,7 @@
 <head>
     <title>Calculator</title>
 </head>
+<script src="dist/jq.js"></script>
 
 <body>
 
@@ -40,10 +41,11 @@
 #input {
     padding: 4px 10px 4px 10px;
     font-size: 62px;
-    margin: 20% auto 5px auto;
+    margin: 15% auto 5% auto;
     outline: none;
     text-align: center;
     display: block;
+    max-width: 70%;
 }
 #calc {
     font-size: 30px;
@@ -68,6 +70,7 @@
     width: 100px;
     margin: 5px 0 5px 0;
     display: inline-block;
+    padding-right: 14%;
 }
 .keys {
     font-size: 30px;
@@ -79,11 +82,17 @@
     text-align: center;
     color: white;
     border-radius: 4px;
-    background-color: rgb(10, 30, 80);
+    background-color: rgb(15, 38, 95);
     display: inline-block;
 }
 html {
-    background-color: rgb(104, 88, 88);
+background:
+radial-gradient(black 15%, transparent 16%) 0 0,
+radial-gradient(black 15%, transparent 16%) 8px 8px,
+radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+background-color:#282828;
+background-size:16px 16px;
 }
 </style>
 <script>
@@ -105,12 +114,38 @@ DEFINING PRINCIPLES
     -- The presence of an operator (-, +, *, /, ^) should signal increment and fill the  next object array index
 */
 
+last_clicked = 'x';
+ops = /\+|\*|\^|\//g;
 
 function put(obj) {
     console.log(obj);
-    document.getElementById('input').value = document.getElementById('input').value.concat(obj);
+    if (obj.match(ops) && last_clicked.match(ops)) {
+        console.log('blocked ' + last_clicked);
+    } else {
+        last_clicked = obj;
+        document.getElementById('input').value = document.getElementById('input').value.concat(obj);
+    }
 }
 var letters = /[a-z]/i;
+
+window.onresize = resizeMe;
+
+function resizeMe() {
+    curWidth = window.innerWidth;
+    if (curWidth <= 470 ) {
+        console.log('Resized to: ' + curWidth);
+        $('.keys').css('font-size', 22);
+        $('.keys').css('width', '50px');
+        $('.keys').css('height', '40px');
+        $('#key-pad').css('margin', '5px 0% 5px 25%');
+    }
+    else {
+        $('.keys').css('font-size', 30);
+          $('.keys').css('width', '70px');
+        $('.keys').css('height', '50px')
+         $('#key-pad').css('margin', '5px 0% 5px 30%');
+    }
+}
 
 window.addEventListener("keydown", function(event) {
     if (event.defaultPrevented) {
@@ -132,9 +167,13 @@ window.addEventListener("keydown", function(event) {
             // user has pressed enter
             calc();
             //console.log('Enter pressed' + event);
-        } else if (charStr.match(letters) != null) {
+        } else if (charStr.match(letters)) {
             console.log('Key pressed ' + charStr);
             event.preventDefault();
+        } else if (charStr.match(/\d/)) {
+            /*console.log('Key pressed ' + charStr);
+            put(charStr);
+            event.preventDefault(); */
         }
         /*else if (event.keyCode === 187) {  //plus sign
 
@@ -160,9 +199,9 @@ function addNext(obj, s) { //add a string to an object
 function parseInput(myString) { //parseInput takes a string input and returns the Object Array containing the parsed Input
     var space = /^\s+|\s|\s+$/g; // ^\s corresponds to beginning, \s+$ end of line
     if (myString == undefined) {
-            pre_data = document.getElementById('input').value;
-    }
-    else { pre_data = myString;
+        pre_data = document.getElementById('input').value;
+    } else {
+        pre_data = myString;
     }
     pre_data = pre_data.replace(space, '');
     data = [];
@@ -204,14 +243,14 @@ function parseInput(myString) { //parseInput takes a string input and returns th
         }
         //console.log(data);
     }
-    console.log('array looks like: '  + data);
+    console.log('array looks like: ' + data);
     return data;
 }
 
 function eval(val_1, op, val_2) { //op is a string, return a String!
     var result = 0;
     val_1 = deParen(val_1);
-    val_2 = deParen(val_2);  //excess safety
+    val_2 = deParen(val_2); //excess safety
     if (op == '+') {
         result = parseFloat(val_1) + parseFloat(val_2);
     } else if (op == '-') {
@@ -233,7 +272,7 @@ function deParen(myString) {
 
 function calc(arg) {
     data = parseInput(document.getElementById('input').value);
-    if (arg != undefined)  {
+    if (arg != undefined) {
 
         data = arg;
     }
@@ -256,18 +295,16 @@ function calc(arg) {
         var i = 0; // index
         while (counter < ops_count) {
             if (data.length > 3) {
-                if (data[i].match(parens) && !(data[i+2].match(parens)) && data[i + 3].match(low_signs) ) { //ASSUME parentheses are balanced and in the form (2-3) * 2
+                if (data[i].match(parens) && !(data[i + 2].match(parens)) && data[i + 3].match(low_signs)) { //ASSUME parentheses are balanced and in the form (2-3) * 2
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
                     data = data.splice(0, 1).concat(data.splice(2, data.length));
-                }
-                else if (data[i].match(parens) && data[i+2].match(parens) ) { //ASSUME parentheses are balanced and in the form (2-3) * 2
+                } else if (data[i].match(parens) && data[i + 2].match(parens)) { //ASSUME parentheses are balanced and in the form (2-3) * 2
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
                     data = data.splice(0, 1).concat(data.splice(2, data.length));
-                }
-                else if (data[i + 2].match(parens) ) {
+                } else if (data[i + 2].match(parens)) {
                     data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
                     data = data.splice(0, 3).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-                } else if (data[i + 3].match(high_signs)) {   //note that 3^1^4 = 3
+                } else if (data[i + 3].match(high_signs)) { //note that 3^1^4 = 3
                     data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
                     data = data.splice(0, 3).concat(data.splice(2, data.length));
                 } else {
@@ -276,7 +313,7 @@ function calc(arg) {
                 }
             } else if (data[i + 1].match(low_signs) || data[i + 1].match(high_signs)) {
                 if (data[i].match(parens) || data[i + 2].match(parens)) {
-                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 } else {
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 }
@@ -316,10 +353,10 @@ function test3() {
 function runTests() {
     x = [];
     signArr = ['+', '-', '/', '*', '^'];
-    var length = parseInt(Math.random(0,1) * 10) + 2;
-    for (var q= 0; q < length; q+=2 ) {
-        x[q] =  parseInt(Math.random(0,1) * 10).toString();
-        x[q+1] = signArr[parseInt(Math.random(0,1) * 5)];
+    var length = parseInt(Math.random(0, 1) * 10) + 2;
+    for (var q = 0; q < length; q += 2) {
+        x[q] = parseInt(Math.random(0, 1) * 10).toString();
+        x[q + 1] = signArr[parseInt(Math.random(0, 1) * 5)];
     }
     x.pop();
     console.log('Running Tests on array: ');
