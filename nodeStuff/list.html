@@ -60,11 +60,11 @@ function quickSort(items, left, right) {
 // first call
 //var result = quickSort(items, 0, items.length - 1);
 
-qSort = function (x) { //anon QuickSort
-    return quickSort(x, 0, x.length-1);
+qSort = function(x) { //anon QuickSort
+    return quickSort(x, 0, x.length - 1);
 }
 
-function quicksortD(arr) {
+function qSortD(arr) {
     //if array is empty
     if (arr.length === 0) {
         return [];
@@ -80,7 +80,7 @@ function quicksortD(arr) {
             right.push(arr[i]);
         }
     }
-    return quicksortD(left).concat(pivot, quicksortD(right));
+    return qSortD(left).concat(pivot, qSortD(right));
 }
 
 /*var anon = function(x) {
@@ -111,12 +111,11 @@ function zsort(arr) { // zsort
             temp = arr[sorted - 1];
             arr[sorted - 1] = arr[min];
             arr[min] = temp;
-       }
-        else {
+        } else {
             min = sorted;
         }
         sorted++;
-       // console.log(arr);
+        // console.log(arr);
     }
     return arr;
 }
@@ -125,7 +124,7 @@ function zsort(arr) { // zsort
 
 function makeArr(len, max) {
     if (len == undefined) {
-         len = parseInt(Math.random(0, 1) * 10 + 2);
+        len = parseInt(Math.random(0, 1) * 10 + 2);
     }
     if (max == undefined) {
         max = 10;
@@ -138,12 +137,46 @@ function makeArr(len, max) {
 }
 
 
-function timeThis( func, obj) {
+function timeThis(func, obj) { //also returns the result of the function
+    result = [];
     var t0 = performance.now();
-    result = func(obj);
+    result.data = func(obj);
+    result.name = func.toString().slice(0, 30);
     var t1 = performance.now();
-    console.log("Call to " + func.toString().slice(0,30) + ' took: \n' + (t1 - t0) + " milliseconds.");
+    result.time = (t1 - t0);
+    console.log("Call to " + result.name + ' took: \n' + result.time + " milliseconds.");
     return result;
+}
+
+function makeFuncArr() {
+    x = [];
+    for (var i = 0; i < arguments.length; i++) {
+        x[i] = arguments[i];
+    }
+    return x;
+}
+
+function runManyTests(functionArr, size, max) { //if size is undefined, size is random, same with max
+    if (functionArr == undefined) {
+        functionArr = makeFuncArr(zsort, nativeSort);
+    }
+    results = [];
+    x = [makeArr(size, max)];
+    console.log('Comparing x: ' + x);
+    for (var i = 1; i < functionArr.length; i++) {
+        x[i] = x[0];
+    };
+    for (var j = 0; j < functionArr.length; j++) {
+       result = timeThis(functionArr[j], x[j]);
+       results[j] = [result.name, result.data, result.time];
+       console.log('Result of test: ' + result.data);
+    };
+
+    /*if (y.toString() != x.toString()) {
+        console.log('ERROR: Strings do not match!');
+    } else {
+        console.log('PASS');
+    }*/
 }
 
 function runTests(f1, f2, size, max) { //if size is undefined, size is random, same with max
@@ -152,8 +185,8 @@ function runTests(f1, f2, size, max) { //if size is undefined, size is random, s
     y = x;
     z = timeThis(f1, x);
     y = timeThis(f2, y);
-    console.log('Your sorted x: ' + z);
-    if (y.toString() != x.toString()) {
+    console.log('Your sorted x: ' + z.data);
+    if (y.data.toString() != z.data.toString()) {
         console.log('ERROR: Strings do not match!');
     } else {
         console.log('PASS');
