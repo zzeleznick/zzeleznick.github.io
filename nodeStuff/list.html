@@ -89,13 +89,13 @@ function quicksortD(arr) {
 
 anon();*/
 
-nativeSort = function(x) {
+nativeSort = function(x) { // nativeSort
     x.sort();
     return x;
 }
 
 
-function zsort(arr) {
+function zsort(arr) { // zsort
     min = 0;
     sorted = 1;
     if (arr.length == 1) {
@@ -116,43 +116,43 @@ function zsort(arr) {
             min = sorted;
         }
         sorted++;
-        console.log(arr);
+       // console.log(arr);
     }
     return arr;
 }
 
 /* T E S T I N G   S U I T E */
 
+function makeArr(len, max) {
+    if (len == undefined) {
+         len = parseInt(Math.random(0, 1) * 10 + 2);
+    }
+    if (max == undefined) {
+        max = 10;
+    }
+    x = [];
+    for (var i = 0; i < len; i++) {
+        x[i] = Math.round(Math.random(0, 1) * max);
+    }
+    return x;
+}
 
 
 function timeThis( func, obj) {
-
     var t0 = performance.now();
     result = func(obj);
     var t1 = performance.now();
-    console.log("Call to " + func.toString().slice(0,20) + ' took ' + (t1 - t0) + " milliseconds.");
+    console.log("Call to " + func.toString().slice(0,30) + ' took: \n' + (t1 - t0) + " milliseconds.");
     return result;
 }
 
-function runTests() {
-    var length = parseInt(Math.random(0, 1) * 10 + 2);
-    x = [];
-    for (var i = 0; i < length; i++) {
-        x[i] = parseInt(Math.random(0, 1) * 10 + 2);
-    }
-    console.log('Running Test on x: ' + x);
-    var t0 = performance.now();
-    //y = zsort(x);
-    //y = quickSort(x, 0, x.length - 1);
-    y = quicksortD(x);
-    var t1 = performance.now();
-    // console.log("Call to zsort took " + (t1 - t0) + " milliseconds.")
-    console.log("Call to quickSort took " + (t1 - t0) + " milliseconds.")
-    var t2 = performance.now();
-    x.sort();
-    var t3 = performance.now();
-    console.log("Call to sort took " + (t2 - t1) + " milliseconds.")
-    console.log('Your sorted x: ' + y);
+function runTests(f1, f2, size, max) { //if size is undefined, size is random, same with max
+    x = makeArr(size, max);
+    console.log('Comparing x: ' + x);
+    y = x;
+    z = timeThis(f1, x);
+    y = timeThis(f2, y);
+    console.log('Your sorted x: ' + z);
     if (y.toString() != x.toString()) {
         console.log('ERROR: Strings do not match!');
     } else {
