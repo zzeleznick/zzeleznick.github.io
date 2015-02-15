@@ -1,0 +1,165 @@
+<html>
+<title> List Practice</title>
+
+<body>
+
+
+</body>
+<script>
+function swap(items, i, j) {
+    var temp = items[i];
+    items[i] = items[j];
+    items[j] = temp;
+}
+
+function partition(items, left, right) {
+    var pivot = items[Math.floor((right + left) / 2)],
+        i = left,
+        j = right;
+
+    while (i <= j) {
+        while (items[i] < pivot) {
+            i++;
+        }
+        while (items[j] > pivot) {
+            j--;
+        }
+
+        if (i <= j) {
+            swap(items, i, j);
+            i++;
+            j--;
+        }
+    }
+
+    return i;
+}
+
+function quickSort(items, left, right) {
+
+    var index;
+
+    if (items.length > 1) {
+
+        index = partition(items, left, right);
+
+        if (left < index - 1) {
+            quickSort(items, left, index - 1);
+        }
+
+        if (index < right) {
+            quickSort(items, index, right);
+        }
+
+    }
+
+    return items;
+}
+
+
+// first call
+//var result = quickSort(items, 0, items.length - 1);
+
+qSort = function (x) { //anon QuickSort
+    return quickSort(x, 0, x.length-1);
+}
+
+function quicksortD(arr) {
+    //if array is empty
+    if (arr.length === 0) {
+        return [];
+    }
+    var left = [];
+    var right = [];
+    var pivot = arr[0];
+    //go through each element in array
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] < pivot) {
+            left.push(arr[i]);
+        } else {
+            right.push(arr[i]);
+        }
+    }
+    return quicksortD(left).concat(pivot, quicksortD(right));
+}
+
+/*var anon = function(x) {
+    console.log(x);
+};
+
+anon();*/
+
+nativeSort = function(x) {
+    x.sort();
+    return x;
+}
+
+
+function zsort(arr) {
+    min = 0;
+    sorted = 1;
+    if (arr.length == 1) {
+        return arr;
+    }
+    while (sorted < arr.length) {
+        for (c = sorted; c < arr.length; c++) {
+            if (arr[min] > arr[c]) {
+                min = c;
+            }
+        }
+        if (min > sorted - 1) {
+            temp = arr[sorted - 1];
+            arr[sorted - 1] = arr[min];
+            arr[min] = temp;
+       }
+        else {
+            min = sorted;
+        }
+        sorted++;
+        console.log(arr);
+    }
+    return arr;
+}
+
+/* T E S T I N G   S U I T E */
+
+
+
+function timeThis( func, obj) {
+
+    var t0 = performance.now();
+    result = func(obj);
+    var t1 = performance.now();
+    console.log("Call to " + func.toString().slice(0,20) + ' took ' + (t1 - t0) + " milliseconds.");
+    return result;
+}
+
+function runTests() {
+    var length = parseInt(Math.random(0, 1) * 10 + 2);
+    x = [];
+    for (var i = 0; i < length; i++) {
+        x[i] = parseInt(Math.random(0, 1) * 10 + 2);
+    }
+    console.log('Running Test on x: ' + x);
+    var t0 = performance.now();
+    //y = zsort(x);
+    //y = quickSort(x, 0, x.length - 1);
+    y = quicksortD(x);
+    var t1 = performance.now();
+    // console.log("Call to zsort took " + (t1 - t0) + " milliseconds.")
+    console.log("Call to quickSort took " + (t1 - t0) + " milliseconds.")
+    var t2 = performance.now();
+    x.sort();
+    var t3 = performance.now();
+    console.log("Call to sort took " + (t2 - t1) + " milliseconds.")
+    console.log('Your sorted x: ' + y);
+    if (y.toString() != x.toString()) {
+        console.log('ERROR: Strings do not match!');
+    } else {
+        console.log('PASS');
+    }
+
+}
+</script>
+
+</html>
