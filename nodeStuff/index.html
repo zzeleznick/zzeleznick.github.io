@@ -96,57 +96,65 @@ CURRENT FEATURES
 -- Handles Floats (decimals)
 -- Fires Calculate on Keypress = Enter
 -- Prevents default for latin letters input
+
+DEFINING PRINCIPLES
+-- The Input should be parsed from a String to an Object Array of String Numeric Values and String Operators
+    -- The addition operator '+' is defaulted as String Concatentation, so the parseFloat() function is used to override on addition
+    -- Handling operations through an Object Array allows for easier traversal of data than by character
+    -- A negative sign '-' has dual meaning of subtraction and sign, which should be accounted for when using signed operations eg. 2--2 = 4; 2^-2 =.25;
+    -- The presence of an operator (-, +, *, /, ^) should signal increment and fill the  next object array index
 */
 
 
 function put(obj) {
     console.log(obj);
-   document.getElementById('input').value = document.getElementById('input').value.concat(obj);
+    document.getElementById('input').value = document.getElementById('input').value.concat(obj);
 }
 var letters = /[a-z]/i;
 
-window.addEventListener("keydown", function (event) {
-  if (event.defaultPrevented) {
-    return; // Should do nothing if the default action has been cancelled
-  }
+window.addEventListener("keydown", function(event) {
+    if (event.defaultPrevented) {
+        return; // Should do nothing if the default action has been cancelled
+    }
 
-  var handled = false;
+    var handled = false;
     charCode = (typeof event.which == "undefined") ? event.keyCode : event.which;
     charStr = String.fromCharCode(charCode);
-  /*if (event.key !== undefined) {
-    // Handle the event with KeyboardEvent.key and set handled true.
-  }
-  if (event.keyIdentifier !== undefined) {
-    // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
-  } */
-  if (event.keyCode !== undefined) {
-     if(event.keyCode == 13){
-        last_event = event;
-       // user has pressed enter
-       calc();
-       console.log('Enter pressed' + event);
-   }
-   else if (charStr.match(letters) != null) {
-    console.log('Key pressed ' + charStr);
-     event.preventDefault();
-   }
-    // Handle the event with KeyboardEvent.keyCode and set handled true.
-  }
+    /*if (event.key !== undefined) {
+      // Handle the event with KeyboardEvent.key and set handled true.
+    }
+    if (event.keyIdentifier !== undefined) {
+      // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
+    } */
+    if (event.keyCode !== undefined) {
+        if (event.keyCode == 13) {
+            last_event = event;
+            // user has pressed enter
+            calc();
+            //console.log('Enter pressed' + event);
+        } else if (charStr.match(letters) != null) {
+            console.log('Key pressed ' + charStr);
+            event.preventDefault();
+        } /*else if (event.keyCode === 187) {  //plus sign
 
-  if (handled) {
-    // Suppress "double action" if event handled
-    event.preventDefault();
-  }
+        }*/
+        // Handle the event with KeyboardEvent.keyCode and set handled true.
+    }
+
+    if (handled) {
+        // Suppress "double action" if event handled
+        event.preventDefault();
+    }
 }, true);
 
-function calc() {
-    var pre_data = document.getElementById('input').value;
+function parseInput(myString) { //parseInput takes a string input and returns the Object Array containing the parsed Input
+    var pre_data = myString;
     data = [];
     var k = 0;
     var sign_count = 0;
-    var space = /^\s+|\s|\s+$/g;
+    var space = /^\s+|\s|\s+$/g; // ^\s corresponds to beginning, \s+$ end of line
     var signs = /\+|\-|\*|\^|\//g;
-    pre_data = pre_data.replace(space, '');
+    pre_data = pre_data.replace(space, ''); //strip all spaces
     for (var j = 0; j < pre_data.length; j++) {
         if (pre_data[j] == '-' && j == 0) {
             data[k] = pre_data[j];
@@ -171,7 +179,30 @@ function calc() {
             }
         }
     }
-
+    console.log(data);
+    return data;
+}
+function eval(val_1, op, val_2) {  //op is a string
+    var result = 0;
+    if (op == '+') {
+        result = parseFloat(val_1) + parseFloat(val_2);
+    }
+    else if (op == '-') {
+        result = val_1 - val_2;
+    }
+    else if (op == '*') {
+        result = val_1 * val_2;
+    }
+    else if (op == '/') {
+        result = val_1 / val_2;
+    }
+    else if (op == '^') {
+        result = Math.pow(val_1, val_2);
+    }
+    return result;
+}
+function calc() {
+    data = parseInput(document.getElementById('input').value);
     var ops_count = Math.floor(data.length / 2);
 
     if (data.length < 1) {
@@ -196,16 +227,18 @@ function calc() {
                 data[i] = (data[i]) / (data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length));
                 //console.log(data);
-            }
-             else if (data[i + 1] == '^') {
+            } else if (data[i + 1] == '^') {
                 data[i] = Math.pow(data[i], data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length));
             }
-             else if (data[i + 3] == '^') {
+            /*else if (data[i].substring(0,1) == '(') {
                 data[i] = Math.pow(data[i], data[i + 2]);
                 data = data.splice(0, 3).concat(data.splice(2, data.length));
-            }
-            else if (data[i + 3] == '*') {
+            }*/
+            else if (data[i + 3] == '^') {
+                data[i] = Math.pow(data[i], data[i + 2]);
+                data = data.splice(0, 3).concat(data.splice(2, data.length));
+            } else if (data[i + 3] == '*') {
                 data[i + 2] = data[i + 2] * data[i + 4];
                 data = data.splice(0, 3).concat(data.splice(2, data.length));
                 //console.log(data);
@@ -213,8 +246,7 @@ function calc() {
                 data[i + 2] = data[i + 2] / data[i + 4];
                 data = data.splice(0, 3).concat(data.splice(2, data.length));
                 //console.log(data);
-            }
-             else if (data[i + 1] == '-') {
+            } else if (data[i + 1] == '-') {
                 data[i] = (data[i]) - (data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length));
                 //console.log(data);
