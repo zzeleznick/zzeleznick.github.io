@@ -203,7 +203,7 @@ function parseInput(myString) { //parseInput takes a string input and returns th
     return data;
 }
 
-function eval(val_1, op, val_2) { //op is a string
+function eval(val_1, op, val_2) { //op is a string, return a String!
     var result = 0;
     if (op == '+') {
         result = parseFloat(val_1) + parseFloat(val_2);
@@ -216,7 +216,11 @@ function eval(val_1, op, val_2) { //op is a string
     } else if (op == '^') {
         result = Math.pow(val_1, val_2);
     }
-    return result;
+    return result.toString();
+}
+
+function deParen(myString) {
+    return myString.replace(/\(|\)/g, '');
 }
 
 function calc() {
@@ -240,30 +244,35 @@ function calc() {
         while (counter < ops_count) {
             if (data[i + 1].match(high_signs) != null) {
                 if (data[i].match("\\(")) {
-                    console.log('Triggered');
-                    data[i] = eval(data[i].substring(1), data[i + 1], data[i + 2].substring(0, data[i + 2].length - 1));
-                }
-                else {data[i] = eval(data[i], data[i + 1], data[i + 2]);}
-                data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-            } else if (data.length > 3) {
-                if (data[i].match("\\(") != null) { //ASSUME parentheses are balanced and in the form (2-3) * 2
-                    console.log('Triggered');
-                    data[i] = eval(data[i].substring(1), data[i + 1], data[i + 2].substring(0, data[i + 2].length - 1));
-                    data = data.splice(0, 1).concat(data.splice(2, data.length));
-                } else if (data[i + 3].match(high_signs) != null) {
-                    data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
-                    data = data.splice(0, 3).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-                } else if (data[i + 1].match(low_signs) != null) {
+                    console.log('Paren Triggered');
+                    data[i] = deParen(data[i]);
+                    data[i + 2] = deParen(data[i + 2]);
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
-                    data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-                }
-            } else if (data[i + 1].match(low_signs)) {
-                if (data[i].match("\\(")) {
-                    console.log('Triggered');
-                    data[i] = eval(data[i].substring(1), data[i + 1], data[i + 2].substring(0, data[i + 2].length - 1));
                 } else {
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 }
+                data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+            } else if (data.length > 3) {
+                if (data[i].match("\\(")) { //ASSUME parentheses are balanced and in the form (2-3) * 2
+                    console.log('Triggered');
+                    data[i] = deParen(data[i]);
+                    data[i + 2] = deParen(data[i + 2]);
+                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                    data = data.splice(0, 1).concat(data.splice(2, data.length));
+                    console.log(data);
+                } else if (data[i + 3].match(high_signs) != null) {
+                    data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
+                    data = data.splice(0, 3).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+                }
+            } else if (data[i + 1].match(low_signs)) {
+                if (data[i].match("\\(")) {
+                    data[i] = deParen(data[i]);
+                    data[i + 2] = deParen(data[i + 2]);
+                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                } else {
+                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                }
+                console.log(data[i]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
             } else {
                 console.log('Uncaught ERROR: ' + data);
@@ -276,5 +285,27 @@ function calc() {
         document.getElementById('input').value = data;
         //console.log(result);
     }
+}
+
+function test1() {
+    string1 = '(-2)*4';
+    document.getElementById('input').value = string1;
+    calc();
+}
+
+function test2() {
+    string2 = '(-2-4)*5';
+    document.getElementById('input').value = string2;
+    calc();
+}
+
+function test3() {
+    string3 = '(-2^2)-4*5';
+    document.getElementById('input').value = string3;
+    calc();
+}
+
+function runTests() {
+
 }
 </script>
