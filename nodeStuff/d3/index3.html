@@ -1,0 +1,127 @@
+<html>
+<script src="lib/js/jquery.js"></script>
+<script src="lib/js/d3.v2.min.js"></script>
+<!--div id="map" style="width: 600px; height: 400px"></div-->
+
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<div id="map-canvas"></div>
+
+<style type="text/css">
+#map-canvas {
+    height: 400px;
+    width: 500px;
+}
+</style>
+
+<script type="text/javascript">
+   var business_locations = [
+        ['South Plaza', '5105 Main St  Kansas City, MO 64112', 39.03454, -94.587315],
+        ['City Market', '427 Main Street Kansas City, MO 64105', 39.108518, -94.582635],
+        ['Barry Road East', '221 Northeast Barry Road Kansas City, MO 64155', 39.246116, -94.57759],
+        ['Barry Road West', '7007 NW Barry Road Kansas City, MO 64153', 39.246116, -94.57759],
+        ['Shawnee', '7198 Renner Road Shawnee, KS 66217', 38.999569, -94.779798],
+        ['Blue Springs', '2201 NW State Route 7 Blue Springs, MO 64014', 39.04395, -94.271227],
+        ['Leawood', '12920 State Line Road Leawood, KS 66209', 38.893127, -94.607991],
+        ['Lenexa', '13400 College Boulevard Lenexa, KS 66210', 38.927529, -94.741263],
+        ['Olathe', '15983 S Bradley Drive Olathe, KS 66062', 38.838983, -94.778771],
+        ['Prarie Village', '6921 Tomahawk Rd Prairie Village, KS 66208', 39.003414, -94.631471],
+        ['Independence', '2551 S State Route 291 Independence, MO 64057', 39.073201, -94.378762],
+        ['Lees Summit', '632 NE State Route 291 Lees Summit, MO 64086', 38.923416, -94.360608],
+        ['Liberty', '205 N 291 Highway Liberty, MO 64068', 39.246472, -94.443878]
+    ];
+
+/*
+   * create infowindow (which will be used by markers)
+   */
+  var infoWindow = new google.maps.InfoWindow();
+
+  /*
+   * marker creater function (acts as a closure for html parameter)
+   */
+  function createMarker(options, html) {
+    var marker = new google.maps.Marker(options);
+    if (html) {
+      google.maps.event.addListener(marker, "click", function () {
+        infoWindow.setContent(html);
+        infoWindow.open(options.map, this);
+      });
+    }
+    return marker;
+  }
+
+
+function initialize() {
+    var map;
+    var mapOptions = {
+        zoom: 9,
+        center: new google.maps.LatLng(122.40319, 37.80511),
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+    };
+
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+/*
+   * add markers to map
+   */
+  var marker0 = createMarker({
+    //position: new google.maps.LatLng(39.03454, -94.587315),
+    position: new google.maps.LatLng(-122.4031949051393, 37.80511854740679),
+    map: map,
+    icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+  }, "<h1>Marker 0</h1><p>This is the home marker.</p>");
+
+  var marker1 = createMarker({
+    position: new google.maps.LatLng(33.818038, -117.928492),
+    map: map
+  }, "<h1>Marker 1</h1><p>This is marker 1</p>");
+
+  var marker2 = createMarker({
+    position: new google.maps.LatLng(33.803333, -117.915278),
+    map: map
+  }, "<h1>Marker 2</h1><p>This is marker 2</p>");
+
+
+  /*var markerArray = [];
+   for (var i = 0; i < business_locations.length; i++) {
+        markerArray[i] = createMarker({
+                position: new google.maps.LatLng(business_locations[i][2], business_locations[i][3]),
+                map: map
+                }, "<h1>Marker " + i + "</h1><p>This is marker " + i + "</p>");
+    }*/
+
+  var distArray = [];
+   for (var i = 0; i < business_locations.length; i++) {
+        distArray[i] = createMarker({
+                position: new google.maps.LatLng(business_locations[i][2], business_locations[i][3]),
+                map: map
+                }, "<h1>Marker " + i + "</h1><p>This is marker " + i + "</p>");
+    }
+};
+
+/*
+ var triangleCoords = [
+    new google.maps.LatLng(25.774252, -80.190262),
+    new google.maps.LatLng(18.466465, -66.118292),
+    new google.maps.LatLng(32.321384, -64.75737),
+    new google.maps.LatLng(25.774252, -80.190262)
+  ];
+
+  // Construct the polygon.
+  bermudaTriangle = new google.maps.Polygon({
+    paths: triangleCoords,
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35
+  });
+
+  bermudaTriangle.setMap(map);
+}
+*/
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+</html>

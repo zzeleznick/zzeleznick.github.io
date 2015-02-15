@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+</head>
+
+<body>
+
+    <input id='input'>
+    <!--button id='calc' onclick="calc()"> Calculate </button-->
+    <div id="cont">
+        <div id="key-pad">
+            <button class="keys" onclick="put(this.innerText)"> 7 </button>
+            <button class="keys" onclick="put(this.innerText)"> 8 </button>
+            <button class="keys" onclick="put(this.innerText)"> 9 </button>
+            <button class="keys" onclick="put(this.innerText)"> 4 </button>
+            <button class="keys" onclick="put(this.innerText)"> 5 </button>
+            <button class="keys" onclick="put(this.innerText)"> 6 </button>
+            <button class="keys" onclick="put(this.innerText)"> 1 </button>
+            <button class="keys" onclick="put(this.innerText)"> 2 </button>
+            <button class="keys" onclick="put(this.innerText)"> 3 </button>
+            <button class="keys" onclick="put(this.innerText)"> 0 </button>
+            <button class="keys" onclick="put(this.innerText)"> . </button>
+            <button class="keys" onclick="calc()"> = </button>
+        </div>
+        <div id="key-pad-r">
+            <button class="keys" onclick="put(this.innerText)"> / </button>
+            <button class="keys" onclick="put(this.innerText)"> * </button>
+            <button class="keys" onclick="put(this.innerText)"> - </button>
+            <button class="keys" onclick="put(this.innerText)"> + </button>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<style>
+#input {
+    padding: 4px 10px 4px 10px;
+    font-size: 62px;
+    margin: 20% auto 5px auto;
+    outline: none;
+    text-align: center;
+    display: block;
+}
+#calc {
+    font-size: 30px;
+    margin: 15px auto 1px auto;
+    outline: none;
+    text-align: center;
+    color: white;
+    border-radius: 4px;
+    background-color: rgb(10, 30, 80);
+    display: block;
+}
+#cont {
+    margin: 10px auto 1px auto;
+    display: flex;
+}
+#key-pad {
+    width: 220px;
+    margin: 5px 0% 5px 30%;
+    display: inline-block;
+}
+#key-pad-r {
+    width: 100px;
+    margin: 5px 0 5px 0;
+    display: inline-block;
+}
+.keys {
+    font-size: 30px;
+    width: 70px;
+    height: 50px;
+    padding: 5px 15px 5px 15px;
+    margin: 1px auto 1px auto;
+    outline: none;
+    text-align: center;
+    color: white;
+    border-radius: 4px;
+    background-color: rgb(10, 30, 80);
+    display: inline-block;
+}
+html {
+    background-color: rgb(104, 88, 88);
+}
+</style>
+<script>
+/* THIS IS MY CALCULATOR */
+/*
+CURRENT FEATURES
+-- Handles simple two-term addition (+), subtraction (-),  multiplication (*), divison (/), and exponents (^).
+-- Follows standard order of operations (P)EMDAS on an input sequence -- parantheses not configured yet
+-- Handles signed operators: signed addition, substraction, multiplication, division, exponentiation
+-- Handles Floats (decimals)
+-- Fires Calculate on Keypress = Enter
+-- Prevents default for latin letters input
+*/
+
+
+function put(obj) {
+    console.log(obj);
+   document.getElementById('input').value = document.getElementById('input').value.concat(obj);
+}
+var letters = /[a-z]/i;
+
+window.addEventListener("keydown", function (event) {
+  if (event.defaultPrevented) {
+    return; // Should do nothing if the default action has been cancelled
+  }
+
+  var handled = false;
+    charCode = (typeof event.which == "undefined") ? event.keyCode : event.which;
+    charStr = String.fromCharCode(charCode);
+  /*if (event.key !== undefined) {
+    // Handle the event with KeyboardEvent.key and set handled true.
+  }
+  if (event.keyIdentifier !== undefined) {
+    // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
+  } */
+  if (event.keyCode !== undefined) {
+     if(event.keyCode == 13){
+        last_event = event;
+       // user has pressed enter
+       calc();
+       console.log('Enter pressed' + event);
+   }
+   else if (charStr.match(letters) != null) {
+    console.log('Key pressed ' + charStr);
+     event.preventDefault();
+   }
+    // Handle the event with KeyboardEvent.keyCode and set handled true.
+  }
+
+  if (handled) {
+    // Suppress "double action" if event handled
+    event.preventDefault();
+  }
+}, true);
+
+function calc() {
+    var pre_data = document.getElementById('input').value;
+    data = [];
+    var k = 0;
+    var sign_count = 0;
+    var space = /^\s+|\s|\s+$/g;
+    var signs = /\+|\-|\*|\^|\//g;
+    pre_data = pre_data.replace(space, '');
+    for (var j = 0; j < pre_data.length; j++) {
+        if (pre_data[j] == '-' && j == 0) {
+            data[k] = pre_data[j];
+        } else if (pre_data[j] == '-' && sign_count > 0) {
+            if (data[k - 1].match(signs) != null) {
+                data[k] = pre_data[j];
+            } else {
+                k++;
+                data[k] = pre_data[j];
+                k++;
+            }
+        } else if (pre_data[j].match(signs) != null) {
+            k++;
+            data[k] = pre_data[j];
+            sign_count++;
+            k++;
+        } else {
+            if (data[k] != undefined) {
+                data[k] = data[k].concat(pre_data[j]);
+            } else {
+                data[k] = pre_data[j];
+            }
+        }
+    }
+
+    var ops_count = Math.floor(data.length / 2);
+
+    if (data.length < 1) {
+        console.log('ERROR: Nothing to do');
+        return;
+    } else if ((data.length) % 2 == 0) {
+        console.log('ERROR: Unbalanced terms');
+        return
+    } //
+    else {
+        var result = 0; //data[2];
+        var temp = 0;
+        var counter = 0; // counter for ops_count
+        var i = 0; // index
+        while (counter < ops_count) {
+            //if (data[i+1] != data[i+3])  {
+            if (data[i + 1] == '*') {
+                data[i] = data[i] * data[i + 2];
+                data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+                //console.log(data);
+            } else if (data[i + 1] == '/') {
+                data[i] = (data[i]) / (data[i + 2]);
+                data = data.splice(0, 1).concat(data.splice(2, data.length));
+                //console.log(data);
+            }
+             else if (data[i + 1] == '^') {
+                data[i] = Math.pow(data[i], data[i + 2]);
+                data = data.splice(0, 1).concat(data.splice(2, data.length));
+            }
+             else if (data[i + 3] == '^') {
+                data[i] = Math.pow(data[i], data[i + 2]);
+                data = data.splice(0, 3).concat(data.splice(2, data.length));
+            }
+            else if (data[i + 3] == '*') {
+                data[i + 2] = data[i + 2] * data[i + 4];
+                data = data.splice(0, 3).concat(data.splice(2, data.length));
+                //console.log(data);
+            } else if (data[i + 3] == '/') {
+                data[i + 2] = data[i + 2] / data[i + 4];
+                data = data.splice(0, 3).concat(data.splice(2, data.length));
+                //console.log(data);
+            }
+             else if (data[i + 1] == '-') {
+                data[i] = (data[i]) - (data[i + 2]);
+                data = data.splice(0, 1).concat(data.splice(2, data.length));
+                //console.log(data);
+            } else if (data[i + 1] == '+') {
+                data[i] = parseFloat(data[i]) + parseFloat(data[i + 2]);
+                data = data.splice(0, 1).concat(data.splice(2, data.length));
+                //console.log(data)
+            } else {
+                console.log('Uncaught ERROR: ' + data);
+                return;
+            }
+            // }
+            counter++;
+        }
+        console.log('Answer: ' + data);
+        document.getElementById('input').value = data;
+        //console.log(result);
+    }
+}
+</script>

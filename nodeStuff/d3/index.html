@@ -1,0 +1,408 @@
+<html style="background: antiquewhite;">
+<script src="lib/js/jquery.js"></script>
+<script src="lib/js/d3.v2.min.js"></script>
+
+
+
+<div id="my-frame">
+    <div id="my-title" class="my-box"></div>
+    <div id="my-toggle">
+        <ul>
+            <button onclick="recolorMe(0);" id="btn0">0</button>
+            <button onclick="recolorMe(1);" id="btn1">1</button>
+            <button onclick="recolorMe(2);" id="btn2">2</button>
+        </ul>
+    </div>
+    <div id="container">
+        <div id="map" style="width: 600px; height: 400px"></div>
+    </div>
+
+    <div class="my-box sm" id="Legend">
+        <p id="dis"> </p>
+    </div>
+</div>
+
+<!--div id="my-frame">
+    <div id="my-title2" class="my-box lg">
+        <p class="large"> THIS IS BLURB
+            <p>
+    </div>
+</div-->
+
+<!--script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script-->
+<!--div id="map-canvas"></div-->
+
+<style type="text/css">
+p {
+    font: 300 1em/1.38 museo-sans, Avenir, "Open Sans", Helvetica, Sans-serif;
+    line-height: 1.9;
+}
+p.large {
+    font: 400 2em/1.38 museo-sans, Avenir, "Open Sans", Helvetica, Sans-serif;
+    line-height: 1.9;
+}
+html {
+    /*background: linear-gradient(322deg, #009688 0%, #2e7d32 100%) #eceff1; */
+}
+body {
+
+}
+#my-frame {
+    width: 86%;
+    height: 600px;
+}
+#container {
+    max-height: 100%;
+    max-width: 95%;
+    margin-top: 2%;
+}
+#map-canvas {
+    height: 700px;
+    width: 600px;
+}
+#my-title {
+    margin: 5px 0px 0px 10px;
+    padding-top: 2px;
+}
+#my-toggle {
+    display: inline-block;
+    /* margin: 0px 0px 0px 50px; */
+    /*margin: -20px 0px 0px -30px;*/
+
+    margin: 56px 0px 0px -26px;
+    text-align: right;
+    position: absolute;
+    z-index: 999;
+}
+.sm {
+    height: 200px;
+    width: 200px;
+    right: 20px;
+    top: 120px;
+}
+.lg {
+    width: 400px;
+    text-align: center;
+}
+.my-box {
+    position: absolute;
+    /*z-index: -999;*/
+
+    display: inline-block;
+    padding: 6px 20px;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    /*border: 3px solid #F3EEE0;
+    border-radius: 5px;
+    color: #666;*/
+
+    background-color: #ffffff;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: black;
+    box-shadow: 1px 2px 1px 0px rgba(0, 0, 0, 0.5);
+}
+button {
+    display: inline-block;
+    padding: 6px 20px;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: #ffffff;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: black;
+    transition: box-shadow .28s cubic-bezier(.4, 0, .2, 1);
+    /*-webkit-box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.75);*/
+
+    box-shadow: 1px 2px 1px 0px rgba(0, 0, 0, 0.5);
+    outline: none!important;
+}
+button:hover {
+    color: rgb(9, 175, 249);
+    background-color: rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+#dis {
+    position: absolute;
+    z-index: 900;
+    padding: 6px 6px 2px 6px;
+    /*right: 60px;
+    top: 120px;*/
+
+    background-color: rgba(255, 255, 255, 0.35);
+}
+#dis:first-child {
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.btn-link,
+.btn:not([class*=btn-]),
+.btn-default {
+    color: rgba(0, 0, 0, .84);
+}
+.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    background: lightsteelblue;
+    border: 1px;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 999;
+    font: 200 .5em/2 museo-sans, Avenir, "Open Sans", Helvetica, Sans-serif;
+    line-height: 1.2;
+}
+.tooltip h4 {
+    margin: 0;
+    font-size: 14px;
+}
+#tooltip table {
+    table-layout: fixed;
+}
+#tooltip tr td {
+    padding: 0;
+    margin: 0;
+}
+#tooltip tr td:nth-child(1) {
+    width: 50px;
+}
+#tooltip tr td:nth-child(2) {
+    text-align: center;
+}
+</style>
+
+
+<script>
+var arr = [];
+var LAST = 0;
+var colorScheme = 2;
+//var h = $("#map").height();
+//var w = $("#map").width();
+var rates = [];
+
+var width = document.getElementById('map').offsetWidth;
+var height = document.getElementById('map').offsetHeight;
+var map = d3.select('#map').append('svg').attr("width", width)
+    .attr("height", height);
+var path = d3.geo.path().projection(d3.geo.albers().origin([-122.4031949051393, 37.80511854740679]).scale(200000).translate([400, 103]));
+
+x = map.selectAll('path');
+zz = x[0].parentNode;
+colorArray = [
+    ['rgb(237,248,251)', 'rgb(191,211,230)', 'rgb(158,188,218)', 'rgb(140,150,198)', 'rgb(136,86,167)', 'rgb(129,15,124)'],
+    ["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d"],
+    ["#ffeda0", "#fed976", "#fecc5c", "#feb24c", "#f03b20", "#bd0026", "#800026"]
+];
+
+backgrounds = ["aliceblue", "#ffffb2", "antiquewhite"];
+high_color = ["#ffeda0", "purple", "black"];
+names = ["Poverty", "Diabetes Density", "Asthma Rate"];
+
+function colorMe(value, max_val, swatch) {
+    var step_size = Math.round(max_val / swatch.length);
+    var color = Math.round(value / step_size);
+    return swatch[Math.min(Math.min(color, swatch.length), swatch.length - 1)]
+}
+
+
+window.onresize = resizeMe;
+
+function resizeMe() {
+    curWidth = parseInt($('#map').children().css('width'));
+    ratio = window.outerWidth / curWidth;
+    /* if (ratio >= 1.2 && (curWidth * ratio/1.2 < window.outerWidth) ) {
+         $('#map').children().css('transform', 'scale(' + (Math.min(ratio/1.3, window.outerWidth / 1.3)) +')');
+     }
+     else if (ratio <= .8) {
+         $('#map').children().css('transform', 'scale(' + (ratio) +')');
+         if(window.outerWidth < 630 ) {
+             transX = transX <= 40 ? transX : transX += 4;
+             map.selectAll('path')
+             .attr("transform", "translate(" + transX + "," + (transY) + ")");
+         }
+     } */
+    if (window.outerWidth <= 1060) {
+        //$('.my-box').css('background-color', 'red')
+        $('#Legend').css('background-color', 'transparent');
+        $('#Legend').css('box-shadow', 'none');
+        $('#dis').css('background-color', 'rgba(255, 255, 255, 0.5)');
+        //console.log('true');
+    } else {
+        $('#Legend').css('background-color', 'rgba(255, 255, 255, 1)');
+        $('#Legend').css('box-shadow', '1px 2px 1px 0px rgba(0, 0, 0, 0.5)');
+        $('#dis').css('background-color', 'rgba(255, 255, 255, 0.35)');
+        //console.log('REVERT');
+    }
+
+}
+
+//$(window).on("resize", func());
+
+
+
+function recolorMe(id) {
+    colorScheme = id;
+    d3.select('html').style('background', backgrounds[colorScheme]);
+    d3.select('#title').text('Map of ' + names[colorScheme] + '\n in SF');
+    for (i = 0; i < 3; i++) {
+        document.getElementById('btn' + i).style.background = '#ffffff';
+    }
+    document.getElementById('btn' + colorScheme).style.background = 'rgba(0, 0, 0, 0.15)';
+    map.selectAll('path')
+        .style("fill", function(d) { /*console.log(i);*/
+            return colorMe(d.properties.ASTHMARATE, 14, colorArray[id])
+        })
+}
+
+transX = 0;
+transY = 0;
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+    e = e || window.event;
+    if (e.keyCode == '38') { // up arrow
+        transY = transY >= 50 ? transY : (transY += 4);
+        map.selectAll('path')
+            .attr("transform", "translate(" + transX + "," + transY + ")");
+    } else if (e.keyCode == '40') { // down arrow
+        transY = transY >= -50 ? (transY -= 4) : transY;
+        map.selectAll('path')
+            .attr("transform", "translate(" + transX + "," + (transY) + ")");
+    } else if (e.keyCode == '37') { // left arrow
+        transX = transX >= 40 ? transX : transX += 4;
+        map.selectAll('path')
+            .attr("transform", "translate(" + transX + "," + (transY) + ")");
+    } else if (e.keyCode == '39') { // right arrow
+        transX = transX >= -40 ? (transX -= 4) : transX;
+        map.selectAll('path')
+            .attr("transform", "translate(" + (transX) + "," + (transY) + ")");
+    }
+}
+
+d3.select('#my-title').append('p').attr('id', 'title').text('Map of ' + names[colorScheme] + '\n in SF');
+
+
+d3.select('#dis').text('District: ' + 060750101001);
+d3.select('#dis').append('p').text('Value: ' + 6.299994);
+d3.select('#dis').append('p').text('ID: ' + 0);
+d3.select('#dis').append('p').text('\n Dataset Source: SF Gov');
+console.log(high_color[colorScheme]);
+
+function createTooltip (my_id, my_val) {
+   d3.select("#map")
+    .insert("div")
+    .style("position", "absolute")
+    .style("z-index", "999")
+    //.style("visibility", "hidden")
+    .style("display", "none")
+    .attr('class', "tooltip")
+    .attr("id", function() { /*console.log(i);*/
+        return 'tooltip' + my_id
+    })
+    .text("District with val " + my_val);
+}
+
+
+d3.json('Asthma.json', function(json) {
+    map.selectAll('path')
+        .data(json.features)
+        .enter().append('path')
+        .attr('d', path)
+        .attr("id", function(d, i) { /*console.log(i);*/
+            createTooltip(i, d.properties.ASTHMARATE);
+            return 'n' + i
+        })
+        .attr('class', function(d, i) {
+            //console.log('block: ' + d.properties.BLOCKGROUP);
+            //   console.log('zip z' + d.properties);
+            arr.push(d.properties);
+            return 'block b' + d.properties.BLOCKGROUP // + 'num id' + i
+        })
+        .style("fill", function(d) { /*console.log(i);*/
+            return colorMe(d.properties.ASTHMARATE, 14, colorArray[colorScheme])
+        })
+        /*.attr("x", "-1em")
+        .attr("y", ".31em")
+        .style("font-size", "13px")
+        .text(function(d,i) { return i; }) */
+        .on('mouseover', function() {
+            var zip = d3.select(this).attr('class').split('block b').join('');
+            var ques = d3.select(this).attr('id').split('n').join('');
+            //console.log('block ' + zip + ' selected with id ' + ques);
+
+            d3.select('#map').selectAll('p').remove();
+            //d3.select('#map').selectAll('p').text('');
+            /*for (key in arr) {
+                //console.log(arr[key]);
+                d3.select('#map .b' + arr[key].BLOCKGROUP).style("fill", "black");
+            }*/
+
+
+            d3.select('#n' + LAST).style("fill", colorMe(arr[LAST].ASTHMARATE, 14, colorArray[colorScheme]));
+            LAST = ques; //global value for last obj
+            d3.select('#map .b' + zip).style("fill", high_color[colorScheme]);
+
+            d3.select('#tooltip' + ques)
+                //.transition().duration(300).style("opacity", .9)
+                //.style("visibility", "visible")
+                .style("display", "block")
+                .style("left", (d3.event.pageX - 10) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+
+            // Add tooltip
+            // d3.select(that.$.tooltip).transition().duration(200).style("opacity", .9);
+            /* var tootipContent =
+                 "<table>" +
+                 "<tr><td>Score</td><td>" + (score) + "</td></tr>" +
+                 "</table>";*/
+            /* d3.select(that.$.tooltip).html(tootipContent)
+                 .style("left", (d3.event.pageX) + "px")
+                 .style("top", (d3.event.pageY - 28) + "px");
+             */
+
+            /*if (that.lastSelectedBlock != null) {
+                d3.select('#n' + lastSelectedBlock).style("fill", colorBlock(that.computedScores[zip], 1, that.colorArray));
+            }*/
+            lastSelectedBlock = ques; //global value for last obj
+            // d3.select('#map .b' + zip).style("fill", highColor);
+            //d3.select('#map').append('p').attr('id', 'dis').text('District: ' + zip);
+            d3.select('#dis').text('District: ' + zip);
+            d3.select('#dis').append('p').text('Value: ' + arr[ques].ASTHMARATE);
+            d3.select('#dis').append('p').text('ID: ' + ques);
+            d3.select('#dis').append('p').text('\n Dataset Source: SF Gov');
+        })
+        .on('mouseout', function() {
+            // Remove tooltip on mouse out
+            d3.select('#tooltip' + LAST).transition().duration(500)
+            //.style("opacity", 0);
+            .style("display", "none")
+            // Deselect block on mouse out
+            /*for (key in arr) {
+                d3.select('#n' + lastSelectedBlock).style("fill", that.colorBlock(that.computedScores[key], 1, that.colorArray));
+                //d3.select(that.$.map.querySelector('.b' + arr[key].BLOCKGROUP)).style("fill", "black");
+            }*/
+        })
+});
+</script>
+
+<!--div class="top-section">
+    <div class="row">
+        <div class="col-md-4 left-panel">EDGE</div>
+        <div class="col-md-8 right-panel">
+            <div id="map" style="width: 100%; height: 100%"></div>
+        </div>
+    </div>
+
+</div-->
+
+</html>
