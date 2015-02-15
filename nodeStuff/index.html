@@ -168,7 +168,7 @@ function parseInput(myString) { //parseInput takes a string input and returns th
     data = [];
     var k = 0;
     var all_ops = /\-|\+|\*|\^|\//g;
-    var numbPar = /\)|\d/;
+    var numbPar = /\)|\d|\./;
     last_added = '';
     for (var j = 0; j < pre_data.length; j++) {
         if (pre_data[j].match(numbPar)) {
