@@ -135,9 +135,10 @@ window.addEventListener("keydown", function(event) {
         } else if (charStr.match(letters) != null) {
             console.log('Key pressed ' + charStr);
             event.preventDefault();
-        } /*else if (event.keyCode === 187) {  //plus sign
+        }
+        /*else if (event.keyCode === 187) {  //plus sign
 
-        }*/
+                }*/
         // Handle the event with KeyboardEvent.keyCode and set handled true.
     }
 
@@ -182,28 +183,28 @@ function parseInput(myString) { //parseInput takes a string input and returns th
     console.log(data);
     return data;
 }
-function eval(val_1, op, val_2) {  //op is a string
+
+function eval(val_1, op, val_2) { //op is a string
     var result = 0;
     if (op == '+') {
         result = parseFloat(val_1) + parseFloat(val_2);
-    }
-    else if (op == '-') {
+    } else if (op == '-') {
         result = val_1 - val_2;
-    }
-    else if (op == '*') {
+    } else if (op == '*') {
         result = val_1 * val_2;
-    }
-    else if (op == '/') {
+    } else if (op == '/') {
         result = val_1 / val_2;
-    }
-    else if (op == '^') {
+    } else if (op == '^') {
         result = Math.pow(val_1, val_2);
     }
     return result;
 }
+
 function calc() {
     data = parseInput(document.getElementById('input').value);
     var ops_count = Math.floor(data.length / 2);
+    var high_signs = /\*|\^|\//g;
+    var low_signs = /\+|\-/g;
 
     if (data.length < 1) {
         console.log('ERROR: Nothing to do');
@@ -218,24 +219,25 @@ function calc() {
         var counter = 0; // counter for ops_count
         var i = 0; // index
         while (counter < ops_count) {
-            //if (data[i+1] != data[i+3])  {
-            if (data[i + 1] == '*') {
-                data[i] = data[i] * data[i + 2];
+            if (data[i + 1].match(high_signs) != null) {
+                data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-                //console.log(data);
-            } else if (data[i + 1] == '/') {
-                data[i] = (data[i]) / (data[i + 2]);
-                data = data.splice(0, 1).concat(data.splice(2, data.length));
-                //console.log(data);
-            } else if (data[i + 1] == '^') {
-                data[i] = Math.pow(data[i], data[i + 2]);
-                data = data.splice(0, 1).concat(data.splice(2, data.length));
             }
             /*else if (data[i].substring(0,1) == '(') {
                 data[i] = Math.pow(data[i], data[i + 2]);
                 data = data.splice(0, 3).concat(data.splice(2, data.length));
             }*/
-            else if (data[i + 3] == '^') {
+            else if (data.length > 3) {
+                if (data[i + 3].match(high_signs) != null) {
+                    data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
+                    data = data.splice(0, 3).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+                }
+            } else if (data[i + 1].match(low_signs) != null) {
+                data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+            }
+
+            /*else if (data[i + 3] == '^') {
                 data[i] = Math.pow(data[i], data[i + 2]);
                 data = data.splice(0, 3).concat(data.splice(2, data.length));
             } else if (data[i + 3] == '*') {
@@ -246,7 +248,8 @@ function calc() {
                 data[i + 2] = data[i + 2] / data[i + 4];
                 data = data.splice(0, 3).concat(data.splice(2, data.length));
                 //console.log(data);
-            } else if (data[i + 1] == '-') {
+            }*/
+            /* else if (data[i + 1] == '-') {
                 data[i] = (data[i]) - (data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length));
                 //console.log(data);
@@ -254,7 +257,8 @@ function calc() {
                 data[i] = parseFloat(data[i]) + parseFloat(data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length));
                 //console.log(data)
-            } else {
+            } */
+            else {
                 console.log('Uncaught ERROR: ' + data);
                 return;
             }
