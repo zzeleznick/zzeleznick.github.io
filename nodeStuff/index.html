@@ -152,31 +152,51 @@ function parseInput(myString) { //parseInput takes a string input and returns th
     var pre_data = myString;
     data = [];
     var k = 0;
-    var sign_count = 0;
     var space = /^\s+|\s|\s+$/g; // ^\s corresponds to beginning, \s+$ end of line
-    var signs = /\+|\-|\*|\^|\//g;
+    var ops = /\+|\*|\^|\//g;
+    var all_ops = /\-|\+|\*|\^|\//g;
+    var numbs = /\d/;
     pre_data = pre_data.replace(space, ''); //strip all spaces
     for (var j = 0; j < pre_data.length; j++) {
-        if (pre_data[j] == '-' && j == 0) {
-            data[k] = pre_data[j];
-        } else if (pre_data[j] == '-' && sign_count > 0) {
-            if (data[k - 1].match(signs) != null) {
-                data[k] = pre_data[j];
+        if (pre_data[j].match(all_ops) != null) { //is there a sign in the data block?
+            if (j == 0) { //ignore leading non-neg signs
+                if (pre_data[j] == '-') {
+                    if (data[k] != undefined) { //in case of parentheses
+                        data[k] = data[k].concat(pre_data[j]);
+                    } else {
+                        data[k] = pre_data[j];
+                    }
+                } else {
+                    continue; //kill stray leading sign
+                }
+            } else if (data[k - 1].match(numbs)) { //we assume a number has been added to k
+                //k++;
+                data[k] = pre_data[j]; //add sign
+                if (pre_data[j + 1] == '-') {
+                    data[k + 1] = pre_data[j + 1];
+                    console.log(j);
+                    j++;
+                    console.log(j);
+                }
+                k++;
             } else {
-                k++;
-                data[k] = pre_data[j];
-                k++;
+                continue; //kill stray sign
             }
-        } else if (pre_data[j].match(signs) != null) {
-            k++;
-            data[k] = pre_data[j];
-            sign_count++;
-            k++;
         } else {
             if (data[k] != undefined) {
                 data[k] = data[k].concat(pre_data[j]);
+                if (j < pre_data.length - 1) {
+                    if (pre_data[j+1].match(all_ops)) {
+                        k++;
+                    }
+                }
             } else {
                 data[k] = pre_data[j];
+                if (j < pre_data.length - 1) {
+                    if (pre_data[j+1].match(all_ops)) {
+                        k++;
+                    }
+                }
             }
         }
     }
@@ -222,43 +242,22 @@ function calc() {
             if (data[i + 1].match(high_signs) != null) {
                 data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-            }
-            /*else if (data[i].substring(0,1) == '(') {
-                data[i] = Math.pow(data[i], data[i + 2]);
-                data = data.splice(0, 3).concat(data.splice(2, data.length));
-            }*/
-            else if (data.length > 3) {
-                if (data[i + 3].match(high_signs) != null) {
+            } else if (data.length > 3) {
+                if (data[i].match("\\(") != null) { //ASSUME parentheses are balanced and in the form (2-3) * 2
+                    console.log('Triggered');
+                    data[i] = eval(data[i].substring(1), data[i + 1], data[i + 2].substring(0, data[i + 2].length - 1));
+                    data = data.splice(0, 1).concat(data.splice(2, data.length));
+                } else if (data[i + 3].match(high_signs) != null) {
                     data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
                     data = data.splice(0, 3).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+                } else if (data[i + 1].match(low_signs) != null) {
+                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                    data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
                 }
             } else if (data[i + 1].match(low_signs) != null) {
                 data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-            }
-
-            /*else if (data[i + 3] == '^') {
-                data[i] = Math.pow(data[i], data[i + 2]);
-                data = data.splice(0, 3).concat(data.splice(2, data.length));
-            } else if (data[i + 3] == '*') {
-                data[i + 2] = data[i + 2] * data[i + 4];
-                data = data.splice(0, 3).concat(data.splice(2, data.length));
-                //console.log(data);
-            } else if (data[i + 3] == '/') {
-                data[i + 2] = data[i + 2] / data[i + 4];
-                data = data.splice(0, 3).concat(data.splice(2, data.length));
-                //console.log(data);
-            }*/
-            /* else if (data[i + 1] == '-') {
-                data[i] = (data[i]) - (data[i + 2]);
-                data = data.splice(0, 1).concat(data.splice(2, data.length));
-                //console.log(data);
-            } else if (data[i + 1] == '+') {
-                data[i] = parseFloat(data[i]) + parseFloat(data[i + 2]);
-                data = data.splice(0, 1).concat(data.splice(2, data.length));
-                //console.log(data)
-            } */
-            else {
+            } else {
                 console.log('Uncaught ERROR: ' + data);
                 return;
             }
