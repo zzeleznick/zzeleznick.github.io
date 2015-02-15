@@ -158,14 +158,18 @@ function addNext(obj, s) { //add a string to an object
 }
 
 function parseInput(myString) { //parseInput takes a string input and returns the Object Array containing the parsed Input
-    var pre_data = myString;
+    var space = /^\s+|\s|\s+$/g; // ^\s corresponds to beginning, \s+$ end of line
+    if (myString == undefined) {
+            pre_data = document.getElementById('input').value;
+    }
+    else { pre_data = myString;
+    }
+    pre_data = pre_data.replace(space, '');
     data = [];
     var k = 0;
-    var space = /^\s+|\s|\s+$/g; // ^\s corresponds to beginning, \s+$ end of line
     var all_ops = /\-|\+|\*|\^|\//g;
     var numbPar = /\)|\d/;
     last_added = '';
-    pre_data = pre_data.replace(space, ''); //strip all spaces
     for (var j = 0; j < pre_data.length; j++) {
         if (pre_data[j].match(numbPar)) {
             data[k] = addNext(data[k], pre_data[j]);
@@ -200,12 +204,14 @@ function parseInput(myString) { //parseInput takes a string input and returns th
         }
         console.log(data);
     }
-    console.log(data);
+    //console.log(data);
     return data;
 }
 
 function eval(val_1, op, val_2) { //op is a string, return a String!
     var result = 0;
+    val_1 = deParen(val_1);
+    val_2 = deParen(val_2);  //excess safety
     if (op == '+') {
         result = parseFloat(val_1) + parseFloat(val_2);
     } else if (op == '-') {
@@ -232,21 +238,25 @@ function specEval(i, end, data) { //a data array
         console.log('ERROR: Unbalanced Terms ' + data);
         return;
     }*/
+    // NOTE 2^3^2 not evaluating correctly
+    // (-2*4)^-1*(2-2+(4-3)) nor
     while (ops < ops_count) { //ops count of 1 gurantees 3, 2 --> 5
         if (data[i].match(parens)) {
             console.log('ERROR: Unexpected parentheses ' + data);
             return;
         } else if ((end - i) > 3) {
-                console.log(i);
+                console.log('start at val: '+ i + ' end at:' + end);
                 if (data[i + 3].match(high_signs)) {
                     data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
                     data = data.slice(0,i+3).concat(data.slice(i+5,data.length));
                 }
                 else {
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
-                    data.slice(0,i+1).concat(data.slice(i+3,data.length))
+                    data.slice(0,i+1).concat(data.slice(i+3,data.length));
+
                 }
-                      console.log(data);
+                end = Math.min(end, data.length);
+                console.log(data);
         }
         else {
              data[i] = eval(data[i], data[i + 1], data[i + 2]);
@@ -332,6 +342,9 @@ function partCalc(start, data) { //given that start contains parentheses
 }
 
 function bigCalc(data) {
+        if (data == undefined) {
+            data = parseInput(document.getElementById('input').value);
+        }
         data = partCalc(0, data);
         data = specEval(0, data.length - 1, data);
         return data;
