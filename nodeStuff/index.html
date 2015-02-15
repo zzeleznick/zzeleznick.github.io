@@ -162,9 +162,7 @@ function parseInput(myString) { //parseInput takes a string input and returns th
     data = [];
     var k = 0;
     var space = /^\s+|\s|\s+$/g; // ^\s corresponds to beginning, \s+$ end of line
-    var ops = /\+|\*|\^|\//g;
     var all_ops = /\-|\+|\*|\^|\//g;
-    var numbs = /\d/;
     var numbPar = /\)|\d/;
     last_added = '';
     pre_data = pre_data.replace(space, ''); //strip all spaces
@@ -179,6 +177,9 @@ function parseInput(myString) { //parseInput takes a string input and returns th
             } else {
                 continue; //ignore leading signs
             }
+        } else if (pre_data[j] == "(") {
+            data[k] = addNext(data[k], pre_data[j]);
+            last_added = pre_data[j];
         } else if (pre_data[j].match(all_ops)) {
             if (last_added.match(numbPar)) {
                 k++;
@@ -219,15 +220,130 @@ function eval(val_1, op, val_2) { //op is a string, return a String!
     return result.toString();
 }
 
+function specEval(i, end, data) { //a data array
+    var ops_count = Math.floor((end - i)/ 2);
+    console.log('specEval With: '+ data + 'with ops_count: ' +ops_count );
+    var ops = 0;
+    var parens = /\(|\)/;
+     var high_signs = /\*|\^|\//g;
+    if (data.length == 1) {
+        return data;
+    }/* else if (data.length % 2 == 0) {
+        console.log('ERROR: Unbalanced Terms ' + data);
+        return;
+    }*/
+    while (ops < ops_count) { //ops count of 1 gurantees 3, 2 --> 5
+        if (data[i].match(parens)) {
+            console.log('ERROR: Unexpected parentheses ' + data);
+            return;
+        } else if ((end - i) > 3) {
+                console.log(i);
+                if (data[i + 3].match(high_signs)) {
+                    data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
+                    data = data.slice(0,i+3).concat(data.slice(i+5,data.length));
+                }
+                else {
+                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                    data.slice(0,i+1).concat(data.slice(i+3,data.length))
+                }
+                      console.log(data);
+        }
+        else {
+             data[i] = eval(data[i], data[i + 1], data[i + 2]);
+             data = data.slice(0, i+1).concat(data.splice(i+3, data.length));
+        }
+        ops++;
+    }
+    console.log('After spec eval result = ' +data);
+    return data;
+}
+
+
+
+
 function deParen(myString) {
     return myString.replace(/\(|\)/g, '');
 }
+
+function findFirstEnd(start, data) {
+    var end = -1;
+      for (var i = start; i < size; i++) {
+        if (data[i].substr(data[i].length - 1) == ')') {
+            end = i;
+            return end;
+        }
+      }
+    console.log('ERROR: not found!');
+    return end;
+}
+
+function findChunks(obj) {  //(start, data) {  //start is a property, look for inner chunks
+    var parens = /\(|\)/;
+    size = obj.data.length;
+    count = 0;
+    obj.chunks = 0;
+    innerIndex =  obj.start;
+     for (var i = obj.start; i < size; i++) {
+        if (obj.data[i].substr(0, 1) == '(') {
+            count++;
+            obj.chunks++;
+            innerIndex = i;
+        }
+        if (obj.data[i].substr(obj.data[i].length - 1) == ')') {
+            count--;
+        }
+        if (count == 0 && obj.chunks > 0) {
+            break;
+        }
+
+    }
+    console.log('Inner index at ' +innerIndex);
+    obj.start = innerIndex;
+    return obj;
+}
+
+function createO (start, data) {
+    obj = [];
+    obj.start = start;
+    obj.data = data;
+    return obj;
+}
+// use   chunks = findChunks(start,data);
+function partCalc(start, data) { //given that start contains parentheses
+    console.log('Starting Program with start = ' + start);
+    obj = createO(start, data);
+    obj = findChunks(obj);
+    new_start = obj.start;
+    chunks = obj.chunks;
+    console.log('Inner most ( at ' + new_start);
+    console.log('This loop has chunks = ' + chunks);
+    while (chunks > 1) {
+        console.log('Running partCalc with chunks = '+ chunks);
+        data = partCalc(new_start, data);
+    }   if (chunks == 1) {
+        data[new_start] = deParen(data[new_start]);
+        var end =  findFirstEnd(new_start, data);
+        data[end] = deParen(data[end]);
+        console.log('Running specEval at start = ' + new_start + ' with end = ' + end);
+        data = specEval(new_start, end, data);
+    }
+    console.log('End of loop');
+    return data;
+}
+
+function bigCalc(data) {
+        data = partCalc(0, data);
+        data = specEval(0, data.length - 1, data);
+        return data;
+}
+
 
 function calc() {
     data = parseInput(document.getElementById('input').value);
     var ops_count = Math.floor(data.length / 2);
     var high_signs = /\*|\^|\//g;
     var low_signs = /\+|\-/g;
+    var parens = /\(|\)/;
 
     if (data.length < 1) {
         console.log('ERROR: Nothing to do');
@@ -242,37 +358,32 @@ function calc() {
         var counter = 0; // counter for ops_count
         var i = 0; // index
         while (counter < ops_count) {
-            if (data[i + 1].match(high_signs) != null) {
-                if (data[i].match("\\(")) {
-                    console.log('Paren Triggered');
-                    data[i] = deParen(data[i]);
-                    data[i + 2] = deParen(data[i + 2]);
-                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
-                } else {
-                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
-                }
-                data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
-            } else if (data.length > 3) {
-                if (data[i].match("\\(")) { //ASSUME parentheses are balanced and in the form (2-3) * 2
-                    console.log('Triggered');
+            if (data.length > 3) {
+                if (data[i].match(parens)) { //ASSUME parentheses are balanced and in the form (2-3) * 2
+                    //console.log('Triggered');
                     data[i] = deParen(data[i]);
                     data[i + 2] = deParen(data[i + 2]);
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
                     data = data.splice(0, 1).concat(data.splice(2, data.length));
-                    console.log(data);
-                } else if (data[i + 3].match(high_signs) != null) {
+                    //console.log(data);
+                } else if (data[i + 2].match(parens)) {
                     data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
                     data = data.splice(0, 3).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+                } else if (data[i + 3].match(high_signs)) {
+                    data[i + 2] = eval(data[i + 2], data[i + 3], data[i + 4]);
+                    data = data.splice(0, 3).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
+                } else {
+                    data[i] = eval(data[i], data[i + 1], data[i + 2]);
+                    data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
                 }
-            } else if (data[i + 1].match(low_signs)) {
-                if (data[i].match("\\(")) {
+            } else if (data[i + 1].match(low_signs) || data[i + 1].match(high_signs)) {
+                if (data[i].match(parens) || data[i + 2].match(parens)) {
                     data[i] = deParen(data[i]);
                     data[i + 2] = deParen(data[i + 2]);
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 } else {
                     data[i] = eval(data[i], data[i + 1], data[i + 2]);
                 }
-                console.log(data[i]);
                 data = data.splice(0, 1).concat(data.splice(2, data.length)); //note the splice removes and the object is removed
             } else {
                 console.log('Uncaught ERROR: ' + data);
@@ -289,6 +400,7 @@ function calc() {
 
 function test1() {
     string1 = '(-2)*4';
+    console.log('Testing input string ' + string1);
     document.getElementById('input').value = string1;
     calc();
 }
