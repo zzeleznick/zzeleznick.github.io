@@ -22,17 +22,30 @@
         return x;
     }
 
-    function createJSON(len) { //takes in a 2 or 3 dimensional array of values
+  function createObj (p1, p2) {
+      obj = new Object();
+      obj[p1] = null;
+      obj[p2] = null;
+      return obj;
+  }
+
+  function setObj (obj, p1, v1) {
+      obj[p1] = v1;
+      return obj;
+  }
+
+
+    function createJSON(len, p1, p2) { //takes in a 2 or 3 dimensional array of values
         var y = createArr(len);
-        var z = [{
-            'x': y[0][0],
-            'val': y[0][1]
-        }];
-        for (var j = 1; j < len; j++) {
-            z[j] = {
-                'x': y[j][0],
-                'val': y[j][1]
-            };
+        var z = [];
+        for (var j = 0; j < len; j++) {
+           /*z[j] = {
+                prop1: y[j][0],
+                prop2: y[j][1]
+            };*/
+            z[j] = createObj(p1, p2);
+            z[j] = setObj(z[j], p1, y[j][0]);
+            z[j] = setObj(z[j], p2, y[j][1]);
         }
         return z;
     }
