@@ -4,8 +4,11 @@
 </head>
 
 <body>
-<button onclick="draw()"> Draw </button>
+<input id = 'input' placeholder="size, x-axis, y-axis" style="outline: none; width: 160px;">
+<button onclick="buttdraw()"> Draw </button>
 <button onclick="rem()"> Delete </button>
+<div id="helper" style="margin: 10px 0px 5px 0px"> Input an integer value for the size of the array, a label
+for the x and y axes, and plot away! <small> (Make sure to comma seperate)</small></div>
 
 
     <script type="text/javascript">
@@ -174,11 +177,20 @@
             chart.draw();
         }
         // drawChart(myData, 'Coolness', 'Awesomeness');
+    function buttdraw() {
+       var str = document.getElementById('input').value;
+       var input = str.replace(/^\s+|\s|\s+$/g, '').split(',');
+       var len = parseInt(input[0]) || 10;
+       var p1 = input[1] || 'cheese';
+       var p2 = input[2] || 'bacon' ;
+       lastData = createJSON(len, p1, p2);
+       drawChart(lastData, p1, p2);
+    }
     function draw(len, p1, p2) {
         var x = len == undefined ? 10 : len;
         var prop1 = p1 == undefined ? 'Domain' : p1;
         var prop2 = p2 == undefined ? 'Range' : p2;
-        console.log(x);
+        //console.log(x);
         lastData = createJSON(x, prop1, prop2);
         drawChart(lastData, prop1, prop2);
     }
