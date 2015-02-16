@@ -1,0 +1,97 @@
+<head>
+    <script src="dist/d3.v3.min.js"></script>
+    <script src="dist/dimple.min.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+    function createArr(len, range, dim) {
+        if (len == undefined) {
+            len = Math.round(Math.random(0, 1) * 20);
+        }
+        if (dim == undefined) {
+            dim = 2;
+        }
+        if (range == undefined) {
+            range = Math.round(Math.random(0, 1) * 100);
+        }
+        var x = [];
+        for (var i = 0; i < len; i++) {
+            x[i] = [i, Math.round(Math.random(0, 1) * range)];
+        }
+        return x;
+    }
+
+    function createJSON(len) { //takes in a 2 or 3 dimensional array of values
+        var y = createArr(len);
+        var z = [{
+            'x': y[0][0],
+            'val': y[0][1]
+        }];
+        for (var j = 1; j < len; j++) {
+            z[j] = {
+                'x': y[j][0],
+                'val': y[j][1]
+            };
+        }
+        return z;
+    }
+
+    function printJSON(obj, p1, p2) {
+        len = obj.length;
+        //dim = Object.keys(obj[0]).length;
+        text = 'Property : ' + p1 + ' [';
+        console.log('Object with length: ' + len);
+        for (var k = 0; k < len; k++) {
+            text += obj[k][p1];
+           if ( k < len - 1 ) {text += ', ';}
+        }
+        text += "]"
+        console.log(text);
+        text = 'Property : ' + p2 + ' [';
+        for (var k = 0; k < len; k++) {
+            text += obj[k][p2];
+            if ( k < len - 1 ) {text += ', ';}
+        }
+        text += "]"
+        console.log(text);
+    }
+
+   // var svg = dimple.newSvg("body", 800, 600);
+    /* var data = [{
+         "Word": "Hello",
+         "Awesomeness": 2000
+     }, {
+         "Word": "World",
+         "Awesomeness": 3000
+     }];
+     var chart = new dimple.chart(svg, data);
+     chart.addCategoryAxis("x", "Word");
+     chart.addMeasureAxis("y", "Awesomeness");
+     chart.addSeries(null, dimple.plot.bar);
+     chart.draw(); */
+    var myData = [{
+        "Coolness": 1,
+        "Awesomeness": 2000
+    }, {
+        "Coolness": 2,
+        "Awesomeness": 3000
+    }, {
+        "Coolness": 5,
+        "Awesomeness": 6000
+    }, {
+        "Coolness": 3,
+        "Awesomeness": 4000
+    }];
+    function drawChart(data, s1, s2 ) {  //s1 -> 'Awesomeness'
+      var svg = dimple.newSvg("body", 800, 600);
+      var chart = new dimple.chart(svg, data);
+      chart.addCategoryAxis("x", s1);
+      chart.addMeasureAxis("y", s2);
+      chart.addLegend(180, 10, 360, 20, "right");
+      chart.addSeries('Relationshps', dimple.plot.line);
+      chart.draw();
+    }
+   // drawChart(myData, 'Coolness', 'Awesomeness');
+     </script>
+</body>
