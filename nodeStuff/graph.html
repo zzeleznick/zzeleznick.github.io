@@ -22,27 +22,27 @@
         return x;
     }
 
-  function createObj (p1, p2) {
-      obj = new Object();
-      obj[p1] = null;
-      obj[p2] = null;
-      return obj;
-  }
+    function createObj(p1, p2) {
+        obj = new Object();
+        obj[p1] = null;
+        obj[p2] = null;
+        return obj;
+    }
 
-  function setObj (obj, p1, v1) {
-      obj[p1] = v1;
-      return obj;
-  }
+    function setObj(obj, p1, v1) {
+        obj[p1] = v1;
+        return obj;
+    }
 
 
     function createJSON(len, p1, p2) { //takes in a 2 or 3 dimensional array of values
         var y = createArr(len);
         var z = [];
         for (var j = 0; j < len; j++) {
-           /*z[j] = {
-                prop1: y[j][0],
-                prop2: y[j][1]
-            };*/
+            /*z[j] = {
+                 prop1: y[j][0],
+                 prop2: y[j][1]
+             };*/
             z[j] = createObj(p1, p2);
             z[j] = setObj(z[j], p1, y[j][0]);
             z[j] = setObj(z[j], p2, y[j][1]);
@@ -57,20 +57,24 @@
         console.log('Object with length: ' + len);
         for (var k = 0; k < len; k++) {
             text += obj[k][p1];
-           if ( k < len - 1 ) {text += ', ';}
+            if (k < len - 1) {
+                text += ', ';
+            }
         }
         text += "]"
         console.log(text);
         text = 'Property : ' + p2 + ' [';
         for (var k = 0; k < len; k++) {
             text += obj[k][p2];
-            if ( k < len - 1 ) {text += ', ';}
+            if (k < len - 1) {
+                text += ', ';
+            }
         }
         text += "]"
         console.log(text);
     }
 
-   // var svg = dimple.newSvg("body", 800, 600);
+    // var svg = dimple.newSvg("body", 800, 600);
     /* var data = [{
          "Word": "Hello",
          "Awesomeness": 2000
@@ -96,15 +100,37 @@
         "Coolness": 3,
         "Awesomeness": 4000
     }];
-    function drawChart(data, s1, s2 ) {  //s1 -> 'Awesomeness'
-      var svg = dimple.newSvg("body", 800, 600);
-      var chart = new dimple.chart(svg, data);
-      chart.addCategoryAxis("x", s1);
-      chart.addMeasureAxis("y", s2);
-      chart.addLegend(180, 10, 360, 20, "right");
-      chart.addSeries('Relationshps', dimple.plot.line);
-      chart.draw();
+
+    function drawChart(data, s1, s2) { //s1 -> 'Awesomeness'
+            var svg = dimple.newSvg("body", 800, 600);
+            chart = new dimple.chart(svg, data);
+            if(data.length >= 50) {
+              console.log('Crowding detected!');
+              //x.ticks = 5;
+              chart.useLog = true;   //HELP!!
+              chart.addCategoryAxis("x", s1, 2);
+            }
+            else {
+               chart.addCategoryAxis("x", s1);
+            }
+            chart.addMeasureAxis("y", s2);
+            chart.addLegend(180, 10, 360, 20, "right");
+            chart.addSeries('Relationships', dimple.plot.line);
+
+            chart.draw();
+        }
+        // drawChart(myData, 'Coolness', 'Awesomeness');
+    function draw(len, p1, p2) {
+      var x = len == undefined ? 10 : len;
+      var prop1 = p1 == undefined ? 'Domain' : p1;
+      var prop2 = p2 == undefined ? 'Range' : p2;
+      console.log(x);
+      lastData = createJSON(x, prop1, prop2);
+      drawChart(lastData, prop1, prop2);
     }
-   // drawChart(myData, 'Coolness', 'Awesomeness');
-     </script>
+    function remove() {
+        if (document.getElementsByTagName('svg').length > 1)
+          {document.getElementsByTagName('svg')[0].remove();}
+    }
+    </script>
 </body>
