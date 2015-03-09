@@ -85,6 +85,7 @@
   margin: 0 1rem 1rem;
   border-radius: 3px;
   user-select: none;
+  transition: 1s ease-in-out;
   animation: fly-in-from-left 0.5s 1s ease both;
   transform-origin: top left; }
 
@@ -128,6 +129,9 @@
 .card-body p {
   margin-top: 20px;
   margin-bottom: 2px; }
+
+.swiped {
+  display: none; }
 
 .noselect, .panel, .card, header {
   -webkit-touch-callout: none;
@@ -199,5 +203,15 @@ button {
   button:active {
     box-shadow: none;
     margin-top: 5px; }
+
+.ui-loader {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+  outline: none; }
+
+.ui-page {
+  outline: none; }
 
 /*# sourceMappingURL=test.css.map */

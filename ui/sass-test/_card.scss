@@ -10,6 +10,7 @@
   margin: 0 1rem 1rem;
   border-radius: 3px;
   user-select: none;
+  transition: 1s ease-in-out;
   animation: fly-in-from-left 0.5s 1s ease both;
   transform-origin: top left;
   @extend .noselect;
@@ -64,4 +65,7 @@
     margin-top: 20px;
     margin-bottom: 2px;
    }
+}
+.swiped {
+  display: none;
 }

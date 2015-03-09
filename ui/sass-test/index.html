@@ -1,9 +1,11 @@
 <html>
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=3">
+
 <head>
-<script src="../jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="test.css">
-<title>Demo SASS Functionality</title>
+    <script src="../jquery.min.js"></script>
+    <script src="../jquery-mobile.js"></script>
+    <link rel="stylesheet" type="text/css" href="test.css">
+    <title>Demo SASS Functionality</title>
 </head>
 <header>
     <div class="brand">
@@ -13,57 +15,72 @@
 
 </header>
 <main>
-<div class="panel">
-    <div class="panel-header cool-color"> Title <close>x</close> </div>
-    <div class="panel-body"> Stuff </div>
-</div>
- <div class="container center">
-    <button onclick="addCard()">Click Me</button>
-</div>
+    <div class="panel">
+        <div class="panel-header cool-color"> Title
+            <close>x</close>
+        </div>
+        <div class="panel-body"> Stuff </div>
+    </div>
+    <div class="container center">
+        <button onclick="addCard()">Click Me</button>
+    </div>
 </main>
 
 <script>
-    last_obj = 0;
-    card_titles = ['Go Bowling', 'Volunteer', 'Play Bingo'];
+last_obj = 0;
+card_titles = ['Go Bowling', 'Volunteer', 'Play Bingo'];
 
-    card_bodies = [{
-        "des": "Bowling is fun!",
-        "full": "Bowling is a sport that requires little input energy and has shown to reduce your risk of cancer"
-    }, {
-        "des": "Volunteering builds community",
-        "full": "Volunteering has been shown to help regulate mood levels and increase life satisfaction"
-    }, {
-        "des": "Bingo is a community favorite",
-        "full": "Bingo Bingo Bingo. May the odds be ever in your favor"
-    }];
-  function newCard(id) { //length of 3 defaulted
-        var id = id || Math.floor(Math.random(0, 1) * 3);
-        new_Card = '<section class="card filterable hides-hidden" cat="regular" onclick="toggleDisplay(this)">'
-        new_Card += '<div class="card-title">';
-        new_Card += '<h1>' + card_titles[id] + '</h1>';
-        new_Card += '</div> <div class="card-body"><h2>';
-        new_Card += card_bodies[id].des + '</h2> <hidden> <p>'
-        new_Card += card_bodies[id].full + '</p> </hidden> </div></section>'
+card_bodies = [{
+    "des": "Bowling is fun!",
+    "full": "Bowling is a sport that requires little input energy and has shown to reduce your risk of cancer"
+}, {
+    "des": "Volunteering builds community",
+    "full": "Volunteering has been shown to help regulate mood levels and increase life satisfaction"
+}, {
+    "des": "Bingo is a community favorite",
+    "full": "Bingo Bingo Bingo. May the odds be ever in your favor"
+}];
 
-        return new_Card;
-    }
+function newCard(id) { //length of 3 defaulted
+    var id = id || Math.floor(Math.random(0, 1) * 3);
+    new_Card = '<section class="card filterable hides-hidden" cat="regular" onclick="toggleDisplay(this)">'
+    new_Card += '<div class="card-title">';
+    new_Card += '<h1>' + card_titles[id] + '</h1>';
+    new_Card += '</div> <div class="card-body"><h2>';
+    new_Card += card_bodies[id].des + '</h2> <hidden> <p>'
+    new_Card += card_bodies[id].full + '</p> </hidden> </div></section>'
+    return new_Card;
+}
 
-    function addCard() {
-        var x = newCard();
-        $("main").append(x);
-    }
-     function toggleDisplay(obj) {
+function addCard() {
+    var x = newCard();
+    $("main").append(x);
+    $("section").on("swipe", swipeHandler);
+}
+
+function toggleDisplay(obj) {
         console.log('clicked')
         last_obj = obj;
         $(obj).toggleClass('hides-hidden');
-     }
-    function pushCard(card) {
+    }
+    //$("section").on("swipe", swipeHandler);
+function pushCard(card) {
         $("main").append(card);
         //$("section").on("swipe", swipeHandlerDos);
         //$("section").on("dblclick", toggleDisplay);
-
     }
-
+    // Callback function references the event target and adds the 'swipe' class to it
+function swipeHandler(event) {
+        console.log('swiped');
+        if ($(event.target).hasClass('card')) {
+            //$(event.target).css("transform", "translateX(10px)");
+            //$(event.target).attr("transition", "1s ease-in-out");
+            $(event.target).addClass("swiped");
+            //check_states();
+        } else {
+            console.log('disabled');
+        }
+    } // end swipe handler
 </script>
 
 </html>

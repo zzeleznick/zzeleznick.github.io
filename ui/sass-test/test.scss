@@ -75,3 +75,14 @@ button {
     }
 }
 
+.ui-loader {
+    /* Reset the default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+  outline: none;
+}
+
+.ui-page {
+      outline: none;
+}
