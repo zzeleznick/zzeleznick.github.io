@@ -1,0 +1,78 @@
+.panel {
+  border: 1px solid #ccc;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  width: 800px;
+  background-color: #fff;
+  line-height: 1.4;
+  padding-bottom: 10px;
+  margin: 12px auto 12px auto; }
+  @media (max-width: 480px) {
+    .panel {
+      width: 380.95238px;
+      left: 0; } }
+  @media (max-width: 768px) and (min-width: 481px) {
+    .panel {
+      width: 533.33333; } }
+  @media (min-width: 1025px) {
+    .panel {
+      width: 960px; } }
+  .panel .panel-header {
+    background-color: #e6e6e6;
+    min-height: 40px;
+    font-size: 32px;
+    line-height: 1.8;
+    padding-left: 12px; }
+  .panel .panel-body {
+    padding-left: 12px; }
+
+* {
+  margin: 0px;
+  vertical-align: middle; }
+
+html {
+  background-color: #EFEFEF; }
+
+header {
+  font-color: #eeffcc;
+  width: 100%;
+  min-height: 50px;
+  display: inline-block; }
+  header .brand {
+    font-size: 32px; }
+  header .logo {
+    background: url(http://api.randomuser.me/portraits/med/men/50.jpg) 0% 30%/5% no-repeat; }
+
+main {
+  margin-left: 10px;
+  margin-right: 10px; }
+
+.container {
+  width: 100%;
+  margin: 10px auto 10px auto; }
+
+.col-4 {
+  width: 25%; }
+
+.cool-color {
+  color: lightseagreen; }
+
+button {
+  background: #2ecc71;
+  border-radius: 3px;
+  box-shadow: 0px 5px 0px #25a25a;
+  border: 0;
+  color: white;
+  font-size: 17px;
+  padding: 10px 30px;
+  display: inline-block;
+  outline: 0;
+  cursor: pointer; }
+  button:hover {
+    background: #25a25a;
+    box-shadow: 0px 5px 0px #1b7943; }
+  button:active {
+    box-shadow: none;
+    margin-top: 5px; }
+
+/*# sourceMappingURL=test.css.map */

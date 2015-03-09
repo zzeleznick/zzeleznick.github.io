@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery.min.js"></script>
+    <script src="jquery-mobile.js"></script>
+
+
+    <script type="text/javascript">
+    slide_by_prop = function(prop) {
+        $(".filterable[cat!='" + prop + "']").slideUp(200);
+        $(".filterable[cat~='" + prop + "']").css('display', 'inherit');
+        if (prop == undefined) {
+            $(".filterable").fadeIn(600);
+        }
+    }
+    x = false;
+    check_states = function() { //show if archive box is req
+        var arr = [];
+        arr = document.getElementsByClassName('card');
+        for (var i = 0; i < arr.length; i++) {
+            if (!(arr[i].className.match('swiped'))) {
+                console.log('still in stack');
+                break;
+            } else if (i == arr.length - 1) {
+                console.log('all hidden');
+                $("#viewAll").removeClass('swiped')
+            }
+        }
+        console.log('run');
+        /*$("section").each(function(index) {
+                $( "section" ).hasClass('card')$(this).text());
+                   //console.log(index + ": " + $(this).text());
+               }); */
+    }
+
+    returnCards = function() {
+        $("section").each(function(index) {
+            if ($(this).hasClass('swiped')) {
+                $(this).removeClass('swiped');
+            }
+
+        });
+        $("#viewAll").addClass('swiped')
+    }
+
+    $(function() {
+        // Bind the swipeHandler callback function to the swipe event on div.box
+        $("section").on("swipe", swipeHandler);
+        /*$("section").on("hover", function() {
+            console.log('hovered')
+        });*/
+        $("section").on("dblclick", swipeHandler);
+
+        // Callback function references the event target and adds the 'swipe' class to it
+        function swipeHandler(event) {
+                console.log('swiped');
+                if ($(event.target).hasClass('card')) {
+                    $(event.target).addClass("swiped");
+                    check_states();
+                } else {
+                    console.log('disabled');
+                }
+            } // end swipe handler
+    });
+    </script>
+    <main>
+
+        <input class="google" placeholder="Search, or say Google" x-webkit-speech autocomplete="off" />
+
+        <header></header>
+        <!-- SVG SOURCE -->
+        <svg height="0" width="0">
+            <path id="heart-icon" d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454
+    C30,20.335,16,28.261,16,28.261z" />
+        </svg>
+        <!-- SVG SOURCE ends-->
+
+        <div class="protector">
+            <section class="card filterable" cat="regular">
+                <!--{{patient{id}-->
+                <h1> {{p.firstname}} {{p.lastname}}</h1>
+                <h2>Mc Knight Road</h2>
+                <div class="hearts">
+                    <svg class="icon is-check" viewBox="0 0 32 32">
+                        <use xlink:href="#heart-icon"></use>
+                    </svg>
+                    <svg class="icon is-check" viewBox="0 0 32 32">
+                        <use xlink:href="#heart-icon"></use>
+                    </svg>
+                    <svg class="icon is-check" viewBox="0 0 32 32">
+                        <use xlink:href="#heart-icon"></use>
+                    </svg>
+                </div>
+
+            </section>
+
+
+            <section class="card filterable" cat="event">
+                <h1>View nearby events</h1>
+                <h2>Wii Bowling - Thursday Night 7PM - other Cool happenings...</h2>
+                <div class="hearts">
+                    <svg class="icon is-outlined" viewBox="0 0 32 32">
+                        <use xlink:href="#heart-icon"></use>
+                    </svg>
+                </div>
+            </section>
+
+            <section class="card filterable" cat="task">
+                <h1>{{p.firstname}} {{p.lastname}}</h1>
+                <!--input type="checkbox" class="todo" name="todo" value=""-->
+                <h2>Make sure to buy milk and other nice things!</h2>
+                <h3>Weekly Score</h3>
+                <progress max="100" value="80"> </progress> <div class="progress-value">80</div>
+
+            </section>
+
+            <div class="card swiped" id="viewAll">
+                <h2 onclick="returnCards()">View Archived</h2>
+            </div>
+        </div>
+    </main>
+
+    </body>
+
+</html>

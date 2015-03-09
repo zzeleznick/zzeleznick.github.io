@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Patient Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Styles -->
+    <link href="bootflat.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
+    <!--link href="css/font-awesome.css" rel="stylesheet">
+
+    <link href="css/morris.css" rel="stylesheet"-->
+    <link href="css/sub.css" rel="stylesheet">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+</head>
+
+<div class="container" style="margin-top: 50px;">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="well demographics" style="position: relative">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="patient-pic" style=""> </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="patient-info">
+                            <h4 id="patient-name"></h4>
+                            <p>Age: <span class="patient-age"></span>
+                            </p>
+                            <p>Gender: <span id="patient-gender"></span>
+                            </p>
+                            <p>DOB: <span class="patient-dob"></span>
+                            </p>
+                            <p>Address: <span class="patient-address"></span>
+                            </p>
+                            <p>
+                                <span class="patient-city"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="ver-spacer left">
+                            <div class="mask"></div>
+                        </div>
+                        <div class="patient-team">
+                            <p>Healthcare team:</p>
+                            <div class="doc-pic"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end Demographics-->
+
+        <style>
+    div .task-title {
+        margin: 5px auto 5px auto;
+        text-align: center;
+        position: relative;
+    }
+    </style>
+            <div class="well demographics" style="position: relative">
+                <div class="row">
+
+                    <div class="task-title">
+                        <h3> Task name </h3>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="patient-info">
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end col-8-->
+
+
+        <div class="col-md-3" style="float: right; position:relative;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Allergies</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="allergies">
+
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Medications</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="medications">
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Problems</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="problems"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style scoped>
+#edit {
+    margin-bottom: 2px;
+}
+[contenteditable="true"] {
+    padding: 2px;
+    outline: 1px dashed #fef;
+}
+[contenteditable="true"]:hover {
+    outline: 1px dashed #0090D2;
+}
+</style>
+<style>
+ul li {
+    margin-left: -20px;
+}
+</style>
+
+
+
+<script>
+var names = ['Sam Smith', 'Nancy Anderson', 'Charlie Miller', 'Mark Taylor', 'Karen Young'];
+$('#patient-name').text(names[0]);
+$('.patient-age').text('79');
+$('#patient-gender').text('Male');
+$('.patient-dob').text('01/25/1936');
+$('.patient-address').text('534 Erewhon St');
+//$('.patient-pic').text('534 Erewhon St');
+//$('.patient-city').text('PleasantVille, CA');
+$(".patient-pic").css('background', 'url("http://api.randomuser.me/portraits/med/men/6.jpg") center top no-repeat');
+$(".doc-pic").css('background', 'url("http://www.gravatar.com/avatar/3b5e73a6d2b1bc21143bbb7695148a63?d=http%3A%2F%2Fchallengepost1.assetspost.com%2Fassets%2Fdefaults%2Fno-avatar-180.png&s=100") center top no-repeat');
+
+var Allergies = ['Cows milk', 'Pollen', 'Soy'];
+for (var i = 0; i < Allergies.length; i++) {
+    $('ul.allergies').append('<li> <div id="edit" contenteditable="true">' + Allergies[i] + '</div></li>');
+}
+
+meds = [{
+    "medicine": 'Fortecortin',
+    "pseudo": '(deksametazon)',
+    "quantity_amount": 2,
+    "quantity_unit": 'mg, Daily'
+}];
+for (var i = 0; i < meds.length; i++) {
+    $('ul.medications').append('<li> <content-editable>' + '<code>' + meds[i].medicine + '</code> <small>' + meds[i].pseudo + ' </small> <br> - ' + meds[i].quantity_amount + meds[i].quantity_unit + '</content-editable></li>');
+}
+
+probs = ['High Blood Pressure', 'Chronic Depression', 'Type II Diabetes'];
+for (var i = 0; i < probs.length; i++) {
+    $('ul.problems').append('<li> <div id="edit" contenteditable="true">' + probs[i] + '</div> </li>');
+}
+</script>
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+
+</html>

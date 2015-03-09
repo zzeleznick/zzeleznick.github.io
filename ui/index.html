@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery.min.js"></script>
+    <script src="jquery-mobile.js"></script>
+
+
+    <script type="text/javascript">
+    /** README
+                Summary: This is the index page for the indiviudal patient view
+                Users will be able to  interact with cards via swipe (to complete -> archive)
+                After cards are archived, the list can be returned through a button
+
+                Actions:
+                    -- swipe
+                Functions:
+                    swipe (obj) {
+                        swipes this object and marks as hidden
+                    }
+                    pushCard() {
+                        pushes a card to the list
+                    }
+                Classes:
+                    swipable
+                    filterable
+
+
+             **/
+
+    // Callback function references the event target and adds the 'swipe' class to it
+    function swipeHandlerDos(event) {
+            console.log('swiped');
+            if ($(event.target).hasClass('card')) {
+                $(event.target).addClass("swiped");
+                check_states();
+            } else {
+                console.log('disabled');
+            }
+        } // end swipe handler
+
+    last_obj = 0;
+    card_titles = ['Go Bowling', 'Volunteer', 'Play Bingo'];
+
+    card_bodies = [{
+        "des": "Bowling is fun!",
+        "full": "Bowling is a sport that requires little input energy and has shown to reduce your risk of cancer"
+    }, {
+        "des": "Volunteering builds community",
+        "full": "Volunteering has been shown to help regulate mood levels and increase life satisfaction"
+    }, {
+        "des": "Bingo is a community favorite",
+        "full": "Bingo Bingo Bingo. May the odds be ever in your favor"
+    }];
+
+    function genCard(id) { //length of 3 defaulted
+        var id = id || Math.floor(Math.random(0, 1) * 3);
+        new_Card = '<section class="card filterable" cat="regular">'
+        new_Card += '<div class="card-title">';
+        new_Card += '<h1>' + card_titles[id] + '</h1>';
+        new_Card += '</div> <div class="card-body"><h2>';
+        new_Card += card_bodies[id].des + '</h2><p class="hidden">'
+        new_Card += card_bodies[id].full + '</p></div></section>'
+
+        return new_Card;
+    }
+
+    function pushCard(card) {
+        $(".protector").append(card);
+        $("section").on("swipe", swipeHandlerDos);
+        $("section").on("dblclick", toggleDisplay);
+
+    }
+
+    slide_by_prop = function(prop) {
+        $(".filterable[cat!='" + prop + "']").slideUp(200);
+        $(".filterable[cat~='" + prop + "']").css('display', 'inherit');
+        if (prop == undefined) {
+            $(".filterable").fadeIn(600);
+        }
+    }
+    x = false;
+    check_states = function() { //show if archive box is req
+        var arr = [];
+        arr = document.getElementsByClassName('card');
+        for (var i = 0; i < arr.length; i++) {
+            if (!(arr[i].className.match('swiped'))) {
+                console.log('still in stack');
+                break;
+            } else if (i == arr.length - 1) {
+                console.log('all hidden');
+                $("#viewAll").removeClass('swiped')
+            }
+        }
+        console.log('run');
+        /*$("section").each(function(index) {
+                $( "section" ).hasClass('card')$(this).text());
+                   //console.log(index + ": " + $(this).text());
+               }); */
+    }
+
+    returnCards = function() {
+        $("section").each(function(index) {
+            if ($(this).hasClass('swiped')) {
+                $(this).removeClass('swiped');
+            }
+
+        });
+        $("#viewAll").addClass('swiped')
+    }
+
+    function toggleDisplay(event) {
+        console.log('dclicked');
+        //$(event.target).children('p').css('display', 'block');
+        $(event.target).children('p').toggleClass('hidden');
+        //$(event.target).siblings('p').css('display', 'block');
+        $(event.target).parent('section').children('p').toggleClass('hidden');
+         $(event.target).parent('.card-body').children('p').toggleClass('hidden');
+        last_obj = $(event.target);
+        //last_obj.toggleClass('hidden');
+    }
+
+    $(function() {
+        // Bind the swipeHandler callback function to the swipe event on div.box
+        $("section").on("swipe", swipeHandler);
+        /*$("section").on("hover", function() {
+            console.log('hovered')
+        });*/
+        $("section").on("dblclick", toggleDisplay);
+
+        // Callback function references the event target and adds the 'swipe' class to it
+        function swipeHandler(event) {
+                console.log('swiped');
+                if ($(event.target).hasClass('card')) {
+                    $(event.target).addClass("swiped");
+                    check_states();
+                } else {
+                    console.log('disabled');
+                }
+            } // end swipe handler
+    });
+    </script>
+    <main>
+
+        <input class="google" placeholder="Search, or say Google" x-webkit-speech autocomplete="off" />
+
+        <header></header>
+        <div class="protector">
+            <section class="card filterable" cat="regular">
+                <div class="card-title">
+                    <h1><strong>32 minutes</strong> From Your Grandson's House</h1>
+                </div>
+                <div class="card-body">
+                    <h2>Mc Knight Road</h2>
+
+                    <div class="map"></div>
+                </div>
+
+            </section>
+
+            <section class="card filterable" cat="event">
+                <h1>View nearby events</h1>
+                <h2>Wii Bowling - Thursday Night 7PM - other Cool happenings...</h2>
+            </section>
+
+            <section class="card filterable" cat="task">
+                <h1>Buy Milk</h1>
+                <!--input type="checkbox" class="todo" name="todo" value=""-->
+                <h2>Make sure to buy milk and other nice things!</h2>
+
+            </section>
+
+            <div class="card swiped" id="viewAll">
+                <h2 onclick="returnCards()">View Archived</h2>
+            </div>
+        </div>
+    </main>
+
+    </body>
+
+</html>

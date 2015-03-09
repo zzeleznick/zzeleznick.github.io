@@ -179,7 +179,8 @@ for the x and y axes, and plot away! <small> (Make sure to comma seperate)</smal
         // drawChart(myData, 'Coolness', 'Awesomeness');
     function buttdraw() {
        var str = document.getElementById('input').value;
-       var input = str.replace(/^\s+|\s|\s+$/g, '').split(',');
+       //var input = str.replace(/^\s+|\s|\s+$/g, '').split(',');
+       var input = str.split(',');
        var len = parseInt(input[0]) || 10;
        var p1 = input[1] || 'cheese';
        var p2 = input[2] || 'bacon' ;

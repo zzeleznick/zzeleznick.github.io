@@ -1,0 +1,72 @@
+
+@import 'panel';
+
+$primary-color: #eeffcc;
+$light-sea-green: rgb(32,178,170);
+$teal: rgb(0,128,128);
+$font-reg: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+$large-font: 32px;
+$medium-font: $large-font / 1.5px * 100%;
+* {
+    margin: 0px;
+    vertical-align: middle;
+}
+
+html {
+    background-color: #EFEFEF;
+}
+header {
+    font-color: $primary-color;
+    width: 100%;
+    min-height: 50px;
+    display: inline-block;
+    .brand {
+        font-size: $large-font;
+    }
+    .logo {
+          background: url(http://api.randomuser.me/portraits/med/men/50.jpg) 0% 30% / 5% no-repeat;
+    }
+}
+main {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+$container-width: 100%;
+.container {
+    width: $container-width;
+    margin: 10px auto 10px auto;
+}
+.col-4 {
+    width: $container-width / 4;
+}
+
+.cool-color {
+    color: $light-sea-green;
+}
+
+$buttonColor: #2ecc71;
+$buttonDark: darken($buttonColor, 10%);
+$buttonDarker: darken($buttonDark, 10%);
+button {
+    background: $buttonColor;
+    border-radius: 3px;
+    box-shadow: 0px 5px 0px $buttonDark;
+    border: 0;
+    color: white;
+    font-size: 17px;
+    padding: 10px 30px;
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    &:hover {
+        background: $buttonDark;
+        box-shadow: 0px 5px 0px $buttonDarker;
+    }
+    &:active {
+        box-shadow: none;
+        margin-top: 5px;
+    }
+}
+
+

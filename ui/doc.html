@@ -1,0 +1,388 @@
+<head>
+    <script src="dist/d3.js"></script>
+    <script src="dist/dimple.js"></script>
+</head>
+
+<body>
+<input id = 'input' placeholder="size, x-axis, y-axis" style="outline: none; width: 160px;">
+<button onclick="buttdraw()"> Draw </button>
+<button onclick="rem()"> Delete </button>
+<div id="helper" style="margin: 10px 0px 5px 0px"> Input an integer value for the size of the array, a label
+for the x and y axes, and plot away! <small> (Make sure to comma seperate)</small></div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="patient-pic"></div>
+    </div>
+    <div class="col-md-6">
+        <div class="patient-info">
+            <h4 id="patient-name"></h4>
+            <p>Age: <span class="patient-age"></span></p>
+            <p>Gender: <span id="patient-gender"></span></p>
+            <p>DOB: <span class="patient-dob"></span></p>
+        </div>
+    </div>
+</div>
+
+
+    <script type="text/javascript">
+
+
+    function createArr(len, range, dim) {
+        if (len == undefined) {
+            len = Math.round(Math.random(0, 1) * 20);
+        }
+        if (dim == undefined) {
+            dim = 2;
+        }
+        if (range == undefined) {
+            range = Math.round(Math.random(0, 1) * 100);
+        }
+        var x = [];
+        for (var i = 0; i < len; i++) {
+            x[i] = [i, Math.round(Math.random(0, 1) * range)];
+        }
+        return x;
+    }
+
+    function createObj(size) {
+        obj = new Object();
+        for (var i = 0; i < size; i++ ) {
+            obj[i] = null;
+          }
+        return obj;
+    }
+    function setObj(obj, p1, v1) {
+        obj[p1] = v1;
+        return obj;
+    }
+
+
+    function createJSON(len, p1, p2) { //takes in a 2 or 3 dimensional array of values
+        var y = createArr(len);
+        var z = [];
+        for (var j = 0; j < len; j++) {
+            /*z[j] = {
+                 prop1: y[j][0],
+                 prop2: y[j][1]
+             };*/
+            z[j] = createObj(p1, p2);
+            z[j] = setObj(z[j], p1, y[j][0]);
+            z[j] = setObj(z[j], p2, y[j][1]);
+        }
+        return z;
+    }
+
+    function printJSON(obj, p1, p2) {
+        len = obj.length;
+        //dim = Object.keys(obj[0]).length;
+        text = 'Property : ' + p1 + ' [';
+        console.log('Object with length: ' + len);
+        for (var k = 0; k < len; k++) {
+            text += obj[k][p1];
+            if (k < len - 1) {
+                text += ', ';
+            }
+        }
+        text += "]"
+        console.log(text);
+        text = 'Property : ' + p2 + ' [';
+        for (var k = 0; k < len; k++) {
+            text += obj[k][p2];
+            if (k < len - 1) {
+                text += ', ';
+            }
+        }
+        text += "]"
+        console.log(text);
+    }
+var weight = [ {  "Date": '2014-12-29T14:38:00-05:00', "Weight": 70.2 },
+  {  "Date": '2014-12-28T14:55:00-05:00', "Weight": 70.13 },
+  {  "Date": '2014-12-27T14:29:00-05:00', "Weight": 70.19 },
+  {  "Date": '2014-12-26T13:58:00-05:00', "Weight": 70.11 },
+  {  "Date": '2014-12-24T12:41:00-05:00', "Weight": 70.08 },
+  {  "Date": '2014-12-23T12:09:00-05:00', "Weight": 70.13 },
+  {  "Date": '2014-12-22T16:06:00-05:00', "Weight": 70.16 },
+  {  "Date": '2014-12-18T13:41:00-05:00', "Weight": 70.2 },
+  {  "Date": '2014-12-17T15:49:00-05:00', "Weight": 70.25 },
+  {  "Date": '2014-12-16T12:23:00-05:00', "Weight": 70.29 },
+  {  "Date": '2014-12-15T14:25:00-05:00', "Weight": 70.21 },
+  {  "Date": '2014-12-14T15:59:00-05:00', "Weight": 70.17 },
+  {  "Date": '2014-12-13T13:41:00-05:00', "Weight": 70.16 },
+  {  "Date": '2014-12-12T15:06:00-05:00', "Weight": 70.12 },
+  {  "Date": '2014-12-11T13:04:00-05:00', "Weight": 70.05 },
+  {  "Date": '2014-12-10T11:48:00-05:00', "Weight": 70.14 },
+  {  "Date": '2014-12-09T13:42:00-05:00', "Weight": 70.14 },
+  {  "Date": '2014-12-08T13:49:00-05:00', "Weight": 70.09 },
+  {  "Date": '2014-12-07T16:23:00-05:00', "Weight": 70.1 },
+  {  "Date": '2014-12-06T15:08:00-05:00', "Weight": 70.19 },
+  {  "Date": '2014-12-05T15:08:00-05:00', "Weight": 70.13 },
+  {  "Date": '2014-12-04T13:59:00-05:00', "Weight": 70.07 },
+  {  "Date": '2014-12-03T13:16:00-05:00', "Weight": 70.09 },
+  {  "Date": '2014-12-02T13:00:00-05:00', "Weight": 70.11 },
+  {  "Date": '2014-12-01T14:58:00-05:00', "Weight": 70.15 },
+  {  "Date": '2014-11-30T11:55:00-05:00', "Weight": 70.09 },
+  {  "Date": '2014-11-29T14:15:00-05:00', "Weight": 70.14 },
+  {  "Date": '2014-11-28T14:17:00-05:00', "Weight": 70.08 },
+  {  "Date": '2014-11-27T15:38:00-05:00', "Weight": 70.08 },
+  {  "Date": '2014-11-26T11:45:00-05:00', "Weight": 70.11 },
+  {  "Date": '2014-11-25T11:35:00-05:00', "Weight": 70.17 },
+  {  "Date": '2014-11-25T01:14:00-05:00', "Weight": 70.26 },
+  {  "Date": '2014-11-24T14:33:00-05:00', "Weight": 70.32 },
+  {  "Date": '2014-11-23T13:36:00-05:00', "Weight": 70.25 },
+  {  "Date": '2014-11-23T13:24:00-05:00', "Weight": 70.2 },
+  {  "Date": '2014-11-22T14:31:00-05:00', "Weight": 70.26 },
+  {  "Date": '2014-11-21T16:16:00-05:00', "Weight": 70.35 },
+  {  "Date": '2014-11-20T13:35:00-05:00', "Weight": 70.45 },
+  {  "Date": '2014-11-19T11:37:00-05:00', "Weight": 70.39 },
+  {  "Date": '2014-11-18T11:31:00-05:00', "Weight": 70.36 },
+  {  "Date": '2014-11-18T00:42:00-05:00', "Weight": 70.42 },
+  {  "Date": '2014-11-18T00:41:00-05:00', "Weight": 70.41 },
+  {  "Date": '2014-11-17T14:40:00-05:00', "Weight": 70.4 },
+  {  "Date": '2014-11-16T23:39:00-05:00', "Weight": 70.43 },
+  {  "Date": '2014-11-16T15:00:00-05:00', "Weight": 70.47 },
+  {  "Date": '2014-11-15T14:16:00-05:00', "Weight": 70.45 },
+  {  "Date": '2014-11-15T01:55:00-05:00', "Weight": 70.52 },
+  {  "Date": '2014-11-14T15:00:00-05:00', "Weight": 70.45 },
+  {  "Date": '2014-11-13T14:38:00-05:00', "Weight": 70.51 },
+  {  "Date": '2014-11-12T13:48:00-05:00', "Weight": 70.52 },
+  {  "Date": '2014-11-11T12:42:00-05:00', "Weight": 70.52 },
+  {  "Date": '2014-11-10T14:09:00-05:00', "Weight": 70.61 },
+  {  "Date": '2014-11-09T15:13:00-05:00', "Weight": 70.55 },
+  {  "Date": '2014-11-08T13:39:00-05:00', "Weight": 70.52 },
+  {  "Date": '2014-11-08T02:20:00-05:00', "Weight": 70.48 },
+  {  "Date": '2014-11-07T20:25:00-05:00', "Weight": 70.49 },
+  {  "Date": '2014-11-07T14:55:00-05:00', "Weight": 70.57 },
+  {  "Date": '2014-11-06T14:28:00-05:00', "Weight": 70.6 },
+  {  "Date": '2014-11-05T13:52:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-11-04T11:29:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-11-03T14:01:00-05:00', "Weight": 70.58 },
+  {  "Date": '2014-11-02T07:22:00-05:00', "Weight": 70.66 },
+  {  "Date": '2014-11-01T12:19:00-05:00', "Weight": 70.75 },
+  {  "Date": '2014-10-31T11:48:00-05:00', "Weight": 70.68 },
+  {  "Date": '2014-10-29T10:16:00-05:00', "Weight": 70.71 },
+  {  "Date": '2014-10-28T10:54:00-05:00', "Weight": 70.65 },
+  {  "Date": '2014-10-27T08:56:00-05:00', "Weight": 70.65 },
+  {  "Date": '2014-10-25T12:26:00-05:00', "Weight": 70.61 },
+  {  "Date": '2014-10-24T12:43:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-10-23T23:31:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-10-23T12:50:00-05:00', "Weight": 70.65 },
+  {  "Date": '2014-10-22T14:41:00-05:00', "Weight": 70.59 },
+  {  "Date": '2014-10-21T13:45:00-05:00', "Weight": 70.67 },
+  {  "Date": '2014-10-20T13:55:00-05:00', "Weight": 70.68 },
+  {  "Date": '2014-10-19T13:19:00-05:00', "Weight": 70.63 },
+  {  "Date": '2014-10-18T13:57:00-05:00', "Weight": 70.57 },
+  {  "Date": '2014-10-17T12:35:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-10-16T13:34:00-05:00', "Weight": 70.58 },
+  {  "Date": '2014-10-15T15:59:00-05:00', "Weight": 70.51 },
+  {  "Date": '2014-10-14T12:21:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-10-13T13:13:00-05:00', "Weight": 70.63 },
+  {  "Date": '2014-10-12T15:11:00-05:00', "Weight": 70.72 },
+  {  "Date": '2014-10-11T14:21:00-05:00', "Weight": 70.63 },
+  {  "Date": '2014-10-10T13:05:00-05:00', "Weight": 70.58 },
+  {  "Date": '2014-10-09T11:57:00-05:00', "Weight": 70.56 },
+  {  "Date": '2014-10-08T12:52:00-05:00', "Weight": 70.6 },
+  {  "Date": '2014-10-08T12:51:00-05:00', "Weight": 70.58 },
+  {  "Date": '2014-10-07T13:00:00-05:00', "Weight": 70.55 },
+  {  "Date": '2014-10-06T13:54:00-05:00', "Weight": 70.65 },
+  {  "Date": '2014-10-05T12:45:00-05:00', "Weight": 70.64 },
+  {  "Date": '2014-10-04T13:23:00-05:00', "Weight": 70.57 },
+  {  "Date": '2014-10-03T13:15:00-05:00', "Weight": 70.65 },
+  {  "Date": '2014-10-02T13:33:00-05:00', "Weight": 70.66 },
+  {  "Date": '2014-10-01T16:12:00-05:00', "Weight": 70.58 },
+  {  "Date": '2014-09-30T10:33:00-05:00', "Weight": 70.59 },
+  {  "Date": '2014-09-29T08:49:00-05:00', "Weight": 70.63 },
+  {  "Date": '2014-09-29T00:10:00-05:00', "Weight": 70.6 },
+  {  "Date": '2014-09-27T14:28:00-05:00', "Weight": 70.64 },
+  {  "Date": '2014-09-26T10:07:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-09-25T12:08:00-05:00', "Weight": 70.61 },
+  {  "Date": '2014-09-24T12:16:00-05:00', "Weight": 70.71 },
+  {  "Date": '2014-09-24T08:54:00-05:00', "Weight": 70.73 },
+  {  "Date": '2014-09-24T00:17:00-05:00', "Weight": 70.78 },
+  {  "Date": '2014-09-23T12:23:00-05:00', "Weight": 70.86 },
+  {  "Date": '2014-09-21T13:40:00-05:00', "Weight": 70.9 },
+  {  "Date": '2014-09-20T11:22:00-05:00', "Weight": 70.92 },
+  {  "Date": '2014-09-19T10:11:00-05:00', "Weight": 70.87 },
+  {  "Date": '2014-09-18T12:32:00-05:00', "Weight": 70.83 },
+  {  "Date": '2014-09-18T08:48:00-05:00', "Weight": 70.77 },
+  {  "Date": '2014-09-17T09:22:00-05:00', "Weight": 70.86 },
+  {  "Date": '2014-09-16T12:04:00-05:00', "Weight": 70.88 },
+  {  "Date": '2014-09-15T09:45:00-05:00', "Weight": 70.85 },
+  {  "Date": '2014-09-14T11:49:00-05:00', "Weight": 70.84 },
+  {  "Date": '2014-09-13T10:24:00-05:00', "Weight": 70.78 },
+  {  "Date": '2014-09-12T10:41:00-05:00', "Weight": 70.87 },
+  {  "Date": '2014-09-12T00:49:00-05:00', "Weight": 70.82 },
+  {  "Date": '2014-09-11T09:56:00-05:00', "Weight": 70.85 },
+  {  "Date": '2014-09-11T00:13:00-05:00', "Weight": 70.81 },
+  {  "Date": '2014-09-10T11:14:00-05:00', "Weight": 70.75 },
+  {  "Date": '2014-09-09T11:26:00-05:00', "Weight": 70.67 },
+  {  "Date": '2014-09-09T09:56:00-05:00', "Weight": 70.58 },
+  {  "Date": '2014-09-09T00:39:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-09-08T12:24:00-05:00', "Weight": 70.68 },
+  {  "Date": '2014-09-07T13:27:00-05:00', "Weight": 70.59 },
+  {  "Date": '2014-09-06T13:45:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-09-06T11:15:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-09-05T12:59:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-09-04T12:54:00-05:00', "Weight": 70.57 },
+  {  "Date": '2014-09-03T13:11:00-05:00', "Weight": 70.53 },
+  {  "Date": '2014-09-02T11:30:00-05:00', "Weight": 70.63 },
+  {  "Date": '2014-09-01T13:51:00-05:00', "Weight": 70.71 },
+  {  "Date": '2014-08-31T13:32:00-05:00', "Weight": 70.78 },
+  {  "Date": '2014-08-29T11:07:00-05:00', "Weight": 70.88 },
+  {  "Date": '2014-08-29T01:21:00-05:00', "Weight": 70.88 },
+  {  "Date": '2014-08-28T11:34:00-05:00', "Weight": 70.97 },
+  {  "Date": '2014-08-27T10:35:00-05:00', "Weight": 70.94 },
+  {  "Date": '2014-08-26T12:50:00-05:00', "Weight": 70.99 },
+  {  "Date": '2014-08-25T07:54:00-05:00', "Weight": 70.89 },
+  {  "Date": '2014-08-24T10:10:00-05:00', "Weight": 70.79 },
+  {  "Date": '2014-08-23T10:35:00-05:00', "Weight": 70.71 },
+  {  "Date": '2014-08-22T09:52:00-05:00', "Weight": 70.77 },
+  {  "Date": '2014-08-21T15:34:00-05:00', "Weight": 70.81 },
+  {  "Date": '2014-08-20T13:58:00-05:00', "Weight": 70.82 },
+  {  "Date": '2014-08-20T09:29:00-05:00', "Weight": 70.83 },
+  {  "Date": '2014-08-19T23:04:00-05:00', "Weight": 70.78 },
+  {  "Date": '2014-08-19T12:56:00-05:00', "Weight": 70.87 },
+  {  "Date": '2014-08-18T09:47:00-05:00', "Weight": 70.88 },
+  {  "Date": '2014-08-17T12:41:00-05:00', "Weight": 70.78 },
+  {  "Date": '2014-08-16T11:58:00-05:00', "Weight": 70.75 },
+  {  "Date": '2014-08-15T10:11:00-05:00', "Weight": 70.65 },
+  {  "Date": '2014-08-14T09:52:00-05:00', "Weight": 70.57 },
+  {  "Date": '2014-08-13T10:26:00-05:00', "Weight": 70.66 },
+  {  "Date": '2014-08-12T21:04:00-05:00', "Weight": 70.64 },
+  {  "Date": '2014-08-12T10:11:00-05:00', "Weight": 70.57 },
+  {  "Date": '2014-08-11T09:33:00-05:00', "Weight": 70.65 },
+  {  "Date": '2014-08-10T09:11:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-08-09T11:39:00-05:00', "Weight": 70.68 },
+  {  "Date": '2014-08-08T12:17:00-05:00', "Weight": 70.59 },
+  {  "Date": '2014-08-07T10:26:00-05:00', "Weight": 70.59 },
+  {  "Date": '2014-08-07T00:19:00-05:00', "Weight": 70.62 },
+  {  "Date": '2014-08-06T12:55:00-05:00', "Weight": 70.59 },
+  {  "Date": '2014-08-05T11:22:00-05:00', "Weight": 70.49 },
+  {  "Date": '2014-08-01T10:10:00-05:00', "Weight": 70.48 },
+  {  "Date": '2014-07-31T11:03:00-05:00', "Weight": 70.39 },
+  {  "Date": '2014-07-31T08:44:00-05:00', "Weight": 70.35 },
+  {  "Date": '2014-07-30T18:06:00-05:00', "Weight": 70.33 },
+  {  "Date": '2014-07-30T13:25:00-05:00', "Weight": 70.35 },
+  {  "Date": '2014-07-29T11:03:00-05:00', "Weight": 70.42 },
+  {  "Date": '2014-07-28T10:18:00-05:00', "Weight": 70.44 },
+  {  "Date": '2014-07-27T10:44:00-05:00', "Weight": 70.34 },
+  {  "Date": '2014-07-26T11:55:00-05:00', "Weight": 70.43 },
+  {  "Date": '2014-07-25T12:49:00-05:00', "Weight": 70.48 },
+  {  "Date": '2014-07-25T06:18:00-05:00', "Weight": 70.53 },
+  {  "Date": '2014-07-24T13:09:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-07-24T00:14:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-07-23T10:29:00-05:00', "Weight": 70.63 },
+  {  "Date": '2014-07-23T09:28:00-05:00', "Weight": 70.68 },
+  {  "Date": '2014-07-22T11:41:00-05:00', "Weight": 70.59 },
+  {  "Date": '2014-07-21T23:08:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-07-20T19:40:00-05:00', "Weight": 70.61 },
+  {  "Date": '2014-07-20T07:52:00-05:00', "Weight": 70.58 },
+  {  "Date": '2014-07-19T11:34:00-05:00', "Weight": 70.49 },
+  {  "Date": '2014-07-19T09:07:00-05:00', "Weight": 70.42 },
+  {  "Date": '2014-07-18T11:24:00-05:00', "Weight": 70.45 },
+  {  "Date": '2014-07-18T00:17:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-07-17T10:22:00-05:00', "Weight": 70.52 },
+  {  "Date": '2014-07-17T08:50:00-05:00', "Weight": 70.5 },
+  {  "Date": '2014-07-16T14:31:00-05:00', "Weight": 70.52 },
+  {  "Date": '2014-07-16T06:54:00-05:00', "Weight": 70.46 },
+  {  "Date": '2014-07-16T01:04:00-05:00', "Weight": 70.54 },
+  {  "Date": '2014-07-15T09:28:00-05:00', "Weight": 70.48 },
+  {  "Date": '2014-07-14T22:52:00-05:00', "Weight": 70.45 },
+  {  "Date": '2014-07-14T12:45:00-05:00', "Weight": 70.43 },
+  {  "Date": '2014-07-14T08:28:00-05:00', "Weight": 70.42 },
+  {  "Date": '2014-07-13T14:20:00-05:00', "Weight": 70.51 },
+  {  "Date": '2014-07-13T07:20:00-05:00', "Weight": 70.42 },
+  {  "Date": '2014-07-12T14:06:00-05:00', "Weight": 70.38 },
+  {  "Date": '2014-07-12T07:56:00-05:00', "Weight": 70.34 },
+  {  "Date": '2014-07-11T07:48:00-05:00', "Weight": 70.27 },
+  {  "Date": '2014-07-10T12:44:00-05:00', "Weight": 70.18 },
+  {  "Date": '2014-07-09T12:02:00-05:00', "Weight": 70.22 },
+  {  "Date": '2014-07-09T10:33:00-05:00', "Weight": 70.3 },
+  {  "Date": '2014-07-08T12:20:00-05:00', "Weight": 70.24 },
+  {  "Date": '2014-07-08T06:30:00-05:00', "Weight": 70.34 },
+  {  "Date": '2014-07-07T13:45:00-05:00', "Weight": 70.41 } ]
+
+
+    var myData = [{
+        "Coolness": 1,
+        "Awesomeness": 2000
+    }, {
+        "Coolness": 2,
+        "Awesomeness": 3000
+    }, {
+        "Coolness": 5,
+        "Awesomeness": 6000
+    }, {
+        "Coolness": 3,
+        "Awesomeness": 4000
+    }];
+
+    function drawChart(data, s1, s2) { //s1 -> 'Awesomeness'
+            var h = window.outerHeight - 80;
+            var w = window.outerWidth - 50;
+            var svg = dimple.newSvg("body", w , h);
+            chart = new dimple.chart(svg, data);
+            if (data.length >= 50) {
+                console.log('Crowding detected!');
+                //x.ticks = 5;
+                chart.useLog = true; //HELP!!
+                chart.addCategoryAxis("x", s1, 2);
+            } else {
+                chart.addCategoryAxis("x", s1);
+            }
+            chart.addMeasureAxis("y", s2);
+            chart.addLegend(180, 10, 360, 20, "right");
+            chart.addSeries('Relationships', dimple.plot.line);
+
+            chart.draw();
+        }
+        // drawChart(myData, 'Coolness', 'Awesomeness');
+    function buttdraw() {
+       var str = document.getElementById('input').value;
+       //var input = str.replace(/^\s+|\s|\s+$/g, '').split(',');
+       var input = str.split(',');
+       var len = parseInt(input[0]) || 10;
+       var p1 = input[1] || 'cheese';
+       var p2 = input[2] || 'bacon' ;
+       lastData = createJSON(len, p1, p2);
+       drawChart(lastData, p1, p2);
+    }
+    function draw(len, p1, p2) {
+        var x = len == undefined ? 10 : len;
+        var prop1 = p1 == undefined ? 'Domain' : p1;
+        var prop2 = p2 == undefined ? 'Range' : p2;
+        //console.log(x);
+        lastData = createJSON(x, prop1, prop2);
+        drawChart(lastData, prop1, prop2);
+    }
+
+    function rem() {
+        if (document.getElementsByTagName('svg').length > 1) {
+            document.getElementsByTagName('svg')[0].remove();
+        }
+    }
+
+//drawChart(weight, "Date", "Weight");
+
+
+function createMiniJSON(obj, obj_start, obj_end, p1, p2) { //object is your reference object, p1 is the property you will set
+        var z = [];
+        k = 0;
+        for (var j = obj_start; j < obj_end; j++) {
+            v1 = obj[j][p1];
+            v2 = obj[j][p2];
+            z[k] = createObj();
+            z[k] = setObj(z[k], p1, v1);
+            z[k] = setObj(z[k], p2, v2);
+            k++;
+        }
+        return z;
+    }
+
+zz = createMiniJSON(weight, weight.length-20, weight.length, 'Date', 'Weight');
+console.log(zz);
+
+drawChart(zz, 'Date', 'Weight');
+
+    </script>
+</body>
