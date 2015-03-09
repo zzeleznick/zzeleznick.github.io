@@ -1,0 +1,28 @@
+// Utilities properties
+
+$font-reg: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.center {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.hides-hidden {
+    hidden {
+        display:none;
+    }
+}

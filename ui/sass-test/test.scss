@@ -1,10 +1,12 @@
 
 @import 'panel';
+@import 'card';
+@import "utils/properties";
 
 $primary-color: #eeffcc;
 $light-sea-green: rgb(32,178,170);
 $teal: rgb(0,128,128);
-$font-reg: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 $large-font: 32px;
 $medium-font: $large-font / 1.5px * 100%;
 * {
@@ -14,12 +16,14 @@ $medium-font: $large-font / 1.5px * 100%;
 
 html {
     background-color: #EFEFEF;
+    font-family: $font-reg;
 }
 header {
     font-color: $primary-color;
     width: 100%;
     min-height: 50px;
     display: inline-block;
+    @extend .noselect;
     .brand {
         font-size: $large-font;
     }
@@ -59,6 +63,8 @@ button {
     display: inline-block;
     outline: 0;
     cursor: pointer;
+    margin-bottom: 10px;
+    margin-top: 10px;
     &:hover {
         background: $buttonDark;
         box-shadow: 0px 5px 0px $buttonDarker;
@@ -68,5 +74,4 @@ button {
         margin-top: 5px;
     }
 }
-
 
