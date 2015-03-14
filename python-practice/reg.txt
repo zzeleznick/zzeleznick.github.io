@@ -1,0 +1,63 @@
+'''
+via https://docs.python.org/3/howto/regex.html
+
+Note that characters within the set:  . ^ $ * + ? { } [ ] \ | ( )
+are special (or meta) and regular expressions will not match them directly.
+We will need to remove their special properties to negate their inherited effects.
+
+brackets[] : Note that characters contained within brackets [abc] will match any of the
+characters a, b, or c; and this is the same as [a-c], which uses a range to express the same set.
+-- If you wanted to match only lowercase letters, your RE would be [a-z].
+-- Note Metacharacters are not active inside classes.
+    -- e.g.[akm$] will match any of the characters 'a', 'k', 'm', or '$';
+-- Complements of the set can be matched by including a '^' as the first character of the class.
+    -- e.g. [^5] will match any character except '5'.
+
+backslash \: Like Python string literals, the backslash can be followed by various characters to signal various special sequences.
+-- Within RE, it’s used to escape all the metacharacters so you can still match them in patterns
+    -- e.g. To match a [ or \, include a backslash to remove their special meaning: \[ or \\.
+
+
+special sequences:  beginn with '\' and represent useful predefined sets of characters
+    \d : Matches any decimal digit; this is equivalent to the class [0-9].
+    \D : Matches any non-digit character; this is equivalent to the class [^0-9].
+    \s : Matches any whitespace character; this is equivalent to the class [ \t\n\r\f\v].
+    \S : Matches any non-whitespace character; this is equivalent to the class [^ \t\n\r\f\v].
+    \w : Matches any alphanumeric character; this is equivalent to the class [a-zA-Z0-9_].
+    \W : Matches any non-alphanumeric character; this is equivalent to the class [^a-zA-Z0-9_].
+
+    -- These sequences can be included inside a character class.
+        -- e.g. [\s,.] is a character class that will match any whitespace character, or ',' or '.'.
+    . : It matches anything except a newline character
+
+* :  match exp >= 0 times
+? : match 0 | 1 times
++ : match >= 1 times
+
+{m,n}:  where m and n are decimal integers.
+        This qualifier means there must be at least m repetitions, and at most n.
+
+eg: a/{1,3}b  will match a/b, a//b, and a///b
+              but not ab, which has no slashes, or a////b, which has four.
+
+{0,} is the same as *,
+{1,} is equivalent to +,
+and {0,1} is the same as ?.
+
+It’s better to use *, +, or ? when you can, simply because they’re shorter and easier to read.
+
+
+pat = re.compile(r"""
+ \s*                 # Skip leading whitespace
+ (?P<header>[^:]+)   # Header name
+ \s* :               # Whitespace, and a colon
+ (?P<value>.*?)      # The header's value -- *? used to
+                     # lose the following trailing whitespace
+ \s*$                # Trailing whitespace to end-of-line
+""", re.VERBOSE)
+
+This is far more readable than:
+
+pat = re.compile(r"\s*(?P<header>[^:]+)\s*:(?P<value>.*?)\s*$")
+
+'''
