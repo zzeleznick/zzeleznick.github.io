@@ -32,6 +32,9 @@ function hideCards(self) {
         $('#card-' + y).removeClass('hidden');
         $('#card-' + y).parent().toggleClass('m12');
     }
+function generateScore() {
+
+}
     /*meds = [{
         "medicine": 'Fortecortin',
         "pseudo": '(deksametazon)',
