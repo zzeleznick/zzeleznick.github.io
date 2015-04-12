@@ -21,11 +21,11 @@
                     <!--ul id="nav-mobile" class="side-nav"-->
                     <div class="centered red valign-wrapper ">
                         <!--a class="btn-flat btn-large waves-effect waves-light"-->
-                        <a class="second-collapse"> ZZ </a>
+                        <a> ZZ </a>
                         <!--/a-->
                     </div>
-                    <li class="selected"><a href="#"><i class="mdi-action-home"> </i> <zz> Home </zz> </a></li>
-                    <li><a href="graphs.html"><i class="mdi-editor-insert-chart"></i> <zz> Statistics </zz> </a></li>
+                    <li><a href="index.html"><i class="mdi-action-home"> </i> <zz> Home </zz> </a></li>
+                    <li class="selected"><a href="graphs.html"><i class="mdi-editor-insert-chart"></i> <zz> Statistics </zz> </a></li>
                     <li>
                         <a href="logs.html"> <i class="mdi-action-assignment"> </i>
                             <zz> Logs </zz>
@@ -55,53 +55,39 @@
     </div>
     <section class="left-adjust">
         <div class="section no-pad-bot" id="index-banner">
-            <div class="container">
-                <br>
-                <br>
-                <h1 class="header center amber-text">Healthy Mind and Body</h1>
-                <div class="row center">
-                    <h5 class="header col s12 light">Your mental and physical health are our top priority.</h5>
-                </div>
-                <div class="row center">
-                    <a href="#" id="download-button" class="btn-large waves-effect waves-light orange" onclick="genCard($('.value-prop'))">Get Started</a>
-                </div>
-                <br>
-                <br>
-            </div>
+        </div>
+        <div class="container">
+            <br>
+            <br>
+            <h1 class="header center amber-text">Sentiment Analysis</h1>
         </div>
         <div class="value-prop container">
-            <div class="section" id="value-child">
-                <!--   Icon Section   -->
+            <div class="section">
                 <div class="row">
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h2 class="center light-blue-text"><!--i class="mdi-action-accessibility"--><i class="mdi-social-school"></i></h2>
-                            <h5 class="center">Research Driven</h5>
-                            <p class="light">
-                                By utilizing MEMS sensors, physical metrics, and self-reported data, we are able to empower astronauts and citizen scientists alike to take actional steps towards improving their health outcomes.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h2 class="center light-blue-text"><i class="mdi-social-group"></i></h2>
-                            <h5 class="center">User Experience Focused</h5>
-                            <p class="light">We present a delightful and unified framework that incorporates contextually-aware components and animations that provide actionable feedback towards users.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h2 class="center light-blue-text"><i class="mdi-social-public"></i></h2>
-                            <h5 class="center">Galatic Impact</h5>
-                            <p class="light">Join us in our voyage across the universe as we continue to push the boundaries of space travel.</p>
+                    <div class="col sm12 m12">
+                        <link rel="stylesheet" href="graph.css" type="text/css">
+                        <style>
+                        body {
+                            font-family: "Helvetica Neue", Helvetica;
+                        }
+
+                        p {
+                            clear: both;
+                            top: 20px;
+                        }
+
+                        div.aGraph {
+                            margin-top: 30px;
+                            padding: 10px;
+                            margin-bottom: 30px;
+                            margin-left: -30px;
+                        }
+                        </style>
+                        <div class="card">
+                            <div id="graph1" class="aGraph" style="position:relative;width:100%;height:400px"></div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <br>
-            <br>
-            <div class="section">
             </div>
         </div>
         <footer class="page-footer orange">
@@ -132,6 +118,8 @@
     <!--  Scripts-->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="js/materialize.js"></script>
+    <script src="http://d3js.org/d3.v2.js"></script>
+    <script src="line-graph.js"></script>
     <script src="js/init.js"></script>
 </body>
 

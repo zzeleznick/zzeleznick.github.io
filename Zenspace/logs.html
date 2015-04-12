@@ -21,12 +21,12 @@
                     <!--ul id="nav-mobile" class="side-nav"-->
                     <div class="centered red valign-wrapper ">
                         <!--a class="btn-flat btn-large waves-effect waves-light"-->
-                        <a class="second-collapse"> ZZ </a>
+                        <a> ZZ </a>
                         <!--/a-->
                     </div>
-                    <li class="selected"><a href="#"><i class="mdi-action-home"> </i> <zz> Home </zz> </a></li>
+                    <li><a href="index.html"><i class="mdi-action-home"> </i> <zz> Home </zz> </a></li>
                     <li><a href="graphs.html"><i class="mdi-editor-insert-chart"></i> <zz> Statistics </zz> </a></li>
-                    <li>
+                    <li class="selected">
                         <a href="logs.html"> <i class="mdi-action-assignment"> </i>
                             <zz> Logs </zz>
                         </a>
@@ -55,54 +55,80 @@
     </div>
     <section class="left-adjust">
         <div class="section no-pad-bot" id="index-banner">
-            <div class="container">
-                <br>
-                <br>
-                <h1 class="header center amber-text">Healthy Mind and Body</h1>
-                <div class="row center">
-                    <h5 class="header col s12 light">Your mental and physical health are our top priority.</h5>
-                </div>
-                <div class="row center">
-                    <a href="#" id="download-button" class="btn-large waves-effect waves-light orange" onclick="genCard($('.value-prop'))">Get Started</a>
-                </div>
-                <br>
-                <br>
-            </div>
+        </div>
+        <div class="container">
+            <br>
+            <br>
+            <h1 class="header center amber-text">Captain's Logs.</h1>
         </div>
         <div class="value-prop container">
-            <div class="section" id="value-child">
-                <!--   Icon Section   -->
+            <div class="section">
                 <div class="row">
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h2 class="center light-blue-text"><!--i class="mdi-action-accessibility"--><i class="mdi-social-school"></i></h2>
-                            <h5 class="center">Research Driven</h5>
-                            <p class="light">
-                                By utilizing MEMS sensors, physical metrics, and self-reported data, we are able to empower astronauts and citizen scientists alike to take actional steps towards improving their health outcomes.
-                            </p>
+                    <div class="col s12 m6">
+                        <div class="card" id="card-1" onclick="hideCards(this)">
+                            <date> </date>
+                            <div class="notepad">
+                                <div class="notepad-heading">
+                                    <h3>April 3rd, 2015</h3>
+                                </div>
+                                <div class="text" contenteditable>dddddd </div>
+                            </div>
+                            <div class="card-action">
+                                <a href="#">Share</a>
+                                <a href='#'>Analyze</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h2 class="center light-blue-text"><i class="mdi-social-group"></i></h2>
-                            <h5 class="center">User Experience Focused</h5>
-                            <p class="light">We present a delightful and unified framework that incorporates contextually-aware components and animations that provide actionable feedback towards users.
-                            </p>
+                    <div class="col s12 m6">
+                        <div class="card" id="card-2" onclick="hideCards(this)">
+                            <date> </date>
+                            <div class="notepad">
+                                <div class="notepad-heading">
+                                    <h3>April 2nd, 2015</h3>
+                                </div>
+                                <div class="text" contenteditable> super fun day today guyz! </div>
+                            </div>
+                            <div class="card-action">
+                                <a href="#">Share</a>
+                                <a href='#'>Analyze</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h2 class="center light-blue-text"><i class="mdi-social-public"></i></h2>
-                            <h5 class="center">Galatic Impact</h5>
-                            <p class="light">Join us in our voyage across the universe as we continue to push the boundaries of space travel.</p>
+                </div>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <div class="card" id="card-3" onclick="hideCards(this)">
+                            <date> </date>
+                            <div class="notepad">
+                                <div class="notepad-heading">
+                                    <h3>March 31st, 2015</h3>
+                                </div>
+                                <div class="text" contenteditable>dddddd </div>
+                            </div>
+                            <div class="card-action">
+                                <a href="#">Share</a>
+                                <a href='#'>Analyze</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6">
+                        <div class="card" id="card-4" onclick="hideCards(this)">
+                            <date> </date>
+                            <div class="notepad">
+                                <div class="notepad-heading">
+                                    <h3>March 30th, 2015</h3>
+                                </div>
+                                <div class="text" contenteditable>dddddd </div>
+                            </div>
+                            <div class="card-action">
+                                <a href="#">Share</a>
+                                <a href='#'>Analyze</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <br>
-            <br>
-            <div class="section">
-            </div>
+        </div>
         </div>
         <footer class="page-footer orange">
             <div class="container">
