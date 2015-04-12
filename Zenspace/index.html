@@ -21,7 +21,7 @@
                     <!--ul id="nav-mobile" class="side-nav"-->
                     <div class="centered red valign-wrapper ">
                         <!--a class="btn-flat btn-large waves-effect waves-light"-->
-                        <a> ZZ </a>
+                        <a class="second-collapse"> ZZ </a>
                         <!--/a-->
                     </div>
                     <li class="selected"><a href="#"><i class="mdi-action-home"> </i> <zz> Home </zz> </a></li>
@@ -63,14 +63,14 @@
                     <h5 class="header col s12 light">Your mental and physical health are our top priority.</h5>
                 </div>
                 <div class="row center">
-                    <a href="#" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
+                    <a href="#" id="download-button" class="btn-large waves-effect waves-light orange" onclick="genCard($('.value-prop'))">Get Started</a>
                 </div>
                 <br>
                 <br>
             </div>
         </div>
         <div class="value-prop container">
-            <div class="section">
+            <div class="section" id="value-child">
                 <!--   Icon Section   -->
                 <div class="row">
                     <div class="col s12 m4">
@@ -111,7 +111,7 @@
                         <h5 class="white-text">Company Bio</h5>
                         <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
                     </div>
-                    <div class="col l3 s6">
+                    <div class="col offset-s3 offset-l3 l3 s3">
                         <h5 class="white-text">Connect</h5>
                         <ul>
                             <li><a class="white-text" href="#!">About</a></li>
